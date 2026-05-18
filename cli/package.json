@@ -1,0 +1,32 @@
+{
+  "name": "@bumblebee/cli",
+  "version": "0.3.0",
+  "description": "Bumblebee v3 CLI — multi-agent task management",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "bb": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "lint": "eslint src --ext .ts",
+    "test": "vitest run"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^7.2.0",
+    "axios": "^1.7.9",
+    "chalk": "^5.4.0",
+    "commander": "^13.0.0",
+    "ora": "^8.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.0"
+  }
+}

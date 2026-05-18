@@ -1,0 +1,60 @@
+# Complex workflow: Coordinator decomposes → N specialists parallel → integrate → review → deploy.
+# Used for Complex-classified issues with Coordinator role active.
+name: feature-complex-flow
+version: 1
+description: Multi-specialist flow for Complex issues with Coordinator supervisor
+nodes:
+  - id: triage
+    role: triager
+    on_success: plan
+    on_fail:
+      classify: true
+
+  - id: plan
+    role: coordinator
+    decomposes: true
+    on_success:
+      fan_out: implement_subtask
+    on_fail:
+      classify: true
+
+  - id: implement_subtask
+    role: implementer
+    parallel: true
+    on_success: aggregate
+
+  - id: aggregate
+    role: coordinator
+    waits_for: all_subtasks
+    on_success: integrate
+
+  - id: integrate
+    role: integrator
+    on_success: review
+    on_fail: fix
+
+  - id: review
+    role: reviewer
+    on_success: deploy
+    on_changes_requested: fix
+
+  - id: fix
+    role: implementer
+    max_cycles: 5
+    on_success: review
+
+  - id: deploy
+    role: deployer
+    on_success: qa
+
+  - id: qa
+    role: tester
+    on_success: release
+    on_fail: fix
+
+  - id: release
+    role: deployer
+    on_success: done
+
+  - id: done
+    role: terminator

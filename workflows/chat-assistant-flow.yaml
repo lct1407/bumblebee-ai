@@ -1,0 +1,11 @@
+# Chat Assistant flow (Tier 2): Q&A + suggest via HITL. Read tools + suggest tools.
+name: chat-assistant-flow
+version: 1
+description: Conversational Q&A + suggest-only writes (HITL confirms)
+nodes:
+  - id: respond
+    role: assistant
+    on_success: done
+
+  - id: done
+    role: terminator

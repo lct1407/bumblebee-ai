@@ -1,0 +1,27 @@
+# Simple workflow: linear chain for low-complexity bug/chore issues.
+# Loaded into LangGraph StateGraph at startup.
+name: simple-fix-flow
+version: 1
+description: Single-agent linear flow for Simple complexity issues
+nodes:
+  - id: triage
+    role: triager
+    on_success: implement
+    on_fail:
+      classify: true
+      route_by_failure: true
+
+  - id: implement
+    role: implementer
+    on_success: test
+    on_fail:
+      classify: true
+      route_by_failure: true
+
+  - id: test
+    role: tester
+    on_success: done
+    on_fail: implement   # one retry then escalate
+
+  - id: done
+    role: terminator
