@@ -7,7 +7,7 @@ class ToolDef(BaseModel):
     name: str
     description: str
     examples: list[dict] = Field(default_factory=list)
-    schema: dict  # JSON schema for args
+    args_schema: dict  # JSON schema for args (renamed from 'schema' to avoid BaseModel attr shadow)
     roles: list[str] = Field(default_factory=list)  # roles allowed
     version: str = "1.0.0"
 
@@ -18,7 +18,7 @@ TOOLS: dict[str, ToolDef] = {
         name="list_issues",
         description="List issues in a project. Filter by status, type, priority.",
         examples=[{"args": {"project_slug": "bb", "status": "new"}, "result": "[...]"}],
-        schema={
+        args_schema={
             "type": "object",
             "properties": {
                 "project_slug": {"type": "string"},
@@ -33,7 +33,7 @@ TOOLS: dict[str, ToolDef] = {
         name="get_issue",
         description="Fetch full issue detail by id or number.",
         examples=[{"args": {"issue_id": "uuid"}, "result": "{...}"}],
-        schema={
+        args_schema={
             "type": "object",
             "properties": {"issue_id": {"type": "string"}},
             "required": ["issue_id"],
@@ -44,7 +44,7 @@ TOOLS: dict[str, ToolDef] = {
         name="create_issue",
         description="Create a new issue.",
         examples=[{"args": {"project_slug": "bb", "title": "fix login"}, "result": "{...}"}],
-        schema={
+        args_schema={
             "type": "object",
             "properties": {
                 "project_slug": {"type": "string"},
@@ -60,7 +60,18 @@ TOOLS: dict[str, ToolDef] = {
         name="suggest_issue",
         description="Suggest an issue draft for user approval (HITL chat pattern).",
         examples=[{"args": {"draft": {"title": "...", "type": "bug"}}, "result": "{draft_id}"}],
-        schema={
+        args_schema={
+            "type": "object",
+            "properties": {"draft": {"type": "object"}},
+            "required": ["draft"],
+        },
+        roles=["assistant"],
+    ),
+    "suggest_knowledge_entry": ToolDef(
+        name="suggest_knowledge_entry",
+        description="Suggest a knowledge entry for user approval (HITL chat pattern).",
+        examples=[{"args": {"draft": {"category": "decision", "title": "...", "body": "..."}}, "result": "{draft_id}"}],
+        args_schema={
             "type": "object",
             "properties": {"draft": {"type": "object"}},
             "required": ["draft"],
@@ -71,7 +82,7 @@ TOOLS: dict[str, ToolDef] = {
         name="acquire_scope_lease",
         description="Atomically claim file globs for exclusive access.",
         examples=[{"args": {"patterns": ["src/auth/**"]}, "result": "{lease_id}"}],
-        schema={
+        args_schema={
             "type": "object",
             "properties": {"patterns": {"type": "array", "items": {"type": "string"}}},
             "required": ["patterns"],
@@ -82,14 +93,14 @@ TOOLS: dict[str, ToolDef] = {
         name="release_scope_lease",
         description="Release a previously-acquired scope lease.",
         examples=[{"args": {"lease_id": "uuid"}, "result": "ok"}],
-        schema={"type": "object", "properties": {"lease_id": {"type": "string"}}, "required": ["lease_id"]},
+        args_schema={"type": "object", "properties": {"lease_id": {"type": "string"}}, "required": ["lease_id"]},
         roles=["implementer", "tester", "integrator"],
     ),
     "add_knowledge": ToolDef(
         name="add_knowledge",
         description="Add a project knowledge entry (decision/convention/pitfall/fact).",
         examples=[{"args": {"category": "convention", "title": "...", "body": "..."}, "result": "{id}"}],
-        schema={
+        args_schema={
             "type": "object",
             "properties": {
                 "category": {"type": "string"},
@@ -105,7 +116,7 @@ TOOLS: dict[str, ToolDef] = {
         name="query_knowledge",
         description="Query project knowledge by category, tags, or scope.",
         examples=[{"args": {"category": "decision"}, "result": "[...]"}],
-        schema={
+        args_schema={
             "type": "object",
             "properties": {
                 "category": {"type": "string"},
@@ -119,7 +130,7 @@ TOOLS: dict[str, ToolDef] = {
         name="request_human_approval",
         description="Pause and request human approval (HITL-as-tool, 12-factor #7).",
         examples=[{"args": {"context": "ready to deploy"}, "result": "approved | rejected"}],
-        schema={
+        args_schema={
             "type": "object",
             "properties": {"context": {"type": "string"}, "options": {"type": "array"}},
             "required": ["context"],
@@ -130,7 +141,7 @@ TOOLS: dict[str, ToolDef] = {
         name="scratch_write",
         description="Persist working data to session scratchpad (Tier 3 memory).",
         examples=[{"args": {"key": "plan_progress", "value": {}}, "result": "ok"}],
-        schema={
+        args_schema={
             "type": "object",
             "properties": {"key": {"type": "string"}, "value": {}},
             "required": ["key", "value"],
@@ -141,7 +152,7 @@ TOOLS: dict[str, ToolDef] = {
         name="scratch_read",
         description="Read from session scratchpad.",
         examples=[{"args": {"key": "plan_progress"}, "result": "{}"}],
-        schema={"type": "object", "properties": {"key": {"type": "string"}}, "required": ["key"]},
+        args_schema={"type": "object", "properties": {"key": {"type": "string"}}, "required": ["key"]},
         roles=["implementer", "integrator", "coordinator"],
     ),
 }
@@ -158,7 +169,7 @@ def validate_tool_call(name: str, args: dict) -> tuple[bool, str | None]:
     if tool is None:
         return False, f"unknown_tool: {name}"
     # Basic required-field validation (full JSON schema can be added with jsonschema lib)
-    required = tool.schema.get("required", [])
+    required = tool.args_schema.get("required", [])
     for field in required:
         if field not in args:
             return False, f"missing_field: {field}"

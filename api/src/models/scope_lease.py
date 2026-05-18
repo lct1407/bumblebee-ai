@@ -2,6 +2,8 @@
 import uuid
 from datetime import datetime
 from sqlalchemy import ForeignKey, DateTime, Enum as SqlEnum
+
+_evcall = lambda x: [e.value for e in x]
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 import enum
@@ -20,7 +22,8 @@ class ScopeLease(Base, UUIDPKMixin, TimestampMixin):
     __tablename__ = "scope_leases"
 
     status: Mapped[LeaseStatus] = mapped_column(
-        SqlEnum(LeaseStatus, name="lease_status"), default=LeaseStatus.ACTIVE, index=True
+        SqlEnum(LeaseStatus, name="lease_status", values_callable=_evcall),
+        default=LeaseStatus.ACTIVE, index=True,
     )
     patterns: Mapped[list] = mapped_column(JSONB, nullable=False)  # ["src/auth/**", ...]
     resolved_files: Mapped[list] = mapped_column(JSONB, default=list, nullable=False)

@@ -2,6 +2,8 @@
 import uuid
 from datetime import datetime
 from sqlalchemy import String, Text, Integer, ForeignKey, DateTime, Enum as SqlEnum
+
+_evcall = lambda x: [e.value for e in x]
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 import enum
@@ -22,7 +24,8 @@ class KnowledgeEntry(Base, UUIDPKMixin, TimestampMixin):
     title: Mapped[str] = mapped_column(String(500), nullable=False)
     body: Mapped[str] = mapped_column(Text, nullable=False)
     category: Mapped[KnowledgeCategory] = mapped_column(
-        SqlEnum(KnowledgeCategory, name="knowledge_category"), nullable=False, index=True
+        SqlEnum(KnowledgeCategory, name="knowledge_category", values_callable=_evcall),
+        nullable=False, index=True,
     )
     tags: Mapped[list] = mapped_column(JSONB, default=list, nullable=False)
     scope_globs: Mapped[list] = mapped_column(JSONB, default=list, nullable=False)

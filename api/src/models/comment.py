@@ -1,6 +1,8 @@
 """Comment on an issue."""
 import uuid
 from sqlalchemy import String, Text, ForeignKey, Enum as SqlEnum
+
+_evcall = lambda x: [e.value for e in x]
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 import enum
@@ -22,7 +24,8 @@ class Comment(Base, UUIDPKMixin, TimestampMixin):
 
     body: Mapped[str] = mapped_column(Text, nullable=False)
     type: Mapped[CommentType] = mapped_column(
-        SqlEnum(CommentType, name="comment_type"), default=CommentType.DISCUSSION
+        SqlEnum(CommentType, name="comment_type", values_callable=_evcall),
+        default=CommentType.DISCUSSION,
     )
     author: Mapped[str | None] = mapped_column(String(200))
 

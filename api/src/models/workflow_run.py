@@ -2,6 +2,8 @@
 import uuid
 from datetime import datetime
 from sqlalchemy import String, ForeignKey, DateTime, Enum as SqlEnum
+
+_evcall = lambda x: [e.value for e in x]
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 import enum
@@ -22,7 +24,8 @@ class WorkflowRun(Base, UUIDPKMixin, TimestampMixin):
     __tablename__ = "workflow_runs"
 
     status: Mapped[RunStatus] = mapped_column(
-        SqlEnum(RunStatus, name="run_status"), default=RunStatus.PENDING, index=True
+        SqlEnum(RunStatus, name="run_status", values_callable=_evcall),
+        default=RunStatus.PENDING, index=True,
     )
     current_node: Mapped[str | None] = mapped_column(String(100))
     state_snapshot: Mapped[dict] = mapped_column(JSONB, default=dict, nullable=False)

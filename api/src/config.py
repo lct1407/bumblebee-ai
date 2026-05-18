@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
     # Database
-    database_url: str = "postgresql+asyncpg://bumblebee:bumblebee@localhost:5432/bumblebee"
+    database_url: str = "postgresql+asyncpg://bumblebee:bumblebee@localhost:5433/bumblebee"
 
     # API
     api_host: str = "0.0.0.0"

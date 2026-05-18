@@ -2,6 +2,8 @@
 import uuid
 from datetime import datetime
 from sqlalchemy import String, Text, Integer, Float, ForeignKey, DateTime, Enum as SqlEnum
+
+_evcall = lambda x: [e.value for e in x]
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 import enum
@@ -35,7 +37,8 @@ class AgentSession(Base, UUIDPKMixin, TimestampMixin):
     __tablename__ = "agent_sessions"
 
     status: Mapped[SessionStatus] = mapped_column(
-        SqlEnum(SessionStatus, name="session_status"), default=SessionStatus.PENDING, index=True
+        SqlEnum(SessionStatus, name="session_status", values_callable=_evcall),
+        default=SessionStatus.PENDING, index=True,
     )
     role: Mapped[str] = mapped_column(String(100), nullable=False)  # mirrors AgentDefinition.role
     phase: Mapped[str | None] = mapped_column(String(100))  # workflow node id
@@ -62,7 +65,7 @@ class AgentSession(Base, UUIDPKMixin, TimestampMixin):
 
     # Failure handling
     failure_reason: Mapped[FailureReason | None] = mapped_column(
-        SqlEnum(FailureReason, name="failure_reason")
+        SqlEnum(FailureReason, name="failure_reason", values_callable=_evcall)
     )
     failure_detail: Mapped[str | None] = mapped_column(Text)
 

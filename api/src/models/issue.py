@@ -1,6 +1,8 @@
 """Issue: unit of intent (replaces v2 WorkItem). Hierarchical via parent_id."""
 import uuid
 from sqlalchemy import String, Text, Integer, Float, ForeignKey, Enum as SqlEnum
+
+_evcall = lambda x: [e.value for e in x]  # serialize enum by value not name
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 import enum
@@ -59,15 +61,19 @@ class Issue(Base, UUIDPKMixin, TimestampMixin, SoftDeleteMixin):
     number: Mapped[int] = mapped_column(Integer, nullable=False)  # per-project numbering
     title: Mapped[str] = mapped_column(String(500), nullable=False)
     description: Mapped[str | None] = mapped_column(Text)
-    type: Mapped[IssueType] = mapped_column(SqlEnum(IssueType, name="issue_type"), default=IssueType.TASK)
+    type: Mapped[IssueType] = mapped_column(
+        SqlEnum(IssueType, name="issue_type", values_callable=_evcall), default=IssueType.TASK
+    )
     status: Mapped[IssueStatus] = mapped_column(
-        SqlEnum(IssueStatus, name="issue_status"), default=IssueStatus.NEW, index=True
+        SqlEnum(IssueStatus, name="issue_status", values_callable=_evcall),
+        default=IssueStatus.NEW, index=True,
     )
     priority: Mapped[IssuePriority] = mapped_column(
-        SqlEnum(IssuePriority, name="issue_priority"), default=IssuePriority.NONE
+        SqlEnum(IssuePriority, name="issue_priority", values_callable=_evcall),
+        default=IssuePriority.NONE,
     )
     complexity: Mapped[IssueComplexity | None] = mapped_column(
-        SqlEnum(IssueComplexity, name="issue_complexity")
+        SqlEnum(IssueComplexity, name="issue_complexity", values_callable=_evcall)
     )
 
     # AI fields (Triager populates)
@@ -92,7 +98,8 @@ class Issue(Base, UUIDPKMixin, TimestampMixin, SoftDeleteMixin):
 
     # Relationships
     project = relationship("Project", back_populates="issues")
-    children = relationship("Issue", remote_side="Issue.parent_id", backref="parent")
+    parent = relationship("Issue", remote_side="Issue.id", back_populates="children")
+    children = relationship("Issue", back_populates="parent")
     comments = relationship("Comment", back_populates="issue", cascade="all, delete-orphan")
     agent_sessions = relationship("AgentSession", back_populates="issue")
     scope_leases = relationship("ScopeLease", back_populates="issue")

@@ -2,6 +2,8 @@
 import uuid
 from datetime import datetime
 from sqlalchemy import String, Text, ForeignKey, DateTime, Boolean, Enum as SqlEnum
+
+_evcall = lambda x: [e.value for e in x]
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 import enum
@@ -25,7 +27,8 @@ class Notification(Base, UUIDPKMixin, TimestampMixin):
 
     recipient: Mapped[str] = mapped_column(String(200), nullable=False, index=True)
     type: Mapped[NotificationType] = mapped_column(
-        SqlEnum(NotificationType, name="notification_type"), nullable=False
+        SqlEnum(NotificationType, name="notification_type", values_callable=_evcall),
+        nullable=False,
     )
     title: Mapped[str] = mapped_column(String(500), nullable=False)
     body: Mapped[str | None] = mapped_column(Text)
