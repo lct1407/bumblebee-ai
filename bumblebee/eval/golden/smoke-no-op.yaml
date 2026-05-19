@@ -1,0 +1,13 @@
+name: smoke-no-op
+description: Smoke test that always passes — validates eval runner plumbing
+workflow: simple-fix-flow
+issue:
+  title: Smoke test
+  description: No-op validation
+judge:
+  - type: exit_code
+    command: python -c "import sys; sys.exit(0)"
+budget:
+  max_dollars: 0.10
+  max_wall_min: 1
+expected_pass_rate: 1.0

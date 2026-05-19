@@ -1,0 +1,20 @@
+[project]
+name = "bumblebee-plugin-example"
+version = "0.1.0"
+description = "Reference plugin for Bumblebee v3 — demonstrates entry_points discovery"
+requires-python = ">=3.12"
+dependencies = ["bumblebee-ai>=0.3.0"]
+
+[project.entry-points."bumblebee.plugins"]
+example = "bumblebee_plugin_example:manifest"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["bumblebee_plugin_example*"]
+
+[tool.setuptools.package-data]
+bumblebee_plugin_example = ["workflows/*.yaml", "agent_defs/*.md", "skills/*/*.md"]

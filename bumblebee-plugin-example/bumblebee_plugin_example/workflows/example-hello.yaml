@@ -1,0 +1,10 @@
+name: example-hello-flow
+version: 1
+description: Reference plugin workflow — single greeter node
+nodes:
+  - id: greet
+    role: greeter
+    on_success: done
+
+  - id: done
+    role: terminator
