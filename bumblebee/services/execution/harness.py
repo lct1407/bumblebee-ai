@@ -55,8 +55,10 @@ async def run_role(
         await _finalize_failed(db, session, role, FailureReason.BUDGET_EXCEEDED, str(e))
         return HarnessResult(ok=False, output={"error": str(e)})
 
-    # LLM call
-    provider = get_provider("stub")
+    # LLM call (provider selected via BUMBLEBEE_PROVIDER env, default stub)
+    import os
+    provider_name = os.environ.get("BUMBLEBEE_PROVIDER", "stub")
+    provider = get_provider(provider_name)
     response = await provider.invoke(prompt)
 
     cost = estimate_cost(response.tokens_in or 1000, response.tokens_out or 200,

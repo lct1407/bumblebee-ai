@@ -75,30 +75,41 @@ class ClaudeCLIProvider(LLMProvider):
         self.model = model
 
     async def invoke(self, prompt: Prompt, max_tokens: int = 4096) -> LLMResponse:
-        if shutil.which(self.binary) is None:
-            # Fallback to stub if claude-cli not installed
+        # Resolve binary (Windows: try .cmd / .exe variants)
+        candidates = [self.binary, f"{self.binary}.cmd", f"{self.binary}.exe"]
+        resolved = None
+        for c in candidates:
+            if shutil.which(c):
+                resolved = shutil.which(c)
+                break
+        if resolved is None:
             return await StubProvider().invoke(prompt, max_tokens)
 
-        # Compose prompt: system + user combined (claude-cli accepts -p input)
         full = f"{prompt.system}\n\n{prompt.user}"
-        cmd = [self.binary, "-p", full, "--output-format", "json"]
+        cmd = [resolved, "-p", "--output-format", "json"]
         if self.model:
             cmd.extend(["--model", self.model])
 
-        proc = await asyncio.create_subprocess_exec(
-            *cmd,
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
-        )
+        # Use sync subprocess via thread pool (works with SelectorEventLoop on Windows).
+        def _run_sync() -> tuple[int, bytes, bytes]:
+            use_shell = resolved.lower().endswith(".cmd")
+            proc = subprocess.run(
+                subprocess.list2cmdline(cmd) if use_shell else cmd,
+                shell=use_shell,
+                input=full.encode("utf-8"),
+                capture_output=True,
+                timeout=300,
+            )
+            return proc.returncode, proc.stdout, proc.stderr
+
         try:
-            stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=300)
-        except asyncio.TimeoutError:
-            proc.kill()
+            rc, stdout, stderr = await asyncio.to_thread(_run_sync)
+        except subprocess.TimeoutExpired:
             return LLMResponse(text="", finish_reason="timeout", model="claude-cli")
 
-        if proc.returncode != 0:
+        if rc != 0:
             return LLMResponse(
-                text=f"claude-cli error: {stderr.decode()[:300]}",
+                text=f"claude-cli error: {stderr.decode(errors='replace')[:300]}",
                 finish_reason="error",
                 model="claude-cli",
             )
