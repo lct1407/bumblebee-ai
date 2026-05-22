@@ -14,6 +14,7 @@ from bumblebee.models.chat_session import ChatSession
 from bumblebee.models.knowledge_entry import KnowledgeEntry
 from bumblebee.models.notification import Notification
 from bumblebee.models.plugin_registration import PluginRegistration
+from bumblebee.models.user import User, ApiKey
 
 __all__ = [
     "Base",
@@ -31,4 +32,6 @@ __all__ = [
     "KnowledgeEntry",
     "Notification",
     "PluginRegistration",
+    "User",
+    "ApiKey",
 ]

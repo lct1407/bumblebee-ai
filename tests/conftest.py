@@ -62,7 +62,8 @@ async def clean_db(db):
     await db.execute(
         text(
             "TRUNCATE TABLE events, comments, scope_leases, agent_sessions, "
-            "workflow_runs, notifications, chat_sessions, task_queue RESTART IDENTITY CASCADE"
+            "workflow_runs, notifications, chat_sessions, task_queue, "
+            "users, api_keys RESTART IDENTITY CASCADE"
         )
     )
     await db.execute(text("DELETE FROM issues WHERE number > 3"))

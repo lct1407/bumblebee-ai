@@ -7,7 +7,8 @@ from bumblebee import __version__
 from bumblebee.config import get_settings
 from bumblebee.routers import (
     health, projects, issues, events, workflow_runs, chat, plugins,
-    notifications, replay as replay_router,
+    notifications, replay as replay_router, auth as auth_router,
+    websocket as ws_router,
 )
 from bumblebee.services.obs.trace_emitter import init_tracing
 
@@ -46,6 +47,8 @@ def create_app() -> FastAPI:
     app.include_router(plugins.router)
     app.include_router(notifications.router)
     app.include_router(replay_router.router)
+    app.include_router(auth_router.router)
+    app.include_router(ws_router.router)
     init_tracing()
     return app
 

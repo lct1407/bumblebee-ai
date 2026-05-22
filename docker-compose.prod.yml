@@ -1,0 +1,55 @@
+name: bumblebee-prod
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-bumblebee}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?password required}
+      POSTGRES_DB: ${POSTGRES_DB:-bumblebee}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-bumblebee}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    image: bumblebee-ai:0.4.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-bumblebee}:${POSTGRES_PASSWORD:?password required}@db:5432/${POSTGRES_DB:-bumblebee}
+      API_HOST: 0.0.0.0
+      API_PORT: 8000
+      API_SECRET_KEY: ${API_SECRET_KEY:?secret required}
+      BUMBLEBEE_AUTH: ${BUMBLEBEE_AUTH:-on}
+      BUMBLEBEE_PROVIDER: ${BUMBLEBEE_PROVIDER:-claude-cli}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    ports:
+      - "${API_PORT:-8000}:8000"
+
+  web:
+    image: node:24-alpine
+    restart: unless-stopped
+    working_dir: /app
+    depends_on:
+      - api
+    environment:
+      NEXT_PUBLIC_API_URL: ${PUBLIC_API_URL:-http://localhost:8000}
+      NODE_ENV: production
+    volumes:
+      - ./web:/app
+    command: sh -c "npm ci && npm run build && npm run start -- -p 3000"
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+
+volumes:
+  pgdata:

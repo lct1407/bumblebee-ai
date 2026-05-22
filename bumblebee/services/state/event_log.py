@@ -39,6 +39,41 @@ async def append_event(
     )
     db.add(event)
     await db.flush()
+    # Best-effort WS broadcast (non-blocking, ignored on error)
+    try:
+        from bumblebee.services.websocket.manager import get_manager
+        from bumblebee.models.project import Project
+
+        slug = None
+        if project_id:
+            proj = (
+                await db.execute(select(Project).where(Project.id == project_id))
+            ).scalar_one_or_none()
+            if proj:
+                slug = proj.slug
+        elif issue_id:
+            from bumblebee.models.issue import Issue
+            iss = (
+                await db.execute(select(Issue).where(Issue.id == issue_id))
+            ).scalar_one_or_none()
+            if iss:
+                proj = (
+                    await db.execute(select(Project).where(Project.id == iss.project_id))
+                ).scalar_one_or_none()
+                if proj:
+                    slug = proj.slug
+        if slug:
+            await get_manager().broadcast(slug, {
+                "id": str(event.id),
+                "type": event.type,
+                "issue_id": str(event.issue_id) if event.issue_id else None,
+                "session_id": str(event.session_id) if event.session_id else None,
+                "actor": event.actor,
+                "payload": event.payload,
+                "occurred_at": event.occurred_at.isoformat(),
+            })
+    except Exception:
+        pass
     return event
 
 
