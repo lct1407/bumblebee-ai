@@ -46,12 +46,12 @@ async def test_full_simple_fix_flow_e2e(client, clean_db):
     ]:
         assert required in types_set, f"missing event type: {required}"
 
-    # 5. Cost charged event has correct shape
+    # 5. Cost charged events (multi-node traversal — 1 per role session)
     cost_events = [e for e in events if e["type"] == "cost_charged"]
-    assert len(cost_events) == 1
-    payload = cost_events[0]["payload"]
-    assert "amount_usd" in payload
-    assert payload["amount_usd"] > 0
+    assert len(cost_events) >= 1
+    for cost in cost_events:
+        assert "amount_usd" in cost["payload"]
+        assert cost["payload"]["amount_usd"] > 0
 
 
 @pytest.mark.asyncio

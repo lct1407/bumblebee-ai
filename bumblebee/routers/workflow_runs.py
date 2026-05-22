@@ -12,7 +12,7 @@ from bumblebee.models.workflow import Workflow
 from bumblebee.models.workflow_run import WorkflowRun, RunStatus
 from bumblebee.models.agent_session import AgentSession, SessionStatus
 from bumblebee.services.state.event_log import append_event
-from bumblebee.services.execution.harness import run_role
+from bumblebee.services.control.orchestrator import execute_workflow_run
 
 router = APIRouter(prefix="/api/workflow-runs", tags=["workflows"])
 
@@ -51,7 +51,7 @@ async def trigger_workflow(req: TriggerRequest, db: AsyncSession = Depends(get_d
         workflow_id=workflow.id,
         issue_id=issue.id,
         status=RunStatus.RUNNING,
-        current_node="triage",
+        current_node=workflow.graph.get("nodes", [{}])[0].get("id", "start"),
         started_at=datetime.now(timezone.utc),
         langgraph_thread_id=str(uuid.uuid4()),
     )
@@ -68,49 +68,12 @@ async def trigger_workflow(req: TriggerRequest, db: AsyncSession = Depends(get_d
         source="system",
     )
 
-    # Create + execute first stub session (triager)
-    session = AgentSession(
-        role="triager",
-        phase="triage",
-        provider="stub",
-        issue_id=issue.id,
-        workflow_run_id=run.id,
-        budget_wall_min=60,
-        budget_tokens_max=160_000,
-        budget_dollars_max=3.0,
-    )
-    db.add(session)
-    await db.flush()
-
-    result = await run_role(db, session=session, role="triager", input_state={
-        "issue_id": str(issue.id),
-        "title": issue.title,
-        "description": issue.description,
-    })
-
-    # Project triage output back onto issue
-    if result.ok:
-        out = result.output
-        if "complexity" in out:
-            issue.complexity = out["complexity"]
-        if "ai_confidence" in out:
-            issue.ai_confidence = out["ai_confidence"]
-        if "summary" in out:
-            issue.ai_summary = out["summary"]
-
-    run.current_node = "done"
-    run.status = RunStatus.COMPLETED
-    run.completed_at = datetime.now(timezone.utc)
-
-    await append_event(
-        db,
-        type="workflow_completed",
-        issue_id=issue.id,
-        project_id=issue.project_id,
-        workflow_run_id=run.id,
-        payload={"final_status": run.status.value},
-        source="system",
-    )
+    # Full multi-node LangGraph traversal via orchestrator (Phase 1.5)
+    try:
+        await execute_workflow_run(db, workflow, issue, run)
+    except Exception as e:
+        await db.commit()
+        raise HTTPException(500, f"workflow_execution_failed: {str(e)[:200]}")
 
     await db.commit()
     return TriggerResponse(workflow_run_id=run.id, workflow_name=name, status=run.status.value)
