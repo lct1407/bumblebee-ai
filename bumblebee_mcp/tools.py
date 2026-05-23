@@ -315,6 +315,48 @@ TOOLS: list[McpTool] = [
         handler=trigger_workflow,
     ),
     McpTool(
+        name="bumblebee_issue_relations",
+        description=(
+            "Manage cross-issue relations: blocks/depends_on/duplicates/caused_by/relates_to. "
+            "Actions: create, list, delete. Includes inverse-edge auto-resolution + cycle detection."
+        ),
+        input_schema={
+            "type": "object",
+            "required": ["action"],
+            "properties": {
+                "action": {"type": "string", "enum": ["create", "list", "delete"]},
+                "source_number": {"type": "integer"},
+                "target_number": {"type": "integer"},
+                "kind": {"type": "string", "enum": ["blocks", "depends_on", "duplicates", "caused_by", "relates_to"]},
+                "note": {"type": "string"},
+                "relation_id": {"type": "string", "description": "Required for delete"},
+            },
+        },
+        required_permission=Permission.WRITE_ISSUE,
+        handler=lambda db, ctx, args: _issue_relations(db, ctx, args),
+    ),
+    McpTool(
+        name="bumblebee_field_schemas",
+        description=(
+            "Manage per-issue-type custom field schemas. Actions: upsert, get, list. "
+            "Schemas drive validation when issue.custom_fields is set."
+        ),
+        input_schema={
+            "type": "object",
+            "required": ["action"],
+            "properties": {
+                "action": {"type": "string", "enum": ["upsert", "get", "list"]},
+                "issue_type": {"type": "string",
+                               "enum": ["epic","story","task","bug","feature","chore","spike"]},
+                "schema": {"type": "object", "description": "{fields: [{key,type,...}]}"},
+                "project_scope": {"type": "string", "enum": ["workspace", "project"],
+                                  "default": "project"},
+            },
+        },
+        required_permission=Permission.WRITE_PROJECT,
+        handler=lambda db, ctx, args: _field_schemas(db, ctx, args),
+    ),
+    McpTool(
         name="bumblebee_get_events",
         description="Read the event log for an issue (or the entire workspace if no issue specified). Returns most-recent first.",
         input_schema={
@@ -328,6 +370,145 @@ TOOLS: list[McpTool] = [
         handler=get_events,
     ),
 ]
+
+
+async def _issue_relations(db: AsyncSession, ctx: McpAuthContext, args: dict) -> dict:
+    """Handler for bumblebee_issue_relations tool."""
+    from bumblebee.models.issue_relation import IssueRelation, IssueRelationKind
+    from bumblebee.services.issue_links import add_relation, list_relations_for, RelationError
+    action = args.get("action")
+
+    if action == "list":
+        # Either by source_number (one issue) or list_all in workspace
+        n = args.get("source_number")
+        if n is None:
+            rels = (
+                await db.execute(
+                    select(IssueRelation).where(IssueRelation.workspace_id == ctx.workspace_id)
+                )
+            ).scalars().all()
+            return {"relations": [
+                {"id": str(r.id), "source": str(r.source_issue_id),
+                 "target": str(r.target_issue_id), "kind": r.kind.value, "note": r.note}
+                for r in rels
+            ]}
+        issue = (
+            await db.execute(
+                select(Issue).where(
+                    Issue.workspace_id == ctx.workspace_id, Issue.number == int(n)
+                )
+            )
+        ).scalar_one_or_none()
+        if not issue:
+            return {"error": "issue_not_found"}
+        return {"issue_number": n, "relations": await list_relations_for(db, issue.id)}
+
+    if action == "create":
+        src_n, tgt_n = args.get("source_number"), args.get("target_number")
+        kind = args.get("kind")
+        if not (src_n and tgt_n and kind):
+            return {"error": "source_number, target_number, kind required"}
+        src = (
+            await db.execute(
+                select(Issue).where(Issue.workspace_id == ctx.workspace_id, Issue.number == int(src_n))
+            )
+        ).scalar_one_or_none()
+        tgt = (
+            await db.execute(
+                select(Issue).where(Issue.workspace_id == ctx.workspace_id, Issue.number == int(tgt_n))
+            )
+        ).scalar_one_or_none()
+        if not src or not tgt:
+            return {"error": "issue_not_found"}
+        try:
+            rel = await add_relation(
+                db, source=src, target=tgt,
+                kind=IssueRelationKind(kind), note=args.get("note"),
+            )
+            await db.commit()
+            return {"ok": True, "relation_id": str(rel.id),
+                    "from": f"BB-{src.number}", "to": f"BB-{tgt.number}", "kind": kind}
+        except RelationError as e:
+            return {"error": str(e)}
+
+    if action == "delete":
+        rid = args.get("relation_id")
+        if not rid:
+            return {"error": "relation_id required"}
+        r = await db.get(IssueRelation, uuid.UUID(rid))
+        if not r or r.workspace_id != ctx.workspace_id:
+            return {"error": "relation_not_found"}
+        await db.delete(r)
+        await db.commit()
+        return {"ok": True, "deleted": rid}
+
+    return {"error": f"unknown action {action}"}
+
+
+async def _field_schemas(db: AsyncSession, ctx: McpAuthContext, args: dict) -> dict:
+    from bumblebee.models.field_schema import FieldSchema
+    action = args.get("action")
+    typ_raw = args.get("issue_type")
+    typ = IssueType(typ_raw) if typ_raw else None
+    scope = args.get("project_scope", "project")
+
+    if action == "list":
+        rows = (
+            await db.execute(
+                select(FieldSchema).where(FieldSchema.workspace_id == ctx.workspace_id)
+            )
+        ).scalars().all()
+        return {"schemas": [
+            {"id": str(r.id), "issue_type": r.issue_type.value,
+             "project_id": str(r.project_id) if r.project_id else None,
+             "schema": r.schema}
+            for r in rows
+        ]}
+
+    if not typ:
+        return {"error": "issue_type required"}
+
+    project_id = ctx.project_id if scope == "project" else None
+
+    if action == "get":
+        row = (
+            await db.execute(
+                select(FieldSchema).where(
+                    FieldSchema.workspace_id == ctx.workspace_id,
+                    FieldSchema.project_id == project_id,
+                    FieldSchema.issue_type == typ,
+                )
+            )
+        ).scalar_one_or_none()
+        if not row:
+            return {"schema": None}
+        return {"id": str(row.id), "schema": row.schema}
+
+    if action == "upsert":
+        schema = args.get("schema")
+        if not schema or "fields" not in schema:
+            return {"error": "schema.fields[] required"}
+        existing = (
+            await db.execute(
+                select(FieldSchema).where(
+                    FieldSchema.workspace_id == ctx.workspace_id,
+                    FieldSchema.project_id == project_id,
+                    FieldSchema.issue_type == typ,
+                )
+            )
+        ).scalar_one_or_none()
+        if existing:
+            existing.schema = schema
+        else:
+            existing = FieldSchema(
+                workspace_id=ctx.workspace_id, project_id=project_id,
+                issue_type=typ, schema=schema,
+            )
+            db.add(existing)
+        await db.commit()
+        return {"ok": True, "id": str(existing.id), "fields": len(schema["fields"])}
+
+    return {"error": f"unknown action {action}"}
 
 
 TOOLS_BY_NAME: dict[str, McpTool] = {t.name: t for t in TOOLS}

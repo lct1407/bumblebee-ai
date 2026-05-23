@@ -23,9 +23,9 @@ from bumblebee.graphql.auth_mutations import (
 )
 from bumblebee.graphql.context import GraphQLContext
 from bumblebee.graphql.types import (
-    CheckoutSessionInput, CheckoutSessionResult, DevicePairRequestInput,
-    Issue, IssueCreateInput, IssueUpdateInput, PairConfirmResult,
-    PairRequestResult,
+    CheckoutSessionInput, CheckoutSessionResult, CustomFieldsUpdateInput,
+    DevicePairRequestInput, Issue, IssueCreateInput, IssueRelationType,
+    IssueUpdateInput, PairConfirmResult, PairRequestResult, RelationCreateInput,
 )
 from bumblebee.graphql.queries import _require_workspace, _to_issue
 from bumblebee.models.agent_node import AgentNode, NodeStatus
@@ -88,6 +88,53 @@ class Mutation(AuthMutations):
         if input.complexity is not None: issue.complexity = input.complexity
         if input.acceptance_criteria is not None: issue.acceptance_criteria = input.acceptance_criteria
         if input.scope_hints is not None: issue.scope_hints = input.scope_hints
+        await ctx.db.commit()
+        await ctx.db.refresh(issue)
+        return _to_issue(issue)
+
+    @strawberry.mutation
+    async def add_issue_relation(
+        self, info: strawberry.Info, input: RelationCreateInput
+    ) -> IssueRelationType:
+        """Create a typed relation between two issues."""
+        from bumblebee.models.issue import Issue as IssueModel
+        from bumblebee.services.issue_links import add_relation, RelationError
+        ctx: GraphQLContext = info.context
+        _require_workspace(info)
+        src = await ctx.db.get(IssueModel, input.source_issue_id)
+        tgt = await ctx.db.get(IssueModel, input.target_issue_id)
+        if not src or not tgt:
+            raise ValueError("issue_not_found")
+        try:
+            rel = await add_relation(
+                ctx.db, source=src, target=tgt, kind=input.kind, note=input.note,
+            )
+            await ctx.db.commit()
+        except RelationError as e:
+            raise ValueError(str(e))
+        return IssueRelationType(
+            id=rel.id, source_issue_id=rel.source_issue_id,
+            target_issue_id=rel.target_issue_id, kind=rel.kind,
+            note=rel.note, created_at=rel.created_at,
+        )
+
+    @strawberry.mutation
+    async def set_custom_fields(
+        self, info: strawberry.Info, input: CustomFieldsUpdateInput
+    ) -> Issue:
+        """Set/merge custom_fields on an issue, validated against FieldSchema."""
+        from bumblebee.models.issue import Issue as IssueModel
+        from bumblebee.services.issue_links import validate_custom_fields
+        ctx: GraphQLContext = info.context
+        _require_workspace(info)
+        issue = await ctx.db.get(IssueModel, input.issue_id)
+        if not issue:
+            raise ValueError("issue_not_found")
+        merged = {**(issue.custom_fields or {}), **(input.custom_fields or {})}
+        result = await validate_custom_fields(ctx.db, issue, merged)
+        if not result.ok:
+            raise ValueError("validation: " + "; ".join(result.errors))
+        issue.custom_fields = merged
         await ctx.db.commit()
         await ctx.db.refresh(issue)
         return _to_issue(issue)

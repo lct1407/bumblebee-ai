@@ -15,6 +15,7 @@ from bumblebee.models.issue import (
 )
 from bumblebee.models.workspace import WorkspacePlan, WorkspaceRole
 from bumblebee.models.agent_node import NodeStatus
+from bumblebee.models.issue_relation import IssueRelationKind
 
 
 # ---- Enums --------------------------------------------------------------
@@ -26,6 +27,31 @@ IssueComplexityGQL = strawberry.enum(IssueComplexity, name="IssueComplexity")
 WorkspacePlanGQL = strawberry.enum(WorkspacePlan, name="WorkspacePlan")
 WorkspaceRoleGQL = strawberry.enum(WorkspaceRole, name="WorkspaceRole")
 NodeStatusGQL = strawberry.enum(NodeStatus, name="NodeStatus")
+IssueRelationKindGQL = strawberry.enum(IssueRelationKind, name="IssueRelationKind")
+
+
+@strawberry.type
+class IssueRelationType:
+    id: uuid.UUID
+    source_issue_id: uuid.UUID
+    target_issue_id: uuid.UUID
+    kind: IssueRelationKindGQL  # type: ignore[valid-type]
+    note: Optional[str]
+    created_at: datetime
+
+
+@strawberry.input
+class RelationCreateInput:
+    source_issue_id: uuid.UUID
+    target_issue_id: uuid.UUID
+    kind: IssueRelationKindGQL  # type: ignore[valid-type]
+    note: Optional[str] = None
+
+
+@strawberry.input
+class CustomFieldsUpdateInput:
+    issue_id: uuid.UUID
+    custom_fields: strawberry.scalars.JSON
 
 
 # ---- Output types -------------------------------------------------------

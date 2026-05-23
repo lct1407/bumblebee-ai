@@ -49,6 +49,18 @@ async def trigger_workflow(req: TriggerRequest, db: AsyncSession = Depends(get_d
     if not decision.allowed:
         raise HTTPException(409, {"reason": decision.reason, "issue_status": issue.status.value})
 
+    # Relation gate: block dispatch if blocked_by-open
+    from bumblebee.services.issue_links import is_blocked_by_open
+    blockers = await is_blocked_by_open(db, issue.id)
+    if blockers:
+        raise HTTPException(409, {
+            "reason": "blocked_by_open_issue",
+            "blockers": [
+                {"id": str(b.id), "number": b.number, "title": b.title, "status": b.status.value}
+                for b in blockers
+            ],
+        })
+
     # H1: Complexity → workflow auto-router. Explicit workflow_name still wins.
     name = req.workflow_name or select_workflow_name(issue, project)
     workflow = (
