@@ -96,6 +96,9 @@ class Issue(Base, UUIDPKMixin, TimestampMixin, SoftDeleteMixin, WorkspaceScopedM
     # Cached session context (legacy â€” primary memory in event log + IssueMemory projection)
     session_context: Mapped[dict] = mapped_column(JSONB, default=dict, nullable=False)
 
+    # Per-type custom field values (validated against field_schemas row for this type)
+    custom_fields: Mapped[dict] = mapped_column(JSONB, default=dict, nullable=False)
+
     # Relationships
     project = relationship("Project", back_populates="issues")
     parent = relationship("Issue", remote_side="Issue.id", back_populates="children")

@@ -19,6 +19,8 @@ from bumblebee.models.workspace import (
     Workspace, WorkspaceMember, WorkspaceInvite, WorkspaceRole, WorkspacePlan,
 )
 from bumblebee.models.agent_node import AgentNode, NodeStatus
+from bumblebee.models.issue_relation import IssueRelation, IssueRelationKind, INVERSE_OF
+from bumblebee.models.field_schema import FieldSchema
 
 __all__ = [
     "Base",
@@ -45,4 +47,8 @@ __all__ = [
     "WorkspacePlan",
     "AgentNode",
     "NodeStatus",
+    "IssueRelation",
+    "IssueRelationKind",
+    "INVERSE_OF",
+    "FieldSchema",
 ]
