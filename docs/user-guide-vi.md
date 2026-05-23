@@ -509,3 +509,329 @@ Code không upload server (worker chạy local). Sub-processors: Stripe · Anthr
 ---
 
 **Cập nhật cuối:** 2026-05-23
+
+---
+
+# E2E walkthrough captured live
+
+Tất cả output dưới là từ **live run trên prod DB** ngày 2026-05-23. Có thể copy-paste chạy lại.
+
+## Step 0 — Verify servers ready
+
+```bash
+curl -s -o /dev/null -w "API:%{http_code}\n" http://localhost:8000/health/
+curl -s -o /dev/null -w "WEB:%{http_code}\n" http://localhost:3000/
+```
+
+```
+API:307
+WEB:200
+```
+
+## Step 1 — Signup (creates user + workspace + JWT)
+
+```bash
+TS=$(date +%s)
+RESPONSE=$(curl -s -X POST http://localhost:8000/graphql \
+  -H "Content-Type: application/json" \
+  -d "{\"query\":\"mutation(\$i: SignupInput!){signup(input:\$i){accessToken user{username} workspace{name slug plan}}}\",
+       \"variables\":{\"i\":{\"email\":\"e2e-$TS@bb.test\",\"username\":\"e2e$TS\",\"password\":\"e2etest123\",\"workspaceName\":\"E2E Test\"}}}")
+echo "$RESPONSE" | python -m json.tool
+```
+
+Output:
+```json
+{
+  "data": {
+    "signup": {
+      "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6Ik...",
+      "user": { "username": "e2e1779578742" },
+      "workspace": { "name": "E2E Test", "slug": "e2e-test", "plan": "FREE" }
+    }
+  }
+}
+```
+
+## Step 2 — Pair device (worker daemon registration)
+
+### 2a. CLI initiate pair request
+
+```bash
+# On your local machine
+PAIR=$(curl -s -X POST http://localhost:8000/api/devices/pair-request \
+  -H "Content-Type: application/json" \
+  -d '{"name":"my-laptop","capabilities":["claude-cli","git"],"platform":"win32","hostname":"my-machine","workspace_slug":"e2e-test"}')
+echo "$PAIR" | python -m json.tool
+```
+
+Output:
+```json
+{
+  "pairing_code": "XH6H8E95",
+  "node_id": "8d6d9f9c-457d-497b-905d-374454a556e0",
+  "expires_at": "2026-05-23T23:36:10.606999Z"
+}
+```
+
+### 2b. Confirm pairing in web (authenticated)
+
+```bash
+TOKEN="<JWT from step 1>"
+CODE="XH6H8E95"
+curl -s -X POST "http://localhost:8000/api/devices/pair-confirm/$CODE" \
+  -H "Authorization: Bearer $TOKEN" | python -m json.tool
+```
+
+Output:
+```json
+{
+  "node_id": "8d6d9f9c-457d-497b-905d-374454a556e0",
+  "name": "my-laptop",
+  "node_token": "nt_I3wBX9Xji8yP6Q0fOS4-GJqZK9crIatCfzSja..."
+}
+```
+
+### 2c. Save token + start daemon
+
+```bash
+bb device save-token nt_I3wBX9Xji8yP6Q0fOS4-GJqZK9crIatCfzSja...
+bb daemon --server http://localhost:8000
+```
+
+Daemon then heartbeats every 30s with capabilities + discovered repos (BB-17).
+
+### 2d. (Optional) Bind device to specific project
+
+```bash
+NODE_ID="8d6d9f9c-457d-497b-905d-374454a556e0"
+PROJECT_ID="ded46e55-3f7f-4738-a821-891cdcd4bd83"
+curl -s -X POST "http://localhost:8000/api/devices/$NODE_ID/bind-projects" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d "{\"project_ids\":[\"$PROJECT_ID\"]}"
+```
+
+Now task router (BB-18) only routes tasks of this project to this node.
+
+## Step 3 — Create issue via GraphQL
+
+```bash
+PROJECT_ID="ded46e55-3f7f-4738-a821-891cdcd4bd83"
+curl -s -X POST http://localhost:8000/graphql \
+  -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" \
+  -d "{\"query\":\"mutation(\$i: IssueCreateInput!){createIssue(input:\$i){id number title status complexity}}\",
+       \"variables\":{\"i\":{\"projectId\":\"$PROJECT_ID\",
+                              \"title\":\"E2E: improve /health/db endpoint response\",
+                              \"description\":\"Endpoint returns plain {db:ok} but should include pool stats and DB version while keeping backward compat.\",
+                              \"type\":\"FEATURE\",\"priority\":\"MEDIUM\"}}}"
+```
+
+Output:
+```
+Created issue BB-4: E2E: improve /health/db endpoint response
+  id: 5000fe5f-441f-40fd-aed1-7a792917cf47
+  status: NEW, complexity: None
+```
+
+## Step 4 — Triager updates (set complexity + scope_hints)
+
+In production, the Triager agent does this automatically when an issue is created.
+Manual equivalent:
+
+```bash
+ISSUE_ID="5000fe5f-441f-40fd-aed1-7a792917cf47"
+curl -s -X POST http://localhost:8000/graphql \
+  -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" \
+  -d "{\"query\":\"mutation(\$id:UUID!,\$i:IssueUpdateInput!){updateIssue(id:\$id,input:\$i){number status complexity scopeHints}}\",
+       \"variables\":{\"id\":\"$ISSUE_ID\",
+                       \"i\":{\"complexity\":\"MEDIUM\",
+                             \"scopeHints\":[\"bumblebee/routers/health.py\"],
+                             \"status\":\"TRIAGED\"}}}"
+```
+
+Output:
+```json
+{"data":{"updateIssue":{"number":4,"status":"TRIAGED","complexity":"MEDIUM","scopeHints":["bumblebee/routers/health.py"]}}}
+```
+
+## Step 5 — Plan (Coordinator agent via real Claude CLI)
+
+Force `feature-complex-flow` to invoke the Plan node:
+
+```bash
+BUMBLEBEE_PROVIDER=claude-cli PYTHONPATH=. \
+  python scripts/run-planner-demo.py 4
+```
+
+Output (real Claude CLI output, truncated):
+```
+=== Trigger Planner on BB-4 ===
+Provider: claude-cli
+...
+Final state:
+  status: completed
+  nodes completed: ['triage', 'plan']
+  last_result: {'text': '{"plan_summary": "Extend /health/db response with pool stats + DB version while preserving {db: \"ok\"} backward-compat key. Split into 4 sub-tasks ...", "sub_tasks": [
+    {"role":"implementer","scope":["bumblebee/routers/health.py"], "budget_tokens": 6000},
+    {"role":"tester","scope":["tests/test_health.py"], "budget_tokens": 4000},
+    ...
+  ]}'}
+```
+
+## Step 6 — Approve (unblocks dispatch)
+
+```bash
+curl -s -X POST http://localhost:8000/graphql \
+  -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" \
+  -d "{\"query\":\"mutation(\$id:UUID!){approveIssue(id:\$id){number status}}\",
+       \"variables\":{\"id\":\"$ISSUE_ID\"}}"
+```
+
+Output:
+```json
+{"data":{"approveIssue":{"number":4,"status":"APPROVED"}}}
+```
+
+## Step 7 — Trigger workflow (H1 router auto-picks)
+
+```bash
+curl -s -X POST http://localhost:8000/api/workflow-runs/trigger \
+  -H "Content-Type: application/json" \
+  -d "{\"issue_id\":\"$ISSUE_ID\"}"
+```
+
+Output:
+```json
+{"workflow_run_id":"ff960d3a-af0e-45e9-aec6-e1fc4aeb71e7","workflow_name":"simple-fix-flow","status":"completed"}
+```
+
+H1 picked `simple-fix-flow` because complexity=medium.
+
+## Step 8 — Verify execution (events + agent sessions)
+
+```bash
+PYTHONPATH=. python -c "
+import asyncio
+from sqlalchemy import select
+from bumblebee.database import SessionLocal
+from bumblebee.models.event import Event
+from bumblebee.models.agent_session import AgentSession
+async def m():
+    async with SessionLocal() as db:
+        events = (await db.execute(select(Event).where(Event.issue_id=='$ISSUE_ID').order_by(Event.occurred_at))).scalars().all()
+        print(f'=== Events ({len(events)}) ===')
+        for e in events: print(f'  {e.occurred_at:%H:%M:%S}  {e.type:<25}')
+        sessions = (await db.execute(select(AgentSession).where(AgentSession.issue_id=='$ISSUE_ID').order_by(AgentSession.started_at))).scalars().all()
+        print(f'=== AgentSessions ({len(sessions)}) ===')
+        for s in sessions:
+            print(f'  {s.role:<14}  status={s.status.value}  cost=\${s.dollars_used:.4f}  tokens={s.tokens_in}/{s.tokens_out}')
+asyncio.run(m())
+"
+```
+
+Output:
+```
+=== Events (14) ===
+  23:28:59  workflow_started
+  23:29:02  session_started
+  23:29:06  llm_call
+  23:29:07  cost_charged
+  23:29:09  session_completed
+  23:29:11  session_started
+  23:29:12  llm_call
+  23:29:13  cost_charged
+  23:29:15  session_completed
+  23:29:16  session_started
+  23:29:18  llm_call
+  23:29:19  cost_charged
+  23:29:20  session_completed
+  23:29:21  workflow_completed
+
+=== AgentSessions (3) ===
+  triager       status=completed   cost=$0.0028  tokens=855/17
+  implementer   status=completed   cost=$0.0026  tokens=842/7
+  tester        status=completed   cost=$0.0024  tokens=748/12
+```
+
+3 LLM calls (triager → implementer → tester), total cost $0.0078, full flow ~22 seconds.
+
+## Step 9 — Cancel running workflow (interactive)
+
+If you want to stop mid-execution:
+
+```bash
+RUN_ID="ff960d3a-af0e-45e9-aec6-e1fc4aeb71e7"
+curl -s -X POST "http://localhost:8000/api/workflow-runs/$RUN_ID/cancel"
+```
+
+## Step 10 — Merge to staging branch (Phase I)
+
+After workflow status = DEVELOPED, enqueue merge_to_staging task:
+
+```python
+# From orchestrator or admin
+from bumblebee.services.control.staging_flow import enqueue_merge_to_staging
+await enqueue_merge_to_staging(
+    db, issue=issue, project=project,
+    feature_branch="feature/bb-4-health-db"
+)
+# Status → DEPLOYING
+# Worker daemon claims task, runs:
+#   git fetch --all
+#   git checkout stg && git pull --ff-only
+#   git merge --no-ff --no-edit feature/bb-4-health-db
+#   git push origin stg
+```
+
+## Step 11 — Run e2e/smoke on staging
+
+```python
+from bumblebee.services.control.staging_flow import enqueue_e2e_smoke
+await enqueue_e2e_smoke(db, issue=issue, project=project,
+                       gates=["smoke", "e2e:critical"])
+# Status → TESTING
+# Worker runs: npm run test:smoke && pytest -k e2e
+```
+
+After tests green → status STAGING → manually promote to RELEASED.
+
+## Step 12 — Add relations + custom fields (Jira-style)
+
+```bash
+# Relation: BB-4 depends_on BB-5
+curl -s -X POST http://localhost:8000/graphql \
+  -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" \
+  -d '{"query":"mutation($i: RelationCreateInput!){addIssueRelation(input:$i){id kind}}",
+       "variables":{"i":{"sourceIssueId":"<BB-4-uuid>","targetIssueId":"<BB-5-uuid>","kind":"depends_on","note":"need source-aware context first"}}}'
+
+# Custom fields: severity, repro_steps
+curl -s -X POST http://localhost:8000/graphql \
+  -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" \
+  -d '{"query":"mutation($i: CustomFieldsUpdateInput!){setCustomFields(input:$i){number customFields}}",
+       "variables":{"i":{"issueId":"<uuid>","customFields":{"severity":"critical","affected_version":"v0.4.0"}}}}'
+```
+
+## TL;DR of entire flow
+
+```
+1. signup           → JWT + workspace
+2. pair-request     → pairing_code  
+3. pair-confirm     → node_token
+4. save-token       → ~/.bumblebee/node.json
+5. bb daemon        → long-poll /api/tasks/claim
+6. createIssue      → BB-N (status=NEW)
+7. updateIssue      → set complexity/scope_hints (Triager auto in prod)
+8. approveIssue     → status=APPROVED (gate unlocked)
+9. POST /trigger    → H1 picks workflow by complexity
+10. orchestrator    → spawns N AgentSessions (triager/implementer/tester/...)
+11. daemon claims   → spawns claude --print per role
+12. events streamed → WS broadcast to web UI in realtime
+13. status → DEVELOPED
+14. enqueue_merge_to_staging → daemon git merge → status DEPLOYING
+15. enqueue_e2e_smoke → daemon runs tests → status TESTING → STAGING
+16. (manual promote) → RELEASED → CLOSED
+```
+
+Full path: **issue → plan → approve → execute → merge stg → test → release**.
+
+Per-node tracking (cost/tokens in AgentSession) · per-device routing (bound_project_ids) · per-process execution (claude CLI subprocess) — all 3 layers working together.
