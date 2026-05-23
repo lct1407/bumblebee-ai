@@ -1,0 +1,82 @@
+# Production overlay for docker compose.
+# Usage on the SSH server:
+#   docker compose -f docker-compose.yml -f infra/docker-compose.prod.yml up -d
+#
+# Differences from dev compose:
+#   - DB not exposed to host (only via internal network)
+#   - api + web bind to 127.0.0.1 only — public traffic goes via Caddy / cloudflared
+#   - api runs alembic upgrade on startup
+#   - Healthchecks tightened
+#   - Resource limits + restart=always
+services:
+  db:
+    ports: []                  # do NOT expose 5433 publicly
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./backups:/backups
+    deploy:
+      resources:
+        limits: { memory: 1G }
+
+  api:
+    image: ghcr.io/lct1407/bumblebee-ai:latest
+    pull_policy: always
+    restart: always
+    ports:
+      - "127.0.0.1:8000:8000"   # bound to localhost; Caddy/tunnel proxies
+    environment:
+      ENVIRONMENT: production
+      BILLING_ENABLED: "true"
+      BUMBLEBEE_PROVIDER: "claude-cli"
+    deploy:
+      resources:
+        limits: { memory: 1.5G }
+
+  web:
+    image: ghcr.io/lct1407/bumblebee-web:latest
+    pull_policy: always
+    restart: always
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: "${PUBLIC_API_URL}"   # e.g. https://api.bb.yourdomain.com
+    deploy:
+      resources:
+        limits: { memory: 768M }
+
+  # Cloudflare Tunnel — recommended: no public IP needed
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    restart: always
+    profiles: [tunnel]
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: "${CLOUDFLARE_TUNNEL_TOKEN}"
+    depends_on:
+      api:
+        condition: service_healthy
+      web:
+        condition: service_healthy
+
+  # Alternative: Caddy with Let's Encrypt — if not using cloudflared
+  caddy:
+    image: caddy:2-alpine
+    restart: always
+    profiles: [caddy]
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./infra/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      api:
+        condition: service_healthy
+      web:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  caddy_data:
+  caddy_config:
