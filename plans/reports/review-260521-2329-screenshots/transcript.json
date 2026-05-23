@@ -1,0 +1,50 @@
+[
+  {
+    "step": "01-landing-full",
+    "url": "/",
+    "status": "ok"
+  },
+  {
+    "step": "02-dashboard",
+    "url": "/dashboard",
+    "status": "ok"
+  },
+  {
+    "step": "03-issues-list",
+    "url": "/issues",
+    "status": "ok"
+  },
+  {
+    "step": "04-plugins",
+    "url": "/plugins",
+    "status": "ok"
+  },
+  {
+    "step": "05-notifications",
+    "url": "/notifications",
+    "status": "ok"
+  },
+  {
+    "step": "create-project",
+    "status": 201,
+    "body": {
+      "id": "a4ec1edd-4681-421c-93a3-e8dc888aaae1",
+      "created_at": "2026-05-22T06:31:22.427734Z",
+      "updated_at": "2026-05-22T06:31:22.427736Z",
+      "name": "Bumblebee Bug Tracker",
+      "slug": "bumblebee-bugs",
+      "key": "BUG",
+      "description": "Production bug tracking for bumblebee-ai platform itself. Issues here are real bugs discovered during development or reported by users.",
+      "repo_path": null,
+      "base_branch": "master",
+      "policy_config": {},
+      "deploy_config": {},
+      "observability_config": {},
+      "enabled": true
+    }
+  },
+  {
+    "step": "populate-bugs",
+    "count": 10
+  }
+]

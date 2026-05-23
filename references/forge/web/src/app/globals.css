@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+
+html, body {
+  /* Fixed + inset 0 on both html and body ensures iOS Safari has
+     literally nothing at the document level to scroll. */
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* ── Mobile touch targets (44px minimum per Apple HIG / Material) ── */
+@media (pointer: coarse) {
+  button,
+  select,
+  [role="button"],
+  label[for],
+  input[type="checkbox"],
+  input[type="radio"] {
+    min-height: 44px;
+  }
+
+  /* Links get min-height only — min-width would break block-level card links */
+  a {
+    min-height: 44px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="url"],
+  input[type="tel"],
+  input[type="number"],
+  textarea,
+  select {
+    min-height: 44px;
+    font-size: 16px !important; /* Prevents iOS Safari auto-zoom on focus */
+  }
+}
+
+/* Fade-in animation for dashboard sections */
+@keyframes fade-in-up {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fade-in-up 0.35s ease-out both;
+}
+
+/* Board card highlight flash when updated by chat agent */
+@keyframes highlight-fade {
+  0% { box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); background-color: rgba(59, 130, 246, 0.08); }
+  100% { box-shadow: 0 0 0 0 transparent; background-color: white; }
+}
+.animate-highlight-fade {
+  animation: highlight-fade 1.5s ease-out forwards;
+}
+
+/* Toast slide-in */
+@keyframes slide-in {
+  0% { transform: translateX(100%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out forwards;
+}

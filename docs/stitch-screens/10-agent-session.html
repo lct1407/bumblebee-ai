@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bumblebee Agent System</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                font-family: 'Inter', sans-serif;
+                font-size: 14px;
+            }
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #333333;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="h-screen flex overflow-hidden">
+<aside class="w-56 bg-gray-50 border-r border-gray-200 flex flex-col shrink-0">
+<div class="h-14 border-b border-gray-200 flex items-center px-4 gap-2">
+<span class="material-symbols-outlined text-amber-500 text-2xl fill-1">hive</span>
+<span class="font-bold text-gray-900 tracking-tight">Bumblebee</span>
+</div>
+<div class="flex-1 py-6 flex flex-col gap-8">
+<section>
+<h3 class="px-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Main</h3>
+<nav class="space-y-0.5">
+<a class="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="font-medium">Settings</span>
+</a>
+</nav>
+</section>
+<section>
+<h3 class="px-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Project</h3>
+<nav class="space-y-0.5">
+<a class="flex items-center gap-3 px-4 py-2 bg-amber-50 text-amber-600 border-r-2 border-amber-500" href="#">
+<span class="material-symbols-outlined text-[20px] fill-1">smart_toy</span>
+<span class="font-semibold">Agent</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+<span class="font-medium">Tasks</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">database</span>
+<span class="font-medium">Datasets</span>
+</a>
+</nav>
+</section>
+</div>
+<div class="p-4 border-t border-gray-200 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-600">JD</div>
+<div class="flex flex-col">
+<span class="text-xs font-semibold text-gray-900 leading-none">John Doe</span>
+<span class="text-[10px] text-gray-500">Admin</span>
+</div>
+</div>
+</aside>
+<main class="flex-1 flex bg-[#0c0c0c] text-white overflow-hidden">
+<aside class="w-72 bg-[#111111] border-r border-[#333333] flex flex-col shrink-0">
+<div class="p-4 border-b border-[#333333]">
+<button class="w-full bg-amber-500 hover:bg-amber-600 text-black font-bold py-2 px-4 rounded transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">add</span>
+<span>New Session</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<div class="p-2 space-y-1">
+<div class="p-3 bg-[#1a1a1a] rounded border border-[#333333] cursor-pointer group">
+<div class="flex items-center justify-between mb-1">
+<span class="text-xs font-mono text-amber-500">a3f2b1c8</span>
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+</div>
+<div class="text-sm font-medium text-gray-200 truncate">Initialize API Architecture</div>
+<div class="text-[10px] text-gray-500 mt-1 flex items-center gap-2">
+<span class="bg-[#333333] px-1 rounded text-gray-300">BB-42</span>
+<span>2 mins ago</span>
+</div>
+</div>
+<div class="p-3 hover:bg-[#161616] rounded transition-colors cursor-pointer group">
+<div class="flex items-center justify-between mb-1">
+<span class="text-xs font-mono text-gray-400">b9e1d4f2</span>
+<span class="w-2 h-2 rounded-full bg-gray-500"></span>
+</div>
+<div class="text-sm font-medium text-gray-400 truncate">Fix Authentication Leak</div>
+<div class="text-[10px] text-gray-600 mt-1 flex items-center gap-2">
+<span class="bg-[#222222] px-1 rounded text-gray-500">BB-39</span>
+<span>1 hour ago</span>
+</div>
+</div>
+<div class="p-3 hover:bg-[#161616] rounded transition-colors cursor-pointer group">
+<div class="flex items-center justify-between mb-1">
+<span class="text-xs font-mono text-gray-400">d0c4e1a7</span>
+<span class="w-2 h-2 rounded-full bg-red-500"></span>
+</div>
+<div class="text-sm font-medium text-gray-400 truncate">Database Migration</div>
+<div class="text-[10px] text-gray-600 mt-1 flex items-center gap-2">
+<span class="bg-[#222222] px-1 rounded text-gray-500">BB-41</span>
+<span>Yesterday</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<div class="flex-1 flex flex-col relative overflow-hidden">
+<header class="h-14 border-b border-[#333333] flex items-center justify-between px-6 bg-[#0c0c0c]">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="text-gray-400 text-xs font-mono">SESSION</span>
+<span class="text-sm font-bold">a3f2b1c8</span>
+</div>
+<div class="h-4 w-px bg-[#333333]"></div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-gray-500 text-sm">link</span>
+<span class="text-amber-500 text-sm font-semibold">BB-42</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+<span class="text-[11px] text-green-500 font-bold uppercase tracking-wider">Running</span>
+</div>
+<button class="text-red-500 text-xs font-bold border border-red-500/30 px-3 py-1 rounded hover:bg-red-500/10 transition-colors">ABORT</button>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-8">
+<div class="flex gap-4 max-w-4xl">
+<div class="w-8 h-8 rounded bg-amber-500 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-black text-xl fill-1">smart_toy</span>
+</div>
+<div class="flex-1 space-y-4">
+<div class="text-gray-300 leading-relaxed">
+                            I've analyzed the current codebase structure. To initialize the API architecture for <span class="text-amber-500 font-medium">BB-42</span>, I'll need to create the base controller interfaces and set up the initial routing middleware.
+                        </div>
+<div class="bg-[#111111] border border-[#333333] rounded overflow-hidden">
+<div class="px-4 py-2 border-b border-[#333333] flex items-center justify-between bg-[#1a1a1a]">
+<div class="flex items-center gap-2 text-[11px] font-mono text-gray-400">
+<span class="material-symbols-outlined text-sm">terminal</span>
+<span>tool_call: read_file("src/main.ts")</span>
+</div>
+<span class="material-symbols-outlined text-gray-500 text-sm">expand_more</span>
+</div>
+<div class="p-4 bg-[#0c0c0c]">
+<pre class="text-xs font-mono text-gray-500">import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  await app.listen(3000);
+}</pre>
+</div>
+</div>
+<div class="text-gray-300 leading-relaxed">
+                            The entry point is using NestJS. I'll proceed by defining the core endpoints in a new routing configuration.
+                        </div>
+</div>
+</div>
+<div class="flex gap-4 max-w-4xl ml-auto justify-end">
+<div class="flex-1 text-right">
+<div class="inline-block bg-[#1a1a1a] border border-[#333333] rounded px-4 py-2 text-gray-200 text-sm">
+                            That looks solid. Please ensure you include standard error handling for the controllers.
+                        </div>
+</div>
+<div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center shrink-0 text-xs font-bold text-gray-300">JD</div>
+</div>
+<div class="flex gap-4 max-w-4xl">
+<div class="w-8 h-8 rounded bg-amber-500 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-black text-xl fill-1">smart_toy</span>
+</div>
+<div class="flex-1 space-y-4">
+<div class="text-gray-300 leading-relaxed">
+                            Understood. I'll implement a global exception filter and standard response DTOs. Creating <code class="bg-[#222222] text-amber-500 px-1 rounded">src/common/filters/http-exception.filter.ts</code> now.
+                        </div>
+</div>
+</div>
+</div>
+<div class="absolute top-20 right-8 w-56 bg-[#111111]/90 backdrop-blur border border-[#333333] rounded p-4 shadow-2xl z-10">
+<h4 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center justify-between">
+                    Metrics
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+</h4>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-[11px] text-gray-400 mb-1.5">
+<span>Token Usage</span>
+<span class="text-gray-200">14.2k / 32k</span>
+</div>
+<div class="h-1 bg-[#333333] rounded-full overflow-hidden">
+<div class="h-full bg-amber-500 w-[45%]"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2 border-t border-[#333333] pt-3">
+<div>
+<div class="text-[9px] text-gray-500 uppercase font-bold">Cost</div>
+<div class="text-sm font-mono text-gray-200">$0.42</div>
+</div>
+<div>
+<div class="text-[9px] text-gray-500 uppercase font-bold">Status</div>
+<div class="text-sm text-green-500 font-bold">Idle</div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-6 bg-[#111111] border-t border-[#333333]">
+<div class="max-w-4xl mx-auto relative">
+<div class="flex items-center gap-4 mb-2 text-gray-500">
+<button class="hover:text-amber-500 transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-lg">attach_file</span>
+<span class="text-[11px] font-bold">ATTACH</span>
+</button>
+<button class="hover:text-amber-500 transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-lg">code_blocks</span>
+<span class="text-[11px] font-bold">CONTEXT</span>
+</button>
+</div>
+<div class="relative bg-[#0c0c0c] border border-[#333333] rounded focus-within:border-amber-500/50 transition-colors overflow-hidden">
+<textarea class="w-full bg-transparent border-none text-gray-200 text-sm p-4 focus:ring-0 resize-none min-h-[100px] custom-scrollbar" placeholder="Give instructions or ask questions..."></textarea>
+<div class="flex items-center justify-between px-4 py-2 border-t border-[#333333] bg-[#0c0c0c]">
+<span class="text-[10px] text-gray-600 font-mono">⌘ + ENTER to send</span>
+<button class="bg-amber-500 hover:bg-amber-600 text-black font-bold px-4 py-1.5 rounded flex items-center gap-2 transition-colors">
+<span class="text-xs">SEND</span>
+<span class="material-symbols-outlined text-sm">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+</body></html>

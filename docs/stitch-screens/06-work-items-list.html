@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bumblebee Work Items List</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gray: {
+                            50: '#f9fafb',
+                            100: '#f3f4f6',
+                            200: '#e5e7eb',
+                            500: '#6b7280',
+                            700: '#374151',
+                            900: '#111827',
+                        },
+                        amber: {
+                            50: '#fffbeb',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Menlo', 'monospace'],
+                    },
+                    fontSize: {
+                        'base': '14px',
+                    }
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply font-sans text-base text-gray-900 bg-white;
+            }
+        }
+        .material-symbols-outlined {
+            font-size: 18px;
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+        }
+        .active-nav {
+            @apply bg-amber-50 text-amber-600 border-r-2 border-amber-500;
+        }
+    </style>
+</head>
+<body class="antialiased">
+<div class="flex h-screen overflow-hidden">
+<aside class="w-56 flex-shrink-0 bg-gray-50 border-r border-gray-200 flex flex-col h-full">
+<div class="h-16 flex items-center px-6 gap-2">
+<span class="material-symbols-outlined text-amber-500 font-bold" style="font-variation-settings: 'FILL' 1;">hexagon</span>
+<span class="font-bold text-lg tracking-tight">Bumblebee</span>
+</div>
+<div class="flex-1 overflow-y-auto py-4">
+<div class="mb-6">
+<h3 class="px-6 text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Main</h3>
+<nav class="space-y-0.5">
+<a class="flex items-center gap-3 px-6 py-2 text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-2 text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined">folder</span>
+<span class="font-medium">Projects</span>
+</a>
+</nav>
+</div>
+<div class="mb-6">
+<h3 class="px-6 text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Project</h3>
+<nav class="space-y-0.5">
+<a class="flex items-center gap-3 px-6 py-2 text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined">info</span>
+<span class="font-medium">Overview</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-2 active-nav" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">list_alt</span>
+<span class="font-semibold">Items</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-2 text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined">view_kanban</span>
+<span class="font-medium">Board</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-2 text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined">bolt</span>
+<span class="font-medium">Sprints</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-2 text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="font-medium">Agent</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-2 text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-medium">Settings</span>
+</a>
+</nav>
+</div>
+</div>
+</aside>
+<main class="flex-1 flex flex-col min-w-0 bg-white">
+<header class="h-16 flex-shrink-0 flex items-center justify-between px-8 border-b border-gray-200">
+<h1 class="text-xl font-bold text-gray-900">Items</h1>
+<button class="bg-gray-900 text-white px-4 py-2 rounded text-sm font-semibold flex items-center gap-2 hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined !text-sm">add</span>
+                    New Item
+                </button>
+</header>
+<div class="flex items-center gap-3 px-8 py-4 border-b border-gray-100">
+<div class="flex items-center gap-2">
+<button class="inline-flex items-center gap-2 px-3 py-1.5 border border-gray-200 rounded text-sm text-gray-700 hover:bg-gray-50">
+                        Type <span class="material-symbols-outlined text-gray-400">expand_more</span>
+</button>
+<button class="inline-flex items-center gap-2 px-3 py-1.5 border border-gray-200 rounded text-sm text-gray-700 hover:bg-gray-50">
+                        Status <span class="material-symbols-outlined text-gray-400">expand_more</span>
+</button>
+<button class="inline-flex items-center gap-2 px-3 py-1.5 border border-gray-200 rounded text-sm text-gray-700 hover:bg-gray-50">
+                        Priority <span class="material-symbols-outlined text-gray-400">expand_more</span>
+</button>
+<button class="inline-flex items-center gap-2 px-3 py-1.5 border border-gray-200 rounded text-sm text-gray-700 hover:bg-gray-50">
+                        Assignee <span class="material-symbols-outlined text-gray-400">expand_more</span>
+</button>
+</div>
+<div class="ml-auto relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+<input class="w-full pl-10 pr-4 py-1.5 bg-gray-50 border border-gray-200 rounded text-sm focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500" placeholder="Search items..." type="text"/>
+</div>
+</div>
+<div class="flex-1 overflow-auto">
+<table class="w-full text-left border-collapse">
+<thead class="sticky top-0 z-10">
+<tr class="bg-gray-50 border-b border-gray-200">
+<th class="px-4 py-3 text-[11px] font-bold text-gray-500 uppercase tracking-wider w-24">Key</th>
+<th class="px-4 py-3 text-[11px] font-bold text-gray-500 uppercase tracking-wider">Title</th>
+<th class="px-4 py-3 text-[11px] font-bold text-gray-500 uppercase tracking-wider w-32">Type</th>
+<th class="px-4 py-3 text-[11px] font-bold text-gray-500 uppercase tracking-wider w-36">Status</th>
+<th class="px-4 py-3 text-[11px] font-bold text-gray-500 uppercase tracking-wider w-28">Priority</th>
+<th class="px-4 py-3 text-[11px] font-bold text-gray-500 uppercase tracking-wider w-40">Assignee</th>
+<th class="px-4 py-3 text-[11px] font-bold text-gray-500 uppercase tracking-wider w-24 text-right">Updated</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-200">
+<tr class="hover:bg-gray-50 group cursor-pointer">
+<td class="px-4 py-3 font-mono text-sm text-gray-500">BB-101</td>
+<td class="px-4 py-3 font-semibold text-gray-900">Implement OAuth2 flow for third-party integrations</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 uppercase">Story</span>
+</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-medium bg-orange-50 text-orange-700">
+<span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span> In Progress
+                                </span>
+</td>
+<td class="px-4 py-3">
+<span class="text-xs font-semibold text-orange-600">High</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex items-center gap-2">
+<img alt="Assignee" class="w-6 h-6 rounded-full border border-gray-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPaSQSL-ClR8YPiM49JQI_R4Ww2r3jtdai2GLIx0TNBiuhhZ2EAxDKdL7rFU5DTDT_EslwGQmXzbpGX1__-quBaKY3fXlxPwL-RXhmS0FPVkhe_2G3gdBoP0muFrYkHTLCArRjVoUFSbttatZTBNlrsuShWR_MJPPGrWK09LFrg33BDI5yYc2arWeYafbaumRVzoCmn7CNiQwKnGFd3tF32CY57cwWWGqGkRqm2SgRe-y-7Lxl5maKv7BLCBFdwj5vr-V3a2rQvKX9"/>
+<span class="text-xs font-medium text-gray-700">Alex Rivera</span>
+</div>
+</td>
+<td class="px-4 py-3 text-right text-xs text-gray-500">2h ago</td>
+</tr>
+<tr class="hover:bg-gray-50 group cursor-pointer">
+<td class="px-4 py-3 font-mono text-sm text-gray-500">BB-102</td>
+<td class="px-4 py-3 font-semibold text-gray-900">Header jumping on mobile scroll events</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-red-50 text-red-700 uppercase">Bug</span>
+</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-medium bg-gray-100 text-gray-700">
+<span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span> Open
+                                </span>
+</td>
+<td class="px-4 py-3">
+<span class="text-xs font-semibold text-red-600 uppercase">Critical</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex items-center gap-2">
+<img alt="Assignee" class="w-6 h-6 rounded-full border border-gray-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgnH5Rvb0EEme45L9qADMOkSFdrREXg1W4eKov5xDAvnzPsU_bcUC9MtRSnMVyCH2DFchuTvs6cfkn5RRlQTlIjonvQ7h4l4J8xkG6n1swpHULd2fVkQRMmpULe9PbUMWL4Xm7y2QiZ3ycIGl2GtXA0GZlBWmEnLU-jyJvmuDM1AcA7GZlq9pwQpP4q_uQBWU1I4P89hZCpLlu0-rC3z7NbDle14NsbLnl22VF46ybNCXGriw-FvuRde1NK3q5opR7RbXI144OILj3"/>
+<span class="text-xs font-medium text-gray-700">Sam Smith</span>
+</div>
+</td>
+<td class="px-4 py-3 text-right text-xs text-gray-500">5h ago</td>
+</tr>
+<tr class="hover:bg-gray-50 group cursor-pointer">
+<td class="px-4 py-3 font-mono text-sm text-gray-500">BB-103</td>
+<td class="px-4 py-3 font-semibold text-gray-900">Update database migration script for V2 schema</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-gray-100 text-gray-700 uppercase">Task</span>
+</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-medium bg-green-50 text-green-700">
+<span class="material-symbols-outlined !text-[14px]">check_circle</span> Done
+                                </span>
+</td>
+<td class="px-4 py-3">
+<span class="text-xs font-semibold text-amber-500">Medium</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex items-center gap-2">
+<img alt="Assignee" class="w-6 h-6 rounded-full border border-gray-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbkM6ifBPrvkgL3DzJtcdKRshV9UlM1eUwx9OvWOzWUYrAtyV-VApmfTaSSqm08al6f_TM6rJstxagUBOtJ2XepM8GdOuP56z77dsNjeVSxPQq2QzjRtTdM8mu5OKHJu4lkNxAuBDFK7hBYRmvUwi9NtN9QOCJ9cwv6X2qU5VvyVwDlnbXYo6aYrjDdM3J59MZx7ECpgsVOrermhpX16J-pnnvhy1iR8M5UERvNAIj3cqQ787Ft2L9UjbB3CwNTCwur2wB4hbk8e1z"/>
+<span class="text-xs font-medium text-gray-700">Jordan Lee</span>
+</div>
+</td>
+<td class="px-4 py-3 text-right text-xs text-gray-500">1d ago</td>
+</tr>
+<tr class="hover:bg-gray-50 group cursor-pointer">
+<td class="px-4 py-3 font-mono text-sm text-gray-500">BB-104</td>
+<td class="px-4 py-3 font-semibold text-gray-900">Q3 Product Strategy and Technical Roadmap</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-violet-50 text-violet-700 uppercase">Epic</span>
+</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-medium bg-orange-50 text-orange-700">
+<span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span> In Progress
+                                </span>
+</td>
+<td class="px-4 py-3">
+<span class="text-xs font-semibold text-gray-400">Low</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex items-center gap-2">
+<img alt="Assignee" class="w-6 h-6 rounded-full border border-gray-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5YNOAAgFUzh_mtauxs8fvMQIaZahu-havvrsxFpO6L8INxtT7BomuBfIyYzjjm6KY8PzbohX40-ZuTWkpY5jZHE410Q2znMO6XCjw5e_EkTRmcJOSemuFWhnlNhe7rdbPlCEioiSwlLUKNJtsOFvMNCfzyfpMI8RJi-3Xaki8QR7Sjc6OsO4cS-7lMARoNl_mmia5XPfOje1iS5zxSwE4Cma8HJJ-srH_LblxbbH84hyQKpftaPERpEMtc4auhHNXBQnlwi8YHean"/>
+<span class="text-xs font-medium text-gray-700">Alex Rivera</span>
+</div>
+</td>
+<td class="px-4 py-3 text-right text-xs text-gray-500">2d ago</td>
+</tr>
+<tr class="hover:bg-gray-50 group cursor-pointer">
+<td class="px-4 py-3 font-mono text-sm text-gray-500">BB-105</td>
+<td class="px-4 py-3 font-semibold text-gray-900">Refactor core API client for better error handling</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-teal-50 text-teal-700 uppercase">Feature</span>
+</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-50 text-emerald-700">
+<span class="material-symbols-outlined !text-[14px]">verified</span> Resolved
+                                </span>
+</td>
+<td class="px-4 py-3">
+<span class="text-xs font-semibold text-orange-600">High</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex items-center gap-2">
+<img alt="Assignee" class="w-6 h-6 rounded-full border border-gray-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgbE9P7GuEC0eNQkiSh3mxoVb-2J2MJeQVmqSLv9HZOuFZh-jwNWzW_4NdCjgGc9Yao5Es-hb5jA1i0hx2Sc2sSi4y-liGSOxhmiRq2NiDs5PHUttPnuZ_wGrmvUUMqh0lJraC7MYt3DOv1zxAchIX3cFaDaRtnf5KdN5iWKurMU04rU8Oaks_5aa19qAyiIzYwCdzSmNr4dMJvUGaMAj-sxbDGquAtmvC80Q7Qh_ksm76cDnnZ5e4Rb3S_og0YPM_uH02RUPArNdX"/>
+<span class="text-xs font-medium text-gray-700">Taylor Wong</span>
+</div>
+</td>
+<td class="px-4 py-3 text-right text-xs text-gray-500">3d ago</td>
+</tr>
+<tr class="hover:bg-gray-50 group cursor-pointer">
+<td class="px-4 py-3 font-mono text-sm text-gray-500">BB-106</td>
+<td class="px-4 py-3 font-semibold text-gray-900">Update dependency list and resolve security warnings</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-gray-200 text-gray-700 uppercase">Chore</span>
+</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-medium bg-blue-50 text-blue-700">
+<span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span> Todo
+                                </span>
+</td>
+<td class="px-4 py-3">
+<span class="text-xs font-semibold text-amber-500">Medium</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex items-center gap-2">
+<img alt="Assignee" class="w-6 h-6 rounded-full border border-gray-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWtsKZK_ho8rQWunaOyCtPrGyg0E9zatfsnzrsOFknJ_zCG9Rf2239-Xr3X5_el4C0VfipTjAUmlJwsGqKKA_TTArYCx7taGnymJZSP7z4C3cghQH3NAo29mkDInGEx4ycMqPfqCM5ec1_KEayDqtqpShuAcf9VBVgzorp77A_AzN_JwAO9Jq0T4w-_XrKrxBNW6cqF1w2aQbNS6fzqX6cUZ2gJoLKIZZQQxnVc3hyJ2lZfvB1J9WxXX8KZ7tf-hB01-M_o4CE-KSR"/>
+<span class="text-xs font-medium text-gray-700">Casey Jones</span>
+</div>
+</td>
+<td class="px-4 py-3 text-right text-xs text-gray-500">4d ago</td>
+</tr>
+<tr class="hover:bg-gray-50 group cursor-pointer">
+<td class="px-4 py-3 font-mono text-sm text-gray-500">BB-107</td>
+<td class="px-4 py-3 font-semibold text-gray-900">Research vector databases for AI semantic search</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-700 uppercase">Spike</span>
+</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-medium bg-indigo-50 text-indigo-700">
+<span class="material-symbols-outlined !text-[14px]">thumb_up</span> Confirmed
+                                </span>
+</td>
+<td class="px-4 py-3">
+<span class="text-xs font-semibold text-amber-500">Medium</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex items-center gap-2">
+<img alt="Assignee" class="w-6 h-6 rounded-full border border-gray-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD39gxVe13omrIatPlCNFmirzJlklRjw3WgJKzX_HlTvFzOZsGmeMWHzKab5HSsVrpI9oOdTiylPKyop64-jHoOzW_9tW7BR2BcrEthYQD_QsMSie3cvNuI3qGNad4Z9qCGH4ucR4UUnQFDW348W8mr77IXXZ8ROuptnRixogk47ZhPMwQCkiYrn0eL5-DkfCw6L74zxNOnfoJou7hIvtRdu3jNhaIhK6NxhA_ksRnjImxUVPnNm6G4YLLOP_j0mrxGtdxLUQPqvzPt"/>
+<span class="text-xs font-medium text-gray-700">Jordan Lee</span>
+</div>
+</td>
+<td class="px-4 py-3 text-right text-xs text-gray-500">5d ago</td>
+</tr>
+</tbody>
+</table>
+</div>
+<footer class="h-14 flex-shrink-0 flex items-center justify-between px-8 border-t border-gray-200 bg-gray-50">
+<span class="text-sm text-gray-500">Showing <span class="font-semibold text-gray-900">1-7</span> of <span class="font-semibold text-gray-900">42</span> items</span>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 border border-gray-200 rounded text-sm font-medium text-gray-400 cursor-not-allowed bg-white" disabled="">Previous</button>
+<button class="px-3 py-1.5 border border-gray-200 rounded text-sm font-medium text-gray-700 hover:bg-gray-100 bg-white">Next</button>
+</div>
+</footer>
+</main>
+</div>
+
+</body></html>

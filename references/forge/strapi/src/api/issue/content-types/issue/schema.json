@@ -1,0 +1,102 @@
+{
+  "kind": "collectionType",
+  "collectionName": "issues",
+  "info": {
+    "singularName": "issue",
+    "pluralName": "issues",
+    "displayName": "Issue"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "attachments": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": ["images", "files", "videos"]
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["open", "confirmed", "approved", "in_progress", "resolved", "closed", "reopen", "failed", "needs_info"],
+      "default": "open"
+    },
+    "priority": {
+      "type": "enumeration",
+      "enum": ["critical", "high", "medium", "low", "none"],
+      "default": "none"
+    },
+    "category": {
+      "type": "string"
+    },
+    "reportedBy": {
+      "type": "string"
+    },
+    "acceptanceCriteria": {
+      "type": "text"
+    },
+    "suggestedSolution": {
+      "type": "text"
+    },
+    "aiSummary": {
+      "type": "text"
+    },
+    "aiSuggestedSolution": {
+      "type": "text"
+    },
+    "aiAcceptanceCriteria": {
+      "type": "json"
+    },
+    "aiConfidence": {
+      "type": "float"
+    },
+    "isAgentTask": {
+      "type": "boolean",
+      "default": false
+    },
+    "agentStatus": {
+      "type": "enumeration",
+      "enum": ["idle", "running", "completed", "failed"]
+    },
+    "agentLog": {
+      "type": "json"
+    },
+    "plan": {
+      "type": "text"
+    },
+    "changeHistory": {
+      "type": "json",
+      "default": []
+    },
+    "project": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::project.project",
+      "inversedBy": "issues"
+    },
+    "tasks": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::task.task",
+      "mappedBy": "issue"
+    },
+    "comments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::comment.comment",
+      "mappedBy": "issue"
+    },
+    "agentSessions": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::agent-session.agent-session",
+      "mappedBy": "issues"
+    }
+  }
+}

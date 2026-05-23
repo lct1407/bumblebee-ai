@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bumblebee Sprint Detail View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f59f0a",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#221c10",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased">
+<!-- SIDEBAR -->
+<aside class="fixed inset-y-0 left-0 w-56 bg-white dark:bg-zinc-900 border-r border-slate-200 dark:border-zinc-800 z-50">
+<div class="flex flex-col h-full">
+<!-- Sidebar Header -->
+<div class="p-6 flex items-center gap-3">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-xl">hive</span>
+</div>
+<span class="font-bold text-lg tracking-tight text-slate-900 dark:text-white">Bumblebee</span>
+</div>
+<!-- Navigation -->
+<nav class="flex-1 px-4 space-y-8 overflow-y-auto mt-4">
+<div>
+<p class="px-3 text-[10px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-widest mb-2">Main</p>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">list_alt</span>
+<span class="font-medium">Issues</span>
+</a>
+</div>
+</div>
+<div>
+<p class="px-3 text-[10px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-widest mb-2">Project</p>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 bg-primary/10 text-primary rounded-lg font-medium" href="#">
+<span class="material-symbols-outlined text-[20px] fill-1">bolt</span>
+<span>Sprints</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">bar_chart</span>
+<span class="font-medium">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="font-medium">Settings</span>
+</a>
+</div>
+</div>
+</nav>
+<!-- User profile stub -->
+<div class="p-4 border-t border-slate-100 dark:border-zinc-800">
+<div class="flex items-center gap-3 px-2">
+<img class="w-8 h-8 rounded-full bg-slate-200" data-alt="User avatar profile picture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYW2WelyC4Z-LrbQ59yTj5Cdd213Eokgeh943NbiNiYgQ621cgjwhswb2YfhQAf1YAcOoXmiEkjbJ9PvHPyZD4sbaT_pfNPVQ9zrB2yjKLX0sweQoVK8Cd3m3QXSXahWoXFbHCpoELdtaw85Dbb3XBakl6vtUUtdL5BscK1vcCfQuMH4wWf20z5pOlHYVDU7KDxrv2lnK-nqckUZF9JnUNM8pSpIhSu0dBSjWcjoXXA7ljsiZVXGTyQGLEP9j8cDVB5d5Md6ddMmj2"/>
+<div class="flex flex-col min-w-0">
+<span class="text-xs font-semibold truncate">Alex Rivera</span>
+<span class="text-[10px] text-slate-500 truncate">Product Lead</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- MAIN CONTENT -->
+<main class="ml-56 min-h-screen bg-white dark:bg-zinc-950">
+<div class="max-w-7xl mx-auto px-8 py-8">
+<!-- HEADER SECTION -->
+<header class="mb-8">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-4">
+<h1 class="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Sprint 3 - Auth &amp; Permissions</h1>
+<span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider">Active</span>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-4 py-2 border border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-300 font-semibold rounded-lg hover:bg-slate-50 dark:hover:bg-zinc-900 transition-all text-xs">
+                            Close Sprint
+                        </button>
+<button class="px-4 py-2 bg-primary text-slate-900 font-bold rounded-lg hover:bg-primary/90 transition-all shadow-sm shadow-primary/20 text-xs">
+                            Complete Sprint
+                        </button>
+</div>
+</div>
+<div class="flex flex-col gap-1 mb-6">
+<p class="text-sm text-slate-500 dark:text-zinc-400">Implement authentication system and role-based permissions</p>
+<p class="text-xs text-slate-400 dark:text-zinc-500 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">calendar_today</span>
+                        Feb 15 - Mar 1, 2026
+                    </p>
+</div>
+<!-- PROGRESS BAR -->
+<div class="mb-8">
+<div class="flex justify-between items-end mb-2">
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sprint Completion</span>
+<span class="text-sm font-bold text-primary">42%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-zinc-800 rounded-full h-2 overflow-hidden">
+<div class="bg-primary h-full rounded-full w-[42%] transition-all"></div>
+</div>
+</div>
+<!-- STATS ROW -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+<div class="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 p-4 rounded-xl shadow-sm">
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total Items</p>
+<p class="text-2xl font-black text-slate-900 dark:text-white font-mono">12</p>
+</div>
+<div class="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 p-4 rounded-xl shadow-sm">
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Completed</p>
+<p class="text-2xl font-black text-green-600 font-mono">5</p>
+</div>
+<div class="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 p-4 rounded-xl shadow-sm">
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">In Progress</p>
+<p class="text-2xl font-black text-amber-500 font-mono">4</p>
+</div>
+<div class="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 p-4 rounded-xl shadow-sm">
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Remaining</p>
+<p class="text-2xl font-black text-slate-400 font-mono">3</p>
+</div>
+</div>
+</header>
+<!-- MIDDLE SECTION: Sprint Backlog -->
+<section class="mb-8">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-lg font-bold text-slate-900 dark:text-white">Sprint Backlog</h2>
+<button class="flex items-center gap-1 text-primary hover:underline text-xs font-bold">
+<span class="material-symbols-outlined text-sm">add</span>
+                        Add Items
+                    </button>
+</div>
+<div class="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-zinc-800/50 border-bottom border-slate-200 dark:border-zinc-800">
+<th class="px-4 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest w-24">Key</th>
+<th class="px-4 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Title</th>
+<th class="px-4 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Type</th>
+<th class="px-4 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Status</th>
+<th class="px-4 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Priority</th>
+<th class="px-4 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Assignee</th>
+<th class="px-4 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">SP</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-zinc-800">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors">
+<td class="px-4 py-3 font-mono text-[11px] text-slate-500">BB-42</td>
+<td class="px-4 py-3 font-medium text-slate-900 dark:text-zinc-200">Setup OAuth2 provider connection</td>
+<td class="px-4 py-3">
+<span class="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Story</span>
+</td>
+<td class="px-4 py-3">
+<span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Done</span>
+</td>
+<td class="px-4 py-3">
+<span class="flex items-center gap-1 text-red-500">
+<span class="material-symbols-outlined text-sm font-bold">keyboard_double_arrow_up</span>
+<span class="text-[10px] font-bold uppercase">High</span>
+</span>
+</td>
+<td class="px-4 py-3">
+<img class="w-6 h-6 rounded-full border border-white shadow-sm" data-alt="Avatar of Jordan Smith" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBURcORjDHLS74WgwsA9gkHTWjeiNFmcq_EcyqtM3_0jBfWgG2LXB0S2HgFWWyaAWjxCkxA4HvuC60UozG3PMI1SZguw3jvCaJHhDJh5b-3NJGJCXTFRahgDM3FuEx_cpIrcYbNlOiUfWrkbaI8SrWRPQJJOZhBDIJH_o49kAeTIY_MOPs-6bdeRjddByR4d4rdHwX88AR-gjhRIIAkGsp5-Wv0TCrMfFB7WPgNFgQnFlPMyAKpctIgFBewWMk0VM9nc1sRvvZUZExk"/>
+</td>
+<td class="px-4 py-3 text-center font-mono font-bold text-slate-600">5</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors">
+<td class="px-4 py-3 font-mono text-[11px] text-slate-500">BB-43</td>
+<td class="px-4 py-3 font-medium text-slate-900 dark:text-zinc-200">Define RBAC permission schema</td>
+<td class="px-4 py-3">
+<span class="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Story</span>
+</td>
+<td class="px-4 py-3">
+<span class="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 px-2 py-0.5 rounded text-[10px] font-bold uppercase">In Progress</span>
+</td>
+<td class="px-4 py-3">
+<span class="flex items-center gap-1 text-amber-500">
+<span class="material-symbols-outlined text-sm font-bold">keyboard_arrow_up</span>
+<span class="text-[10px] font-bold uppercase">Medium</span>
+</span>
+</td>
+<td class="px-4 py-3">
+<img class="w-6 h-6 rounded-full border border-white shadow-sm" data-alt="Avatar of Sarah Chen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrsyHTGN9taeAjto6ao49A-rvezo-lBCTMIK4Jn64tFTE3sZCeEdidSYG_kaFKUVnED0LqMz4kJKzfD1_wHoZD0Xd1dBGtS0L0UEIKE3Uig6wXO5SExLGyfA6IMc1so_f5rgV9Lbm0O0Hk5iChuH8c9SLEDRKPH6L-wVdGDiLlfhXFaq2W20KJ0FlZFzDNrqI9hnarono4JXtAGYl7Ijv5odBBzT-ZsYOKzV6gct3aDNyLU0vm7O10q22UhAgrtPyJHn_r18GkehvS"/>
+</td>
+<td class="px-4 py-3 text-center font-mono font-bold text-slate-600">3</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors">
+<td class="px-4 py-3 font-mono text-[11px] text-slate-500">BB-44</td>
+<td class="px-4 py-3 font-medium text-slate-900 dark:text-zinc-200">UI for login and password reset</td>
+<td class="px-4 py-3">
+<span class="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Story</span>
+</td>
+<td class="px-4 py-3">
+<span class="bg-slate-100 dark:bg-zinc-800 text-slate-500 dark:text-zinc-400 px-2 py-0.5 rounded text-[10px] font-bold uppercase">To Do</span>
+</td>
+<td class="px-4 py-3">
+<span class="flex items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-sm font-bold">horizontal_rule</span>
+<span class="text-[10px] font-bold uppercase">Low</span>
+</span>
+</td>
+<td class="px-4 py-3">
+<div class="w-6 h-6 rounded-full bg-slate-100 dark:bg-zinc-800 flex items-center justify-center border border-slate-200 dark:border-zinc-700">
+<span class="material-symbols-outlined text-xs text-slate-400">person</span>
+</div>
+</td>
+<td class="px-4 py-3 text-center font-mono font-bold text-slate-600">8</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors">
+<td class="px-4 py-3 font-mono text-[11px] text-slate-500">BB-45</td>
+<td class="px-4 py-3 font-medium text-slate-900 dark:text-zinc-200">Fix JWT expiration edge case</td>
+<td class="px-4 py-3">
+<span class="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Bug</span>
+</td>
+<td class="px-4 py-3">
+<span class="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 px-2 py-0.5 rounded text-[10px] font-bold uppercase">In Progress</span>
+</td>
+<td class="px-4 py-3">
+<span class="flex items-center gap-1 text-red-500">
+<span class="material-symbols-outlined text-sm font-bold">keyboard_double_arrow_up</span>
+<span class="text-[10px] font-bold uppercase">High</span>
+</span>
+</td>
+<td class="px-4 py-3">
+<img class="w-6 h-6 rounded-full border border-white shadow-sm" data-alt="Avatar of Mike Ross" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEWQRS5kGcGbo2_RrRkWW1PFXQro_rMJA0qY0VhVSudICbuZVU7Rz3DxVCAbPvWSZpE0Xv2rwhDp1qjOHULMS3HFQXRQN6ktqF-cxNS8HCR3VMFYfqdSqLmt3aNEHILIkmsAmMXufkoDjH4KqVzI5HKcBgN5FFYky3Eut6gbOGnM_kkUFvw_ZlYUPyRtS1EMJcNP_-PyaJ3afrsdaRWl3H9hKeyoHGP4mF0m_temN3azdMcFDzrjvdEmR4y1tc3DQQ4Kuj20aFJc_w"/>
+</td>
+<td class="px-4 py-3 text-center font-mono font-bold text-slate-600">2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- BOTTOM SECTION: Actions -->
+<footer class="flex items-center justify-between pt-6 border-t border-slate-100 dark:border-zinc-800">
+<div class="flex items-center gap-6">
+<div class="flex flex-col">
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Velocity</span>
+<span class="text-sm font-bold text-slate-700 dark:text-zinc-300">18 / 45 pts</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Days Left</span>
+<span class="text-sm font-bold text-slate-700 dark:text-zinc-300">6 Days</span>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white transition-colors text-xs font-bold">
+<span class="material-symbols-outlined text-lg">add_circle</span>
+                        Add Items
+                    </button>
+<button class="px-4 py-2 border border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-300 font-bold rounded-lg hover:bg-slate-50 dark:hover:bg-zinc-900 transition-all text-xs">
+                        Close Sprint
+                    </button>
+</div>
+</footer>
+</div>
+</main>
+</body></html>

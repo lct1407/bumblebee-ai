@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bumblebee Backlog View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f59f0a",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#221c10",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; font-size: 14px; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased">
+<!-- Sidebar -->
+<aside class="fixed inset-y-0 left-0 w-56 bg-slate-50 dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col z-20">
+<div class="p-6 flex items-center gap-3">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-xl">capture</span>
+</div>
+<span class="font-bold text-lg tracking-tight">Bumblebee</span>
+</div>
+<nav class="flex-1 px-4 space-y-8 mt-4">
+<div>
+<p class="px-2 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Main</p>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary/10 text-primary font-medium rounded-lg" href="#">
+<span class="material-symbols-outlined text-[20px]">layers</span>
+<span>Backlog</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+<span>Sprints</span>
+</a>
+</div>
+</div>
+<div>
+<p class="px-2 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Project</p>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span>Team</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span>Settings</span>
+</a>
+</div>
+</div>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3 px-2">
+<div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+<img alt="User" data-alt="Avatar of a male professional designer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQVjWI1ichA2eHbFQoToNshmvGXpaG5SRC6xUoR_gzNwBZdO7eaVPAHBB94f1H4I6oOffeZxzeGi4xB5mUKsfd3Zwqgwck9bbEr78w4P3qsgNYYsegD5q05rpLkunlph4EYl9B7xUTZKRSZf-vtwLzJ33I2tqIW8-gPagSKOfEebQFAx5aE9v-OezuIakpyd8T7WrxTnwHb9XpnpB6LI2PTjRZ1m6Yvy3bxt-zNIF8Et35QU4qSDZcpzsqb4FTuDzxG1GoanmutYyP"/>
+</div>
+<div class="flex flex-col">
+<span class="text-sm font-medium">Alex Rivers</span>
+<span class="text-xs text-slate-500">Lead Designer</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-56 min-h-screen bg-white dark:bg-background-dark">
+<!-- Header Section -->
+<header class="px-8 pt-8 pb-4">
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-3">
+<h1 class="text-2xl font-bold text-slate-900 dark:text-white">Backlog</h1>
+<span class="px-2.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full text-sm font-medium">28 items</span>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-4 py-2 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-[18px]">outbound</span>
+<span>Assign to Sprint</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 bg-slate-900 dark:bg-primary text-white dark:text-slate-900 rounded-lg font-bold hover:bg-slate-800 dark:hover:bg-primary/90 transition-colors">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>New Item</span>
+</button>
+</div>
+</div>
+<!-- Filters -->
+<div class="flex flex-wrap items-center gap-3 pb-4 border-b border-slate-100 dark:border-slate-800">
+<div class="relative flex-1 min-w-[240px] max-w-sm">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</span>
+<input class="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary/50 text-sm" placeholder="Search items..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-1.5 px-3 py-2 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-lg text-sm border border-transparent hover:border-slate-200">
+<span>Type</span>
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-2 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-lg text-sm border border-transparent hover:border-slate-200">
+<span>Status</span>
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-2 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-lg text-sm border border-transparent hover:border-slate-200">
+<span>Priority</span>
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-2 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-lg text-sm border border-transparent hover:border-slate-200">
+<span>Assignee</span>
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Backlog Table -->
+<div class="px-8 pb-32">
+<div class="w-full overflow-x-auto">
+<table class="w-full border-collapse">
+<thead>
+<tr class="text-left border-b border-slate-200 dark:border-slate-800">
+<th class="py-4 px-4 w-10">
+<input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+</th>
+<th class="py-4 px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Key</th>
+<th class="py-4 px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Title</th>
+<th class="py-4 px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Type</th>
+<th class="py-4 px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider text-center">Status</th>
+<th class="py-4 px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider text-center">Priority</th>
+<th class="py-4 px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider text-center">Assignee</th>
+<th class="py-4 px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider text-right">Created</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<!-- Row 1: Active/Selected State -->
+<tr class="bg-primary/5 hover:bg-primary/10 transition-colors group">
+<td class="py-4 px-4">
+<input checked="" class="rounded border-primary text-primary focus:ring-primary" type="checkbox"/>
+</td>
+<td class="py-4 px-4 text-xs font-mono text-slate-400 uppercase">BB-124</td>
+<td class="py-4 px-4 font-medium text-slate-900 dark:text-slate-100">Update branding guidelines for Q3 release</td>
+<td class="py-4 px-4">
+<span class="flex items-center gap-1.5 px-2 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded text-xs font-semibold">
+<span class="material-symbols-outlined text-[14px] fill-current">description</span>
+                                    STORY
+                                </span>
+</td>
+<td class="py-4 px-4 text-center">
+<span class="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded text-xs font-medium uppercase tracking-wide">Backlog</span>
+</td>
+<td class="py-4 px-4 text-center">
+<span class="material-symbols-outlined text-red-500 fill-current">keyboard_double_arrow_up</span>
+</td>
+<td class="py-4 px-4 text-center">
+<img alt="Assignee" class="w-6 h-6 rounded-full inline-block" data-alt="Avatar of a female project assignee" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKs082lAzWr28LCBWyHLhYoReVT1sCUjO8nJpBdSQs22xvmYdMm1rt-GullisBb6tWsL4Vjokz0YkrWPihiP-IK_4nLR01F8vW_xvM_nooXaDsa-WaHP8DzFY2P_9sJEEWBNa5APtztIhb1u_ziK4IkNDcI1qfAKj5AUaK2ScsMkQjWyKkaBCPbqUHvL_-fV88qUTkho5oAx-nbIEp0RWpm13zh7L1X-CsIgxZa9TtU3jBFG09MTZhB8MGQmYtk1sEOLDls6N95gyF"/>
+</td>
+<td class="py-4 px-4 text-xs text-slate-400 text-right">2 days ago</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+<td class="py-4 px-4">
+<input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+</td>
+<td class="py-4 px-4 text-xs font-mono text-slate-400 uppercase">BB-125</td>
+<td class="py-4 px-4 font-medium text-slate-900 dark:text-slate-100">Bug: Mobile menu not closing on backdrop click</td>
+<td class="py-4 px-4">
+<span class="flex items-center gap-1.5 px-2 py-1 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded text-xs font-semibold">
+<span class="material-symbols-outlined text-[14px] fill-current">bug_report</span>
+                                    BUG
+                                </span>
+</td>
+<td class="py-4 px-4 text-center">
+<span class="px-2 py-1 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 rounded text-xs font-medium uppercase tracking-wide">In Review</span>
+</td>
+<td class="py-4 px-4 text-center">
+<span class="material-symbols-outlined text-orange-400 fill-current">keyboard_arrow_up</span>
+</td>
+<td class="py-4 px-4 text-center">
+<span class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-500 inline-block align-middle">JS</span>
+</td>
+<td class="py-4 px-4 text-xs text-slate-400 text-right">3 days ago</td>
+</tr>
+<!-- Row 3: Selected -->
+<tr class="bg-primary/5 hover:bg-primary/10 transition-colors group">
+<td class="py-4 px-4">
+<input checked="" class="rounded border-primary text-primary focus:ring-primary" type="checkbox"/>
+</td>
+<td class="py-4 px-4 text-xs font-mono text-slate-400 uppercase">BB-126</td>
+<td class="py-4 px-4 font-medium text-slate-900 dark:text-slate-100">API Documentation for v2.0 integrations</td>
+<td class="py-4 px-4">
+<span class="flex items-center gap-1.5 px-2 py-1 bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded text-xs font-semibold">
+<span class="material-symbols-outlined text-[14px] fill-current">assignment</span>
+                                    TASK
+                                </span>
+</td>
+<td class="py-4 px-4 text-center">
+<span class="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded text-xs font-medium uppercase tracking-wide">Backlog</span>
+</td>
+<td class="py-4 px-4 text-center">
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600">drag_handle</span>
+</td>
+<td class="py-4 px-4 text-center">
+<img alt="Assignee" class="w-6 h-6 rounded-full inline-block" data-alt="Avatar of a male developer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpjRz-72mhQIW1LEMncSqSIijGS_QsYcNc8JrTj36D5X-meVbZ1mBxLvHHYeo1OYFtWh1yPH8f6-Tjjtadpq_8v7O7LHK-N3opgLYqHmRqSc0afhL-5_WSIzVeGYX3Y4tyxC4VVdQEsZesre4FZ6NwZk4rGIYATi2cEnMdAjDwAMcVOB57CnYxr4xOSKRhvFobCTs2_fpSKahXNl6IXe-FxiuDzIvtqfih6vtKHgaOEuYOYuxizeKLSCn5jj6mQxOdleNCOPm7A1S8"/>
+</td>
+<td class="py-4 px-4 text-xs text-slate-400 text-right">5 days ago</td>
+</tr>
+<!-- Row 4: Selected -->
+<tr class="bg-primary/5 hover:bg-primary/10 transition-colors group">
+<td class="py-4 px-4">
+<input checked="" class="rounded border-primary text-primary focus:ring-primary" type="checkbox"/>
+</td>
+<td class="py-4 px-4 text-xs font-mono text-slate-400 uppercase">BB-127</td>
+<td class="py-4 px-4 font-medium text-slate-900 dark:text-slate-100">Design audit of the notification center</td>
+<td class="py-4 px-4">
+<span class="flex items-center gap-1.5 px-2 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded text-xs font-semibold">
+<span class="material-symbols-outlined text-[14px] fill-current">palette</span>
+                                    DESIGN
+                                </span>
+</td>
+<td class="py-4 px-4 text-center">
+<span class="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded text-xs font-medium uppercase tracking-wide">Backlog</span>
+</td>
+<td class="py-4 px-4 text-center">
+<span class="material-symbols-outlined text-orange-400 fill-current">keyboard_arrow_up</span>
+</td>
+<td class="py-4 px-4 text-center">
+<img alt="Assignee" class="w-6 h-6 rounded-full inline-block" data-alt="Avatar of a female design lead" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAt1zY8Tr3qhGhV7ThJP6BxpW7rKNP3Ft_7aRiBiyzFVv4aF5DtKB-2E7vRpro9c2h37uAxH1abtTRLqRgyrL_2N5FMkIjNzQjRDAcoHL3t0GnKCZSGoWUMAozDx7s3MvFs0eh-Ghh4l23ZxVaNjGgtSgq6bA9ulawTiscDm8c6NubWyC6FNeR08fXqdyRiyt5xaqrLQY1AIgatD7QCjW4hH2I5_XohgHm_ThTMGiBHc3BZMpXcOGGDQ9W6H4A_dxSsdDILgjUgRW-I"/>
+</td>
+<td class="py-4 px-4 text-xs text-slate-400 text-right">1 week ago</td>
+</tr>
+<!-- More rows -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+<td class="py-4 px-4">
+<input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+</td>
+<td class="py-4 px-4 text-xs font-mono text-slate-400 uppercase">BB-128</td>
+<td class="py-4 px-4 font-medium text-slate-900 dark:text-slate-100">Performance optimization for dashboard charts</td>
+<td class="py-4 px-4">
+<span class="flex items-center gap-1.5 px-2 py-1 bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded text-xs font-semibold">
+<span class="material-symbols-outlined text-[14px] fill-current">assignment</span>
+                                    TASK
+                                </span>
+</td>
+<td class="py-4 px-4 text-center">
+<span class="px-2 py-1 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded text-xs font-medium uppercase tracking-wide">Done</span>
+</td>
+<td class="py-4 px-4 text-center">
+<span class="material-symbols-outlined text-blue-400">keyboard_arrow_down</span>
+</td>
+<td class="py-4 px-4 text-center">
+<span class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-500 inline-block align-middle">TR</span>
+</td>
+<td class="py-4 px-4 text-xs text-slate-400 text-right">1 week ago</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="flex items-center justify-between mt-6 py-4 border-t border-slate-100 dark:border-slate-800">
+<p class="text-sm text-slate-500">Showing <span class="font-medium text-slate-900 dark:text-white">1-20</span> of <span class="font-medium text-slate-900 dark:text-white">28</span> items</p>
+<div class="flex gap-2">
+<button class="px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-medium text-slate-400 cursor-not-allowed">Previous</button>
+<button class="px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Next</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Selection Toolbar -->
+<div class="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-6 px-6 py-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl z-50 ring-1 ring-slate-900/5">
+<div class="flex items-center gap-3 pr-6 border-r border-slate-200 dark:border-slate-700">
+<div class="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-white text-xs font-bold">3</div>
+<span class="font-medium text-slate-900 dark:text-white">items selected</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-2 px-3 py-1.5 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-[18px]">outbound</span>
+                Assign to Sprint
+            </button>
+<button class="flex items-center gap-2 px-3 py-1.5 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-[18px]">flag</span>
+                Set Priority
+            </button>
+<button class="flex items-center gap-2 px-3 py-1.5 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+                Bulk Edit
+            </button>
+<button class="flex items-center gap-2 px-3 py-1.5 text-sm font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors ml-4">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+                Delete
+            </button>
+</div>
+<button class="ml-4 text-slate-400 hover:text-slate-600 transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</body></html>

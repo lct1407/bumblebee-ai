@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bumblebee - Create Project</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                font-family: 'Inter', sans-serif;
+            }
+        }
+        .focus-ring-amber:focus {
+            --tw-ring-color: #f59e0b;
+            border-color: #f59e0b;
+            outline: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        amber: {
+                            500: "#f59e0b",
+                        }
+                    },
+                    borderRadius: {
+                        "xl": "0.75rem",
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 text-slate-900 antialiased">
+<div class="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50 overflow-y-auto">
+<div class="bg-white w-full max-w-2xl rounded-xl shadow-xl overflow-hidden flex flex-col my-8">
+<div class="flex items-center justify-between px-8 py-5 border-b border-gray-100">
+<h2 class="text-xl font-semibold text-gray-900">New Project</h2>
+<button class="text-gray-400 hover:text-gray-600 transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="p-8 space-y-6">
+<div class="space-y-1.5">
+<label class="block text-sm font-medium text-gray-700">
+                    Project Name <span class="text-amber-500">*</span>
+</label>
+<input class="w-full h-10 px-3 bg-white border border-gray-200 rounded-lg text-[14px] text-gray-900 placeholder:text-gray-400 focus:ring-1 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all" placeholder="My Awesome Project" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-6">
+<div class="space-y-1.5">
+<label class="block text-sm font-medium text-gray-700">
+                        Project Key
+                    </label>
+<input class="w-full h-10 px-3 bg-white border border-gray-200 rounded-lg text-[14px] text-gray-900 placeholder:text-gray-400 focus:ring-1 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all uppercase" maxlength="4" placeholder="MAP" type="text"/>
+<p class="text-[12px] text-gray-500">
+                        2-4 characters (e.g. MAP-1)
+                    </p>
+</div>
+<div class="space-y-1.5">
+<label class="block text-sm font-medium text-gray-700">
+                        Slug
+                    </label>
+<input class="w-full h-10 px-3 bg-gray-50 border border-gray-200 rounded-lg text-[14px] text-gray-500 placeholder:text-gray-400 focus:ring-1 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all" placeholder="my-awesome-project" readonly="" type="text"/>
+<p class="text-[12px] text-gray-500">
+                        URL-friendly identifier
+                    </p>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="block text-sm font-medium text-gray-700">
+                    Description <span class="text-xs font-normal text-gray-400 ml-1">(Optional)</span>
+</label>
+<textarea class="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-[14px] text-gray-900 placeholder:text-gray-400 focus:ring-1 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all resize-none" placeholder="What is this project about?" rows="3"></textarea>
+</div>
+<div class="grid grid-cols-2 gap-6">
+<div class="space-y-1.5">
+<label class="block text-sm font-medium text-gray-700">
+                        Repository URL
+                    </label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-lg text-gray-400">link</span>
+</div>
+<input class="w-full h-10 pl-10 pr-3 bg-white border border-gray-200 rounded-lg text-[14px] text-gray-900 placeholder:text-gray-400 focus:ring-1 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all" placeholder="https://github.com/..." type="url"/>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="block text-sm font-medium text-gray-700">
+                        Default Branch
+                    </label>
+<input class="w-full h-10 px-3 bg-white border border-gray-200 rounded-lg text-[14px] text-gray-900 placeholder:text-gray-400 focus:ring-1 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all" placeholder="main" type="text"/>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="block text-sm font-medium text-gray-700">
+                    Tech Stack
+                </label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-lg text-gray-400">layers</span>
+</div>
+<input class="w-full h-10 pl-10 pr-3 bg-white border border-gray-200 rounded-lg text-[14px] text-gray-900 placeholder:text-gray-400 focus:ring-1 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all" placeholder="React, Node.js, Tailwind..." type="text"/>
+</div>
+</div>
+</div>
+<div class="px-8 py-6 bg-gray-50/50 border-t border-gray-100 flex items-center justify-end gap-3">
+<button class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all">
+                Cancel
+            </button>
+<button class="bg-black px-6 py-2.5 rounded-lg text-sm font-medium text-white hover:bg-gray-800 transition-all shadow-sm focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">
+                Create Project
+            </button>
+</div>
+</div>
+</div>
+<div aria-hidden="true" class="p-8 max-w-7xl mx-auto opacity-20 pointer-events-none">
+<header class="flex justify-between items-center mb-12">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-amber-500 text-lg">token</span>
+</div>
+<span class="font-bold text-xl tracking-tight text-gray-900">Bumblebee</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-gray-200"></div>
+</header>
+<div class="grid grid-cols-3 gap-6">
+<div class="h-40 bg-white rounded-xl shadow-sm border border-gray-100"></div>
+<div class="h-40 bg-white rounded-xl shadow-sm border border-gray-100"></div>
+<div class="h-40 bg-white rounded-xl shadow-sm border border-gray-100"></div>
+</div>
+</div>
+
+</body></html>

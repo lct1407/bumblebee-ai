@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bumblebee Projects Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ["Inter", "sans-serif"],
+                    },
+                    colors: {
+                        amber: {
+                            500: '#f59e0b',
+                            100: '#fef3c7',
+                            700: '#a16207',
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply text-[14px] text-gray-900 font-sans antialiased;
+            }
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body class="bg-white">
+<div class="flex min-h-screen">
+<aside class="w-56 bg-gray-50 border-r border-gray-200 flex flex-col fixed inset-y-0 left-0">
+<div class="h-14 border-b border-gray-200 flex items-center px-4 gap-2">
+<div class="flex items-center justify-center text-amber-500">
+<span class="material-symbols-outlined !text-2xl fill-1">hive</span>
+</div>
+<span class="font-bold text-lg tracking-tight">Bumblebee</span>
+</div>
+<div class="flex-1 py-6 px-3 space-y-8 overflow-y-auto">
+<div class="space-y-1">
+<p class="px-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2">Main</p>
+<a class="flex items-center gap-3 px-3 py-2 rounded-md text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-md bg-amber-500/10 text-amber-500 font-medium" href="#">
+<span class="material-symbols-outlined">folder</span>
+<span class="font-medium">Projects</span>
+</a>
+</div>
+<div class="space-y-1">
+<p class="px-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2">Project</p>
+<a class="flex items-center justify-between px-3 py-1.5 rounded-md hover:bg-gray-100 group transition-colors" href="#">
+<div class="flex items-center gap-3">
+<div class="size-2 rounded-full bg-amber-500"></div>
+<span class="text-gray-600">bumblebee</span>
+</div>
+<span class="text-[10px] font-bold text-gray-400">BB</span>
+</a>
+<a class="flex items-center justify-between px-3 py-1.5 rounded-md hover:bg-gray-100 group transition-colors" href="#">
+<div class="flex items-center gap-3">
+<div class="size-2 rounded-full bg-blue-400"></div>
+<span class="text-gray-600">my-saas</span>
+</div>
+<span class="text-[10px] font-bold text-gray-400">MS</span>
+</a>
+<a class="flex items-center justify-between px-3 py-1.5 rounded-md hover:bg-gray-100 group transition-colors" href="#">
+<div class="flex items-center gap-3">
+<div class="size-2 rounded-full bg-purple-400"></div>
+<span class="text-gray-600">client-app</span>
+</div>
+<span class="text-[10px] font-bold text-gray-400">CA</span>
+</a>
+</div>
+</div>
+<div class="p-3 border-t border-gray-200">
+<div class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors overflow-hidden">
+<div class="size-8 rounded-full bg-amber-100 flex-shrink-0 flex items-center justify-center border border-amber-200">
+<span class="text-amber-700 text-xs font-bold uppercase">JD</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-xs font-medium truncate text-gray-900">john@example.com</p>
+<p class="text-[10px] text-gray-400">Developer</p>
+</div>
+<span class="material-symbols-outlined text-gray-400 !text-lg">logout</span>
+</div>
+</div>
+</aside>
+<main class="flex-1 ml-56 bg-white min-h-screen">
+<header class="h-14 flex items-center justify-between px-8 border-b border-gray-100 sticky top-0 bg-white z-10">
+<h2 class="text-2xl font-bold text-gray-900">Projects</h2>
+<button class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-800 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined !text-sm">add</span>
+                    New Project
+                </button>
+</header>
+<div class="p-8 max-w-7xl mx-auto">
+<div class="grid grid-cols-4 gap-6 mb-10">
+<div class="border border-gray-200 p-5 rounded-xl">
+<p class="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Total Projects</p>
+<p class="text-2xl font-bold">3</p>
+</div>
+<div class="border border-gray-200 p-5 rounded-xl">
+<p class="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Open Items</p>
+<p class="text-2xl font-bold">24</p>
+</div>
+<div class="border border-gray-200 p-5 rounded-xl">
+<p class="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">In Progress</p>
+<p class="text-2xl font-bold">8</p>
+</div>
+<div class="border border-gray-200 p-5 rounded-xl">
+<p class="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Resolved Today</p>
+<p class="text-2xl font-bold">5</p>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-6">
+<div class="border border-gray-200 rounded-xl flex flex-col hover:border-amber-500/50 transition-all group">
+<div class="p-6 space-y-3 flex-1">
+<div class="flex items-center justify-between">
+<h4 class="font-bold text-gray-900">bumblebee</h4>
+<span class="px-2 py-0.5 rounded-md bg-amber-100 text-amber-700 text-[10px] font-bold">BB</span>
+</div>
+<p class="text-gray-500 leading-relaxed line-clamp-2">Core developer task management platform with honeycomb visual architecture and API integrations.</p>
+<div class="pt-2 flex -space-x-2">
+<img alt="User avatar" class="size-6 rounded-full border-2 border-white bg-gray-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8KjpkXow8OkwE8sLcAIZeCCZK1kLBxHnKbynu8d0KTIP5oQ8mSoq66uEjVcHZmMMp_nug9erv5HH8bo1UDix1WiRH5ErgPz4MgQrgRmT120LHG68cc22nWkKnTTDBvothnL0UQZLSe7YTpRaZCBAKdtp3j66hxB2XX7QA29hfcNuiomaXShFtK5AS5CBvmHQDrft7qv3_CkaS1oYSf_DHAl5hgifyPu_rJuBkTGR9IoAM3rphxqbqtIbJsrmL24gxjs4NxMhka6v3"/>
+<img alt="User avatar" class="size-6 rounded-full border-2 border-white bg-gray-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDafBcTwoTCwaVQr3622uvV4uyAG5WlaahZw8QEzXOlCR8VKHagc0CJrWudeWR9nyr-zLCUfvt-Kl5y-qxJI-Ov-ac1N8EDWydqZdJIgZshuQ80KCh6TR2say1gOYxnjSdMx4x_W6nvD8OJiGGtQpQlZ5yF64-qezFiSiS8iLaHBQSMQwBznIDbA_DKoTJEcNduk_rj5L0E0YbdqcQJbr-G1IklG6u1IDHEYsOoEzua5JttfHzwxrHd9r96BpX6qb-diPd0DsB1cYGR"/>
+<img alt="User avatar" class="size-6 rounded-full border-2 border-white bg-gray-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBptIRoiY-eTGvcXbgZalxrQxCyMAnaUhKpEklp5N49OFLuYdiuN2lMManrwWdBs55qTrCdGKBllpoSTz31rTUQlhNyaZGazOYzL0czHqFixGvBL07GGL9p901BKHulDbbLBbk5ocFCJmxko4WowyqfnZhkJH6VvuRpNG55ZjBdudlxDkNLyGnm4G7asqjvwgqW45QPTtwacNHM3HvXoYx6NUaHCLlO2GAesRChk0dLO9KngWxTrpgcPpxnZ1DpMfTtAozZmBJ_7kyl"/>
+</div>
+</div>
+<div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between bg-gray-50/30 rounded-b-xl">
+<span class="text-gray-400 font-medium">15 items</span>
+<span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-600 text-[11px] font-bold">3 active</span>
+</div>
+</div>
+<div class="border border-gray-200 rounded-xl flex flex-col hover:border-amber-500/50 transition-all group">
+<div class="p-6 space-y-3 flex-1">
+<div class="flex items-center justify-between">
+<h4 class="font-bold text-gray-900">my-saas</h4>
+<span class="px-2 py-0.5 rounded-md bg-amber-100 text-amber-700 text-[10px] font-bold">MS</span>
+</div>
+<p class="text-gray-500 leading-relaxed line-clamp-2">Personal project for tracking subscription metrics and user growth funnels for next-gen apps.</p>
+<div class="pt-2 flex -space-x-2">
+<img alt="User avatar" class="size-6 rounded-full border-2 border-white bg-gray-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8KjpkXow8OkwE8sLcAIZeCCZK1kLBxHnKbynu8d0KTIP5oQ8mSoq66uEjVcHZmMMp_nug9erv5HH8bo1UDix1WiRH5ErgPz4MgQrgRmT120LHG68cc22nWkKnTTDBvothnL0UQZLSe7YTpRaZCBAKdtp3j66hxB2XX7QA29hfcNuiomaXShFtK5AS5CBvmHQDrft7qv3_CkaS1oYSf_DHAl5hgifyPu_rJuBkTGR9IoAM3rphxqbqtIbJsrmL24gxjs4NxMhka6v3"/>
+<img alt="User avatar" class="size-6 rounded-full border-2 border-white bg-gray-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBptIRoiY-eTGvcXbgZalxrQxCyMAnaUhKpEklp5N49OFLuYdiuN2lMManrwWdBs55qTrCdGKBllpoSTz31rTUQlhNyaZGazOYzL0czHqFixGvBL07GGL9p901BKHulDbbLBbk5ocFCJmxko4WowyqfnZhkJH6VvuRpNG55ZjBdudlxDkNLyGnm4G7asqjvwgqW45QPTtwacNHM3HvXoYx6NUaHCLlO2GAesRChk0dLO9KngWxTrpgcPpxnZ1DpMfTtAozZmBJ_7kyl"/>
+</div>
+</div>
+<div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between bg-gray-50/30 rounded-b-xl">
+<span class="text-gray-400 font-medium">15 items</span>
+<span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-600 text-[11px] font-bold">3 active</span>
+</div>
+</div>
+<div class="border border-gray-200 rounded-xl flex flex-col hover:border-amber-500/50 transition-all group">
+<div class="p-6 space-y-3 flex-1">
+<div class="flex items-center justify-between">
+<h4 class="font-bold text-gray-900">client-app</h4>
+<span class="px-2 py-0.5 rounded-md bg-amber-100 text-amber-700 text-[10px] font-bold">CA</span>
+</div>
+<p class="text-gray-500 leading-relaxed line-clamp-2">External portal for client communication and asset approvals with secure login systems.</p>
+<div class="pt-2 flex -space-x-2">
+<img alt="User avatar" class="size-6 rounded-full border-2 border-white bg-gray-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDafBcTwoTCwaVQr3622uvV4uyAG5WlaahZw8QEzXOlCR8VKHagc0CJrWudeWR9nyr-zLCUfvt-Kl5y-qxJI-Ov-ac1N8EDWydqZdJIgZshuQ80KCh6TR2say1gOYxnjSdMx4x_W6nvD8OJiGGtQpQlZ5yF64-qezFiSiS8iLaHBQSMQwBznIDbA_DKoTJEcNduk_rj5L0E0YbdqcQJbr-G1IklG6u1IDHEYsOoEzua5JttfHzwxrHd9r96BpX6qb-diPd0DsB1cYGR"/>
+</div>
+</div>
+<div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between bg-gray-50/30 rounded-b-xl">
+<span class="text-gray-400 font-medium">15 items</span>
+<span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-600 text-[11px] font-bold">3 active</span>
+</div>
+</div>
+</div>
+<div class="mt-12 space-y-4">
+<h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-400">Recent Activity</h3>
+<div class="border border-gray-200 rounded-xl divide-y divide-gray-100 overflow-hidden">
+<div class="px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-gray-300">check_circle</span>
+<div>
+<p class="text-sm font-medium text-gray-900">Update API documentation</p>
+<p class="text-[11px] text-gray-400 font-medium uppercase">bumblebee • Today, 2:45 PM</p>
+</div>
+</div>
+<span class="px-2 py-1 rounded-md bg-amber-500/10 text-amber-700 text-[10px] font-bold">IN PROGRESS</span>
+</div>
+<div class="px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-emerald-500">check_circle</span>
+<div>
+<p class="text-sm font-medium text-gray-900">Refactor login component</p>
+<p class="text-[11px] text-gray-400 font-medium uppercase">my-saas • Yesterday</p>
+</div>
+</div>
+<span class="px-2 py-1 rounded-md bg-gray-100 text-gray-500 text-[10px] font-bold uppercase">Completed</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>

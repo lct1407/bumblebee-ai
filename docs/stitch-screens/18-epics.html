@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bumblebee Epics Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f59f0a",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#221c10",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
+<div class="flex min-h-screen">
+<!-- SIDEBAR -->
+<aside class="fixed inset-y-0 left-0 w-64 bg-slate-50 dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col z-20">
+<div class="p-6 flex items-center gap-3">
+<div class="size-10 rounded-lg bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined">rocket_launch</span>
+</div>
+<div>
+<h1 class="font-bold text-slate-900 dark:text-white leading-none">Bumblebee</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Project Management</p>
+</div>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-6 overflow-y-auto">
+<div>
+<p class="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">Main</p>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">list_alt</span>
+<span class="font-medium">My Tasks</span>
+</a>
+</div>
+</div>
+<div>
+<p class="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">Project</p>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">layers</span>
+<span class="font-medium">Backlog</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px] fill-1">view_kanban</span>
+<span class="font-medium">Epics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="font-medium">Settings</span>
+</a>
+</div>
+</div>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-200/50 dark:hover:bg-slate-800 cursor-pointer">
+<img alt="User avatar" class="size-8 rounded-full border border-slate-200" data-alt="Close up portrait of a professional man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgDJ6UcbPDonOj6Qi6HW_Ys8C7b0SHC1zgxSv3Y_8zKNuIjLE6UAQA32YE53Wx0e47UuqBsDDSX4IJnsZjCw7gx22s5BwUZjCYvXtCOfnhL9XXefnpRS7pOtI4U3UiVAgxVYXebzbDADRY_c8IGszysJI0mPr3MfZwb0kFgHntCVA-eukA67bpW_QLuV0wJTKfwhRctrU92jyn1_-X2qWtbkqqAoe0DXmvgVMYaYjAyn9s1glrM7IbSkgDPJbfuyxoVOl5H0-CYyAg"/>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-semibold truncate">Alex Rivera</p>
+</div>
+<span class="material-symbols-outlined text-slate-400">more_vert</span>
+</div>
+</div>
+</aside>
+<!-- MAIN CONTENT -->
+<main class="ml-64 flex-1 p-8">
+<!-- HEADER -->
+<header class="mb-8">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-2xl font-bold text-slate-900 dark:text-white">Epics</h2>
+<button class="bg-slate-900 dark:bg-primary text-white px-5 py-2.5 rounded-xl font-semibold flex items-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                        New Epic
+                    </button>
+</div>
+<div class="flex flex-wrap items-center gap-3">
+<div class="relative flex-1 max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" placeholder="Search epics..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-50 transition-colors">
+<span class="text-sm font-medium">Status: All</span>
+<span class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-50 transition-colors">
+<span class="text-sm font-medium">Assignee: Me</span>
+<span class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+</div>
+</div>
+</header>
+<!-- EPIC LIST -->
+<div class="space-y-4">
+<!-- EPIC CARD 1 (EXPANDED) -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+<div class="border-l-4 border-indigo-400 p-5">
+<div class="flex items-start justify-between gap-4">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="font-mono text-[10px] font-bold text-slate-400 uppercase tracking-tight">BB-12</span>
+<h3 class="text-base font-semibold text-slate-900 dark:text-white">Core API Infrastructure</h3>
+</div>
+<p class="text-slate-500 dark:text-slate-400 line-clamp-2 mb-4 leading-relaxed">
+                                    Design and implement the scalable backend architecture for the Bumblebee project using microservices and GraphQL endpoints.
+                                </p>
+<div class="flex items-center gap-6">
+<div class="flex-1 max-w-xs">
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-xs font-medium text-slate-500 dark:text-slate-400">5 of 12 items done</span>
+<span class="text-xs font-bold text-slate-700 dark:text-slate-300">42%</span>
+</div>
+<div class="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-emerald-500 w-[42%] rounded-full"></div>
+</div>
+</div>
+<span class="px-2.5 py-1 bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-bold rounded-lg uppercase tracking-wider">In Progress</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-3 shrink-0">
+<div class="flex items-center -space-x-2">
+<img alt="Avatar" class="size-7 rounded-full border-2 border-white dark:border-slate-900" data-alt="Portrait of a woman with long dark hair" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAI6k1nk9JutsVvo1aO6JzDKbRlT522TJbEfpUAp2Rm2bbcSnyqNKnfWBG9TQ8JzBHkoSVvDaW30pJYhttU3JZ8TvqaokbkYxs6pQ2uAreII97SmlPp2fa94hEAznmanD3MFBiVlIibqQLethCpE-IHagN6YYJYEWLFaSnh_vOTCr5XO55HCh-TGfgDYmZjY7CnJczSnlxPSYVWpd0pBx-pgGPc4IyDZjFajtMfXhdQTRLJTlmuBXeEX3pyAMWoHMb3mO3xMJscvjnu"/>
+<img alt="Avatar" class="size-7 rounded-full border-2 border-white dark:border-slate-900" data-alt="Portrait of a man with a beard" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOt19G04soy9iEFm--5QqDw_T-yzxa9vF0HeEWgm1316-L2S3YoXKM_Nu3MtUz33oj4o7Y3BgQRtGzRoaiRwGyOye-LKUXnf3YmocwQE1wRPoSHw7C5EmdiH8SdRY669rwhKf13sGs5HI_M7CAIcXN1cA9unm4ctFR5JIElZI_vSChRpxE2uKO2pLpnzQljzFYooiXIMKBj_uwwuJ9Ge5R-fnNYzjUm_Ws8VPJ7cwzwI9V7VdEaZssPGQrGqP9UTf4xQwlsdMwjU0S"/>
+<div class="size-7 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-[10px] font-bold text-slate-500 border-2 border-white dark:border-slate-900">+3</div>
+</div>
+<div class="flex items-center gap-4 text-slate-400">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">account_tree</span>
+<span class="text-xs font-medium">12</span>
+</div>
+<span class="text-xs font-medium">2d ago</span>
+</div>
+</div>
+</div>
+</div>
+<!-- NESTED VIEW -->
+<div class="bg-slate-50/50 dark:bg-slate-800/20 border-t border-slate-100 dark:border-slate-800 px-5 py-4 ml-4">
+<div class="space-y-3">
+<div class="flex items-center justify-between p-3 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-emerald-500 text-[18px]">check_circle</span>
+<span class="font-mono text-[10px] font-bold text-slate-400">BB-124</span>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">Database Schema Design</span>
+</div>
+<span class="px-2 py-0.5 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold rounded uppercase">Done</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[18px]">radio_button_checked</span>
+<span class="font-mono text-[10px] font-bold text-slate-400">BB-125</span>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">Auth Service Implementation</span>
+</div>
+<span class="px-2 py-0.5 bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 text-[10px] font-bold rounded uppercase">In Progress</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm opacity-70">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-300 text-[18px]">radio_button_unchecked</span>
+<span class="font-mono text-[10px] font-bold text-slate-400">BB-126</span>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">Load Balancer Config</span>
+</div>
+<span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[10px] font-bold rounded uppercase">To Do</span>
+</div>
+</div>
+</div>
+</div>
+<!-- EPIC CARD 2 -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm hover:border-slate-300 transition-colors cursor-pointer">
+<div class="border-l-4 border-indigo-400 p-5">
+<div class="flex items-start justify-between gap-4">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="font-mono text-[10px] font-bold text-slate-400 uppercase tracking-tight">BB-15</span>
+<h3 class="text-base font-semibold text-slate-900 dark:text-white">User Onboarding Experience</h3>
+</div>
+<p class="text-slate-500 dark:text-slate-400 line-clamp-2 mb-4 leading-relaxed">
+                                    Redesigning the first-time user flow to increase conversion and decrease churn rate for new enterprise accounts.
+                                </p>
+<div class="flex items-center gap-6">
+<div class="flex-1 max-w-xs">
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-xs font-medium text-slate-500 dark:text-slate-400">8 of 10 items done</span>
+<span class="text-xs font-bold text-slate-700 dark:text-slate-300">80%</span>
+</div>
+<div class="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-emerald-500 w-[80%] rounded-full"></div>
+</div>
+</div>
+<span class="px-2.5 py-1 bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-bold rounded-lg uppercase tracking-wider">In Progress</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-3 shrink-0">
+<div class="flex items-center -space-x-2">
+<img alt="Avatar" class="size-7 rounded-full border-2 border-white dark:border-slate-900" data-alt="Portrait of a smiling man with brown hair" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuX-y6csphO-11i0YN-sPTXfCM99fpkGYh6EWxtnsP_68vQrA1TXgv8MoLHvBnwwhQdXsd7Y5fLxUMvY8V7GJ59M1ndUY31epaPEwcNjMteT994PkwO6y8YkidpkxtVF3rf0WZO0-rVJ4gXp9fdsVBWfzqsUm3CejVSAjXrj2ecQKgqwcOxMSIjuL4DqRZph1e8cCaJ8EzeFsdcXjR1i16AL4wK-CeM2vDn_KLHtNfbtlvSebHUfkrjlVVyhySxo8M4lalLYKNWEiH"/>
+<img alt="Avatar" class="size-7 rounded-full border-2 border-white dark:border-slate-900" data-alt="Portrait of a professional woman wearing glasses" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgCfsXSV2PPGb-MgDAQc8VT2MsIFYtoV4DYkHNanEbXTEKCZl8Kh-6KFjY5082RYQaJsXG14JSXtmfNGZjx4Vtd0u0D0XFMRmOXGIGe5UkoOdvblsTk-wHcp1ev74zpG0cVk1Z4QdQR4IrZ4hbuoaGoA9D2uIXDZlL1XtvmJV_HY4jtKiprQ49MJoZrkvnR-h7WUd9KtZTuYxg0ZZDGOizXH_DZxwSm9SO-Js6JogWcqa20a6hRbOdtJCA5KP3SqpnleOP10JxzH3h"/>
+</div>
+<div class="flex items-center gap-4 text-slate-400">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">account_tree</span>
+<span class="text-xs font-medium">10</span>
+</div>
+<span class="text-xs font-medium">5d ago</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- EPIC CARD 3 -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm hover:border-slate-300 transition-colors cursor-pointer">
+<div class="border-l-4 border-indigo-400 p-5">
+<div class="flex items-start justify-between gap-4">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="font-mono text-[10px] font-bold text-slate-400 uppercase tracking-tight">BB-21</span>
+<h3 class="text-base font-semibold text-slate-900 dark:text-white">Mobile App Beta Launch</h3>
+</div>
+<p class="text-slate-500 dark:text-slate-400 line-clamp-2 mb-4 leading-relaxed">
+                                    Preparing the iOS and Android versions for private beta testing with selected premium partners.
+                                </p>
+<div class="flex items-center gap-6">
+<div class="flex-1 max-w-xs">
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-xs font-medium text-slate-500 dark:text-slate-400">0 of 15 items done</span>
+<span class="text-xs font-bold text-slate-700 dark:text-slate-300">0%</span>
+</div>
+<div class="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-emerald-500 w-[0%] rounded-full"></div>
+</div>
+</div>
+<span class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-bold rounded-lg uppercase tracking-wider">To Do</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-3 shrink-0">
+<div class="flex items-center -space-x-2">
+<img alt="Avatar" class="size-7 rounded-full border-2 border-white dark:border-slate-900" data-alt="Portrait of a man with sunglasses on head" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2cIK8OAbd0qJ14gl7YyqpcHEK8DjyiQxrUHOtpzjCuz5nMScJBnSQ6Qe5yny4ckw5lbIZp3ybFyhuRQwHqBdzl6hVh1uta6IklmyT2augVjY8coZLu_F7vvqgpmRYu-HLuMdx2aNYgzyGQ7mhrh78_fPGUruMNKVUrFS4XwfJLYgAOmesS5sh9bV0pqjAsqArNnwn3jza_JniGMeebHH9Ky0gBIP8d34XXzLYgGBiq2t9LW7f-Tn5mK9hb4deokE8ed-EdAtT_ATg"/>
+</div>
+<div class="flex items-center gap-4 text-slate-400">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">account_tree</span>
+<span class="text-xs font-medium">15</span>
+</div>
+<span class="text-xs font-medium">1w ago</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

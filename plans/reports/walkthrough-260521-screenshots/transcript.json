@@ -1,0 +1,298 @@
+[
+  {
+    "id": "01-landing-page",
+    "name": "landing-page",
+    "ts": "2026-05-22T03:47:11.264Z",
+    "actions": [
+      {
+        "type": "screenshot",
+        "file": "01-landing-page-hero.png"
+      },
+      {
+        "type": "screenshot",
+        "file": "01-landing-page-features.png"
+      },
+      {
+        "type": "screenshot",
+        "file": "01-landing-page-showcase.png"
+      },
+      {
+        "type": "screenshot",
+        "file": "01-landing-page-footer.png"
+      }
+    ]
+  },
+  {
+    "id": "02-register-admin",
+    "name": "register-admin",
+    "ts": "2026-05-22T03:47:17.288Z",
+    "actions": [
+      {
+        "type": "api",
+        "method": "POST",
+        "path": "/api/auth/register",
+        "status": 201,
+        "response": {
+          "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZjA5ZGY0OS0yMDNlLTQ1ZGItYjgxZi04MGVmOTgxZjM1MGIiLCJleHAiOjE3Nzk1MDgwMzcsInVzZXJuYW1lIjoiYWRtaW4ifQ.n-Ldmv5UPn4nJzQX4DlVDMLwc5bP4R7q4UwM4wLG9lE",
+          "token_type": "bearer",
+          "user": {
+            "id": "ef09df49-203e-45db-b81f-80ef981f350b",
+            "username": "admin",
+            "email": "admin@bumblebee.ai",
+            "full_name": "Administrator"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "03-login-admin",
+    "name": "login-admin",
+    "ts": "2026-05-22T03:47:17.556Z",
+    "actions": [
+      {
+        "type": "api",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200
+      }
+    ]
+  },
+  {
+    "id": "04-create-api-key",
+    "name": "create-api-key",
+    "ts": "2026-05-22T03:47:17.788Z",
+    "actions": [
+      {
+        "type": "api",
+        "method": "POST",
+        "path": "/api/auth/api-keys",
+        "status": 201,
+        "response": {
+          "id": "037ec559-e632-4b1e-be8b-477fbc238c84",
+          "name": "demo-walkthrough",
+          "key": "bb_xOTipWdM-hAnjnU8FEOXd_iqrkSkdbCni8klMDlf0yk",
+          "created_at": "2026-05-22T03:47:17.794540+00:00"
+        }
+      }
+    ]
+  },
+  {
+    "id": "05-auth-me-verify",
+    "name": "auth-me-verify",
+    "ts": "2026-05-22T03:47:17.815Z",
+    "actions": [
+      {
+        "type": "api",
+        "method": "GET",
+        "path": "/api/auth/me (Bearer)",
+        "status": 200,
+        "response": {
+          "authenticated": true,
+          "id": "ef09df49-203e-45db-b81f-80ef981f350b",
+          "username": "admin",
+          "email": "admin@bumblebee.ai",
+          "is_admin": false
+        }
+      },
+      {
+        "type": "api",
+        "method": "GET",
+        "path": "/api/auth/me (X-BB-API-Key)",
+        "status": 200,
+        "response": {
+          "authenticated": true,
+          "id": "ef09df49-203e-45db-b81f-80ef981f350b",
+          "username": "admin",
+          "email": "admin@bumblebee.ai",
+          "is_admin": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "06-view-dashboard",
+    "name": "view-dashboard",
+    "ts": "2026-05-22T03:47:17.827Z",
+    "actions": [
+      {
+        "type": "screenshot",
+        "file": "06-view-dashboard.png"
+      }
+    ]
+  },
+  {
+    "id": "07-view-issues-list",
+    "name": "view-issues-list",
+    "ts": "2026-05-22T03:47:19.707Z",
+    "actions": [
+      {
+        "type": "screenshot",
+        "file": "07-view-issues-list.png"
+      }
+    ]
+  },
+  {
+    "id": "08-create-issue-via-web",
+    "name": "create-issue-via-web",
+    "ts": "2026-05-22T03:47:21.537Z",
+    "actions": [
+      {
+        "type": "screenshot",
+        "file": "08-create-issue-via-web-form-filled.png"
+      },
+      {
+        "type": "api",
+        "method": "POST",
+        "path": "/api/projects/bb/issues",
+        "status": 201,
+        "result": "BB-4 created via API (X-BB-Bearer)"
+      },
+      {
+        "type": "screenshot",
+        "file": "08-create-issue-via-web-list-with-new-issue.png"
+      }
+    ]
+  },
+  {
+    "id": "09-view-issue-detail",
+    "name": "view-issue-detail",
+    "ts": "2026-05-22T03:47:26.670Z",
+    "actions": [
+      {
+        "type": "screenshot",
+        "file": "09-view-issue-detail.png"
+      }
+    ]
+  },
+  {
+    "id": "10-trigger-workflow",
+    "name": "trigger-workflow",
+    "ts": "2026-05-22T03:47:28.352Z",
+    "actions": [
+      {
+        "type": "screenshot",
+        "file": "10-trigger-workflow-before-trigger.png"
+      },
+      {
+        "type": "api",
+        "method": "POST",
+        "path": "/api/workflow-runs/trigger",
+        "status": 200,
+        "response": {
+          "workflow_run_id": "0dfe3b84-a7ca-44e5-a96c-04fe34626aea",
+          "workflow_name": "simple-fix-flow",
+          "status": "completed"
+        }
+      },
+      {
+        "type": "screenshot",
+        "file": "10-trigger-workflow-after-completion.png"
+      },
+      {
+        "type": "wait",
+        "result": "workflow completed"
+      }
+    ]
+  },
+  {
+    "id": "11-view-event-log",
+    "name": "view-event-log",
+    "ts": "2026-05-22T03:47:30.669Z",
+    "actions": [
+      {
+        "type": "api",
+        "method": "GET",
+        "path": "/api/events?issue_id=efade608-252e-496c-803e-3ee26e58df04",
+        "count": 15,
+        "types": [
+          "workflow_completed",
+          "session_completed",
+          "cost_charged",
+          "llm_call",
+          "session_started",
+          "session_completed",
+          "cost_charged",
+          "llm_call",
+          "session_started",
+          "session_completed",
+          "cost_charged",
+          "llm_call",
+          "session_started",
+          "workflow_started",
+          "status_change"
+        ]
+      },
+      {
+        "type": "screenshot",
+        "file": "11-view-event-log-events-table.png"
+      }
+    ]
+  },
+  {
+    "id": "12-view-plugins",
+    "name": "view-plugins",
+    "ts": "2026-05-22T03:47:30.738Z",
+    "actions": [
+      {
+        "type": "screenshot",
+        "file": "12-view-plugins.png"
+      },
+      {
+        "type": "screenshot",
+        "file": "12-view-plugins-after-reload.png"
+      }
+    ]
+  },
+  {
+    "id": "13-view-notifications",
+    "name": "view-notifications",
+    "ts": "2026-05-22T03:47:34.775Z",
+    "actions": [
+      {
+        "type": "screenshot",
+        "file": "13-view-notifications.png"
+      }
+    ]
+  },
+  {
+    "id": "14-api-key-workflow-trigger",
+    "name": "api-key-workflow-trigger",
+    "ts": "2026-05-22T03:47:36.788Z",
+    "actions": [
+      {
+        "type": "api",
+        "method": "POST",
+        "path": "/api/projects/bb/issues",
+        "status": 201,
+        "result": "BB-5"
+      },
+      {
+        "type": "api",
+        "method": "POST",
+        "path": "/api/workflow-runs/trigger",
+        "status": 200,
+        "response": {
+          "workflow_run_id": "7e695e9b-c4a9-4608-a9f7-8e761e2f7b1f",
+          "workflow_name": "simple-fix-flow",
+          "status": "completed"
+        }
+      }
+    ]
+  },
+  {
+    "id": "15-concurrent-multi-issue",
+    "name": "concurrent-multi-issue",
+    "ts": "2026-05-22T03:47:36.901Z",
+    "actions": [
+      {
+        "type": "concurrent",
+        "result": [
+          "completed",
+          "completed",
+          "?"
+        ]
+      }
+    ]
+  }
+]

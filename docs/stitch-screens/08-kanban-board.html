@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bumblebee Kanban Board</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        amber: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            200: '#fde68a',
+                            300: '#fcd34d',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        },
+                        gray: {
+                            50: '#f9fafb',
+                            100: '#f3f4f6',
+                            200: '#e5e7eb',
+                            400: '#9ca3af',
+                            500: '#6b7280',
+                        }
+                    },
+                    fontFamily: {
+                        "sans": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"]
+                    }
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        body { font-family: 'Inter', sans-serif; }
+        .kanban-column { min-width: 280px; width: 280px; }
+        .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+        .sidebar-item-active { @apply bg-white border border-gray-200 text-amber-500 shadow-sm; }
+    </style>
+</head>
+<body class="bg-white text-slate-900 antialiased font-sans">
+<div class="flex h-screen overflow-hidden">
+<aside class="w-56 flex-shrink-0 border-r border-gray-200 bg-gray-50 flex flex-col">
+<div class="h-14 border-b border-gray-200 flex items-center px-4 gap-2.5">
+<span class="material-symbols-outlined text-amber-500 fill-1">hive</span>
+<span class="text-sm font-bold tracking-tight">Bumblebee</span>
+</div>
+<div class="flex-1 overflow-y-auto py-4 px-3 space-y-6">
+<div>
+<p class="px-2 mb-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Main</p>
+<nav class="space-y-0.5">
+<a class="flex items-center gap-2.5 px-2 py-1.5 text-sm text-gray-600 hover:text-gray-900 rounded-md transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-2.5 px-2 py-1.5 text-sm text-gray-600 hover:text-gray-900 rounded-md transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">layers</span>
+<span>Projects</span>
+</a>
+</nav>
+</div>
+<div>
+<p class="px-2 mb-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Project</p>
+<nav class="space-y-0.5">
+<a class="flex items-center gap-2.5 px-2 py-1.5 text-sm text-gray-600 hover:text-gray-900 rounded-md transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">overview</span>
+<span>Overview</span>
+</a>
+<a class="flex items-center gap-2.5 px-2 py-1.5 text-sm text-gray-600 hover:text-gray-900 rounded-md transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">format_list_bulleted</span>
+<span>Items</span>
+</a>
+<a class="flex items-center gap-2.5 px-2 py-1.5 text-sm sidebar-item-active font-medium rounded-md transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">view_kanban</span>
+<span>Board</span>
+</a>
+<a class="flex items-center gap-2.5 px-2 py-1.5 text-sm text-gray-600 hover:text-gray-900 rounded-md transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+<span>Sprints</span>
+</a>
+<a class="flex items-center gap-2.5 px-2 py-1.5 text-sm text-gray-600 hover:text-gray-900 rounded-md transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">smart_toy</span>
+<span>Agent</span>
+</a>
+<a class="flex items-center gap-2.5 px-2 py-1.5 text-sm text-gray-600 hover:text-gray-900 rounded-md transition-colors pt-4" href="#">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+</div>
+</div>
+</aside>
+<main class="flex-1 flex flex-col overflow-hidden bg-white">
+<header class="px-8 pt-6 pb-4 border-b border-gray-100">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-2xl font-bold text-gray-900">Board</h2>
+<div class="flex items-center gap-2">
+<button class="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1.5 rounded text-sm font-medium transition-colors flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm">add</span> New Issue
+                        </button>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="relative flex-1 max-w-[240px]">
+<span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-lg leading-none">search</span>
+<input class="w-full pl-9 pr-3 py-1.5 bg-gray-50 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-amber-500 focus:border-amber-500 outline-none" placeholder="Search..." type="text"/>
+</div>
+<button class="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 rounded text-sm text-gray-600 hover:bg-gray-50 transition-colors">
+<span>Type:</span>
+<span class="font-medium text-gray-900">Stories</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 rounded text-sm text-gray-600 hover:bg-gray-50 transition-colors">
+<span>Assignee:</span>
+<span class="font-medium text-gray-900">All</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</div>
+</header>
+<div class="flex-1 overflow-x-auto p-8 bg-gray-50/50 custom-scrollbar">
+<div class="flex h-full gap-6">
+<div class="kanban-column flex flex-col gap-3">
+<div class="flex items-center gap-2 px-1">
+<h3 class="text-xs font-semibold uppercase text-gray-500 tracking-wider">Open</h3>
+<span class="text-[10px] px-2 py-0.5 bg-gray-100 rounded-full text-gray-500 font-bold">3</span>
+</div>
+<div class="flex-1 space-y-3">
+<div class="rounded-lg border border-gray-200 bg-white p-3 shadow-sm hover:border-amber-400 transition-colors cursor-pointer group">
+<div class="flex items-center justify-between mb-2">
+<span class="font-mono text-[10px] text-gray-400">BB-42</span>
+<span class="bg-blue-50 text-blue-600 text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-tight">Story</span>
+</div>
+<h4 class="text-sm font-medium text-gray-900 leading-snug mb-3">Implement Redis caching for API endpoints</h4>
+<div class="flex items-center justify-between">
+<span class="w-2 h-2 rounded-full bg-orange-400" title="High Priority"></span>
+<div class="size-6 rounded-full overflow-hidden border border-gray-100">
+<img alt="Assignee" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1YKymM4P3unS3dGK6S3GCHiVUF6B9KCLeXnjVS-2X6mY-IS0zv_TVWDp93RzpentchTA6AFmtHrEAYucIxdf9V72HuaAinDe81gvwR1efgJ6U3IonY0dtK4ytKXJk7OGGTiI83xP3_6xzgsCz8GZsAxC7EABTIRs36_bP9yxqAj53CciTb7vysVmA2dKBNPOSwhUj15e2BMoHEBP-W7SVZv1ad1mKEHfvf8O-H4GlgBUkQernzotWiDob62Cs2SwaGnQohJmPiBGW"/>
+</div>
+</div>
+</div>
+<div class="rounded-lg border border-gray-200 bg-white p-3 shadow-sm hover:border-amber-400 transition-colors cursor-pointer">
+<div class="flex items-center justify-between mb-2">
+<span class="font-mono text-[10px] text-gray-400">BB-45</span>
+<span class="bg-indigo-50 text-indigo-600 text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-tight">Task</span>
+</div>
+<h4 class="text-sm font-medium text-gray-900 leading-snug mb-3">Fix navigation layout shift on mobile devices</h4>
+<div class="flex items-center justify-between">
+<span class="w-2 h-2 rounded-full bg-red-500"></span>
+<div class="size-6 rounded-full overflow-hidden border border-gray-100">
+<img alt="Assignee" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKv8ZkZbYTHyxOFOXNhcv8fFeWrtvs2p8p1Hu0ZM7KOXGgXtOGu3_D1M86YIbmmzpGTqURmB0aR8y8uHasPNPTmtkoRjrba9jHR1OHO6cecxYL401jp2MHEEeYFacwT1juwQ1_ga5_Gxes1SIu-oK0Ut82NO6pqnlBi0azLf88D1lFxqOL9_nQ9zyzUwM99OXO-NFn8Xm3sX_WFmuz7z5U1JhW5GTEcEJpnB_ufSreshfv1emNdzGa4iSO7iZVQ-tdlxuIv-LI-rtD"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="kanban-column flex flex-col gap-3">
+<div class="flex items-center gap-2 px-1">
+<h3 class="text-xs font-semibold uppercase text-gray-500 tracking-wider">In Progress</h3>
+<span class="text-[10px] px-2 py-0.5 bg-gray-100 rounded-full text-gray-500 font-bold">2</span>
+</div>
+<div class="flex-1 space-y-3">
+<div class="rounded-lg border border-gray-200 bg-white p-3 shadow-sm hover:border-amber-400 transition-colors cursor-pointer">
+<div class="flex items-center justify-between mb-2">
+<span class="font-mono text-[10px] text-gray-400">BB-38</span>
+<span class="bg-orange-50 text-orange-600 text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-tight italic">In Progress</span>
+</div>
+<h4 class="text-sm font-medium text-gray-900 leading-snug mb-3">Add user authentication via OAuth2 provider</h4>
+<div class="flex items-center justify-between">
+<span class="w-2 h-2 rounded-full bg-red-500"></span>
+<div class="size-6 rounded-full overflow-hidden border border-gray-100">
+<img alt="Assignee" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_G8HgfLz3yWh0wuWDthrj-hwmW7qBZZIK1Jj5geSqaTXhx5BiTc8KrTfhoRXo7kvqUyoLWem5iSykzBbmwwcRa24Bgcw_o4SM6D3bOq7JvJ98KybypPKW93gUn5xJ-5AOSR6iiZMyF-s88pXPgNAq5M1gdWzTwLh0X-7gnLxm5qVjreerNgibX34mbCbabPAU9tyamJ5EtM83PSd1J5D_EewEiOYGGCtnEx0ZIzaYGYYNXL_i_HQsPw4XsIHrv-4YQCMYPz8-12TX"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="kanban-column flex flex-col gap-3">
+<div class="flex items-center gap-2 px-1">
+<h3 class="text-xs font-semibold uppercase text-gray-500 tracking-wider">In Review</h3>
+<span class="text-[10px] px-2 py-0.5 bg-gray-100 rounded-full text-gray-500 font-bold">1</span>
+</div>
+<div class="flex-1 space-y-3">
+<div class="rounded-lg border border-gray-200 bg-white p-3 shadow-sm hover:border-amber-400 transition-colors cursor-pointer">
+<div class="flex items-center justify-between mb-2">
+<span class="font-mono text-[10px] text-gray-400">BB-22</span>
+<span class="bg-purple-50 text-purple-600 text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-tight">Story</span>
+</div>
+<h4 class="text-sm font-medium text-gray-900 leading-snug mb-3">Design system integration for global dark mode</h4>
+<div class="flex items-center justify-between">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<div class="size-6 rounded-full overflow-hidden border border-gray-100">
+<img alt="Assignee" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBF1Vn_xeoETd_zXcc-BHskSiiY8KAaHCITFcgEAum_QTB5g_JPkPDPCfH8B2yK2sytQDSucorVH0CSsG9zEHtdtdRzD_6Mb434Cq1OXUB558-cOj0Kik_mEFaG7OOGgmW7fvoF5xWNYemGvqoy-_Is4Q-ozub6SJyK1p_zenui0r1kw5XtxHcmEJwSHjReSIejBhF7hmtiPQlDk2Fc7m_MJ9XoHtNsTSAAT6wVHJIM__XzXAG3myAWAdxqjt_I37lX2RH_IO2cWwCU"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="kanban-column flex flex-col gap-3">
+<div class="flex items-center gap-2 px-1">
+<h3 class="text-xs font-semibold uppercase text-gray-500 tracking-wider">Resolved</h3>
+<span class="text-[10px] px-2 py-0.5 bg-gray-100 rounded-full text-gray-500 font-bold">0</span>
+</div>
+<div class="flex-1 border-2 border-dashed border-gray-200 rounded-lg flex items-center justify-center p-4">
+<span class="text-xs text-gray-400">Drop cards here</span>
+</div>
+</div>
+<div class="kanban-column flex flex-col gap-3">
+<div class="flex items-center gap-2 px-1">
+<h3 class="text-xs font-semibold uppercase text-gray-500 tracking-wider">Closed</h3>
+<span class="text-[10px] px-2 py-0.5 bg-gray-100 rounded-full text-gray-500 font-bold">12</span>
+</div>
+<div class="flex-1 space-y-3 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all">
+<div class="rounded-lg border border-gray-200 bg-white p-3 shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<span class="font-mono text-[10px] text-gray-400">BB-12</span>
+<span class="bg-gray-100 text-gray-600 text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-tight">Bug</span>
+</div>
+<h4 class="text-sm font-medium text-gray-900 leading-snug mb-3 line-through">Initialization failure on Safari 12</h4>
+<div class="flex items-center justify-between">
+<span class="w-2 h-2 rounded-full bg-gray-300"></span>
+<div class="size-6 rounded-full overflow-hidden border border-gray-100">
+<img alt="Assignee" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAK6k0rrgmQ2ZuDMUDegS2TGxbO1vPiBJNfrUowzD2-SLzWm4yBWU6WMWBHeELh_AmbgoddCunSsPDtmhqQr73KkgIET-fhVI7pZodvr-Ibhvy8oHHOak8W1eCWH0NxuM2C4EBhXT2FtYCZ7nQi9LLoN0F1C05zlgSfLsed-O3o9hTIq_ZkHwpURlQGWxLOZ3A8xqdlGq2vFpPUFXLX_OvXlkJdGUJt2p39WCcyS5Ta5Bhm7ouMsl1VvHvsetBjltJ4Rvd1U_uFgGKB"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>

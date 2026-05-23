@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "comments",
+  "info": {
+    "singularName": "comment",
+    "pluralName": "comments",
+    "displayName": "Comment"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "body": {
+      "type": "richtext",
+      "required": true
+    },
+    "author": {
+      "type": "string"
+    },
+    "isAI": {
+      "type": "boolean",
+      "default": false
+    },
+    "issue": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::issue.issue",
+      "inversedBy": "comments"
+    }
+  }
+}

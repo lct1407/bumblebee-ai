@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bumblebee Sprint Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                font-family: 'Inter', sans-serif;
+                font-size: 14px;
+                @apply text-slate-900 bg-white;
+            }
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body class="antialiased">
+<div class="flex h-screen overflow-hidden">
+<aside class="w-56 bg-gray-50 border-r border-gray-200 flex flex-col shrink-0">
+<div class="p-4 flex items-center gap-2.5">
+<div class="size-6 bg-amber-500 rounded flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[16px] font-bold">rocket_launch</span>
+</div>
+<span class="font-bold tracking-tight text-slate-900">Bumblebee</span>
+</div>
+<nav class="flex-1 px-3 mt-4 space-y-6">
+<div>
+<p class="px-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Main</p>
+<div class="space-y-0.5">
+<a class="flex items-center gap-2.5 px-3 py-1.5 rounded-md text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined text-gray-400">dashboard</span>
+<span class="font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-2.5 px-3 py-1.5 rounded-md text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined text-gray-400">mail</span>
+<span class="font-medium">Inbox</span>
+</a>
+</div>
+</div>
+<div>
+<p class="px-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Project</p>
+<div class="space-y-0.5">
+<a class="flex items-center gap-2.5 px-3 py-1.5 rounded-md text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined text-gray-400">list_alt</span>
+<span class="font-medium">Backlog</span>
+</a>
+<a class="flex items-center gap-2.5 px-3 py-1.5 rounded-md bg-amber-100/50 text-amber-600 font-semibold" href="#">
+<span class="material-symbols-outlined text-amber-500">sync</span>
+<span>Sprints</span>
+</a>
+<a class="flex items-center gap-2.5 px-3 py-1.5 rounded-md text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined text-gray-400">check_circle</span>
+<span class="font-medium">Tasks</span>
+</a>
+<a class="flex items-center gap-2.5 px-3 py-1.5 rounded-md text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined text-gray-400">group</span>
+<span class="font-medium">Team</span>
+</a>
+</div>
+</div>
+</nav>
+<div class="p-3 border-t border-gray-200">
+<a class="flex items-center gap-2.5 px-3 py-2 rounded-md text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined text-gray-400">settings</span>
+<span class="font-medium text-sm">Settings</span>
+</a>
+</div>
+</aside>
+<main class="flex-1 overflow-y-auto bg-white">
+<header class="px-8 py-6 flex items-center justify-between border-b border-gray-100">
+<h1 class="text-2xl font-bold text-slate-900">Sprints</h1>
+<button class="bg-black text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-slate-800 transition-colors flex items-center gap-1.5">
+<span class="material-symbols-outlined !text-[18px]">add</span>
+                    New Sprint
+                </button>
+</header>
+<div class="p-8 max-w-5xl space-y-10">
+<section>
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Active Sprint</h2>
+</div>
+<div class="border-2 border-amber-300 bg-amber-50/30 rounded-xl p-6 shadow-sm">
+<div class="flex flex-col md:flex-row justify-between items-start gap-6">
+<div class="flex-1">
+<div class="flex items-center gap-3 mb-3">
+<span class="bg-emerald-100 text-emerald-700 text-[11px] font-bold px-2 py-0.5 rounded border border-emerald-200">ACTIVE</span>
+<span class="text-sm font-medium text-amber-700">Feb 17 → Mar 2, 2026</span>
+</div>
+<h3 class="text-xl font-bold text-slate-900 mb-1">Sprint 3 - Authentication</h3>
+<p class="text-slate-600 text-sm mb-6">Goal: Implement OAuth2 and MFA flows for secure user access across all platforms.</p>
+<div class="space-y-2 mb-6">
+<div class="flex justify-between items-end">
+<span class="text-xs font-bold text-slate-500 uppercase tracking-tight">Overall Progress</span>
+<span class="text-sm font-bold text-amber-600">60%</span>
+</div>
+<div class="h-2 w-full bg-amber-100 rounded-full overflow-hidden">
+<div class="h-full bg-amber-500 rounded-full" style="width: 60%;"></div>
+</div>
+<div class="flex gap-4 pt-1">
+<div class="flex items-center gap-1.5">
+<div class="size-2 rounded-full bg-slate-400"></div>
+<span class="text-xs text-slate-500">2 open</span>
+</div>
+<div class="flex items-center gap-1.5">
+<div class="size-2 rounded-full bg-blue-500"></div>
+<span class="text-xs text-slate-500">3 in progress</span>
+</div>
+<div class="flex items-center gap-1.5">
+<div class="size-2 rounded-full bg-emerald-500"></div>
+<span class="text-xs text-slate-500">3 done</span>
+</div>
+</div>
+</div>
+<div class="bg-white/60 rounded-lg border border-amber-200 divide-y divide-amber-100">
+<div class="px-4 py-2.5 flex items-center justify-between group">
+<div class="flex items-center gap-3">
+<span class="text-[11px] font-bold text-slate-400 font-mono">BB-42</span>
+<span class="text-sm font-medium text-slate-700">Setup Auth0 Provider</span>
+</div>
+<span class="bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-100">DONE</span>
+</div>
+<div class="px-4 py-2.5 flex items-center justify-between group">
+<div class="flex items-center gap-3">
+<span class="text-[11px] font-bold text-slate-400 font-mono">BB-43</span>
+<span class="text-sm font-medium text-slate-700">Design MFA Setup Screen</span>
+</div>
+<span class="bg-blue-50 text-blue-600 text-[10px] font-bold px-2 py-0.5 rounded border border-blue-100">IN PROGRESS</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end gap-4 shrink-0">
+<button class="bg-white border border-gray-200 text-slate-700 px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-50 transition-colors shadow-sm">
+                                    Close Sprint
+                                </button>
+<div class="bg-white border border-amber-200 rounded-lg p-4 w-32 text-center shadow-sm">
+<p class="text-2xl font-black text-amber-600">8</p>
+<p class="text-[10px] uppercase font-bold text-slate-400">Items Total</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section>
+<h2 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Planning</h2>
+<div class="rounded-xl border border-gray-200 p-6 bg-white hover:border-gray-300 transition-colors">
+<div class="flex flex-col md:flex-row justify-between items-start gap-4">
+<div class="flex-1">
+<div class="flex items-center gap-3 mb-2">
+<span class="bg-blue-50 text-blue-600 text-[11px] font-bold px-2 py-0.5 rounded border border-blue-100">PLANNING</span>
+<span class="text-sm font-medium text-slate-400">Mar 3 → Mar 17, 2026</span>
+</div>
+<h3 class="text-lg font-bold text-slate-900 mb-1">Sprint 4 - Dashboard Refresh</h3>
+<p class="text-slate-500 text-sm">Target: Overhaul the main analytics dashboard with new chart components and export features.</p>
+</div>
+<button class="bg-black text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-slate-800 transition-colors">
+                                Start Sprint
+                            </button>
+</div>
+</div>
+</section>
+<section>
+<h2 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Completed</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="rounded-xl border border-gray-200 p-5 bg-gray-50/50">
+<div class="flex items-center justify-between mb-4">
+<span class="bg-gray-100 text-gray-500 text-[11px] font-bold px-2 py-0.5 rounded border border-gray-200">COMPLETED</span>
+<div class="flex items-center gap-1 text-emerald-600">
+<span class="material-symbols-outlined !text-[16px]">check_circle</span>
+<span class="text-[11px] font-bold uppercase">All done</span>
+</div>
+</div>
+<h4 class="font-bold text-gray-500">Sprint 2 - API Integration</h4>
+<p class="text-xs text-gray-400 mt-1 mb-4">Feb 3 → Feb 16, 2026</p>
+<div class="h-1.5 w-full bg-gray-200 rounded-full">
+<div class="h-full bg-emerald-500 opacity-50 rounded-full" style="width: 100%;"></div>
+</div>
+</div>
+<div class="rounded-xl border border-gray-200 p-5 bg-gray-50/50">
+<div class="flex items-center justify-between mb-4">
+<span class="bg-gray-100 text-gray-500 text-[11px] font-bold px-2 py-0.5 rounded border border-gray-200">COMPLETED</span>
+<div class="flex items-center gap-1 text-emerald-600">
+<span class="material-symbols-outlined !text-[16px]">check_circle</span>
+<span class="text-[11px] font-bold uppercase">All done</span>
+</div>
+</div>
+<h4 class="font-bold text-gray-500">Sprint 1 - Initial Scaffold</h4>
+<p class="text-xs text-gray-400 mt-1 mb-4">Jan 20 → Feb 2, 2026</p>
+<div class="h-1.5 w-full bg-gray-200 rounded-full">
+<div class="h-full bg-emerald-500 opacity-50 rounded-full" style="width: 100%;"></div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+
+</body></html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bumblebee Project Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20; }
+    </style>
+</head>
+<body class="bg-white text-gray-900">
+<div class="flex min-h-screen">
+<aside class="w-56 bg-gray-50 border-r border-gray-200 flex flex-col shrink-0">
+<div class="p-6">
+<div class="flex items-center gap-2 mb-8">
+<div class="flex h-8 w-8 items-center justify-center rounded bg-black text-white">
+<span class="material-symbols-outlined text-xl">rocket_launch</span>
+</div>
+<span class="font-bold text-lg tracking-tight">Bumblebee</span>
+</div>
+<nav class="space-y-1">
+<p class="px-3 mb-2 text-[10px] font-bold uppercase tracking-wider text-gray-400">Project</p>
+<a class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                        Overview
+                    </a>
+<a class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+                        Analytics
+                    </a>
+<a class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-bold text-gray-900 bg-white border border-gray-200 shadow-sm" href="#">
+<span class="material-symbols-outlined">settings</span>
+                        Settings
+                    </a>
+</nav>
+</div>
+</aside>
+<main class="flex-1 bg-white overflow-y-auto">
+<div class="mx-auto max-w-2xl px-8 py-12">
+<header class="mb-10">
+<h1 class="text-2xl font-bold text-gray-900">Settings</h1>
+<p class="mt-1 text-sm text-gray-500">Manage your project configuration and team access.</p>
+</header>
+<div class="space-y-8">
+<section class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+<div class="p-6 border-b border-gray-100">
+<h2 class="text-base font-semibold text-gray-900">General</h2>
+</div>
+<div class="p-6 space-y-5">
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-1.5">
+<label class="text-sm font-medium text-gray-700">Project Name</label>
+<input class="w-full rounded-md border-gray-200 text-sm focus:border-black focus:ring-black" type="text" value="Bumblebee"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-sm font-medium text-gray-700">Project Key</label>
+<input class="w-full rounded-md border-gray-200 bg-gray-50 text-gray-400 text-sm cursor-not-allowed" disabled="" type="text" value="BB"/>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="text-sm font-medium text-gray-700">Slug</label>
+<div class="flex">
+<span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-200 bg-gray-50 text-gray-500 text-sm">bumblebee.io/</span>
+<input class="flex-1 rounded-r-md border-gray-200 text-sm focus:border-black focus:ring-black" type="text" value="bumblebee-core"/>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="text-sm font-medium text-gray-700">Description</label>
+<textarea class="w-full rounded-md border-gray-200 text-sm focus:border-black focus:ring-black" rows="3">Core platform infrastructure for distributed bumblebee node management.</textarea>
+</div>
+<div class="space-y-1.5">
+<label class="text-sm font-medium text-gray-700">Repository URL</label>
+<input class="w-full rounded-md border-gray-200 text-sm focus:border-black focus:ring-black" type="text" value="https://github.com/bumblebee-org/bumblebee-core"/>
+</div>
+<div class="pt-2 flex justify-end">
+<button class="bg-black text-white text-sm font-semibold px-4 py-2 rounded-md hover:bg-gray-800 transition-colors">
+                                    Save Changes
+                                </button>
+</div>
+</div>
+</section>
+<section class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+<div class="p-6 border-b border-gray-100 flex items-center justify-between">
+<h2 class="text-base font-semibold text-gray-900">API Access</h2>
+<button class="text-xs font-semibold bg-white border border-gray-200 px-3 py-1.5 rounded hover:bg-gray-50 transition-colors flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base">add</span>
+                                Generate Key
+                            </button>
+</div>
+<div class="p-6">
+<div class="border border-gray-200 rounded-lg overflow-hidden">
+<table class="w-full text-left text-sm border-collapse">
+<thead>
+<tr class="bg-gray-50 border-b border-gray-200">
+<th class="px-4 py-3 font-semibold text-gray-700">Name</th>
+<th class="px-4 py-3 font-semibold text-gray-700">Key</th>
+<th class="px-4 py-3 font-semibold text-gray-700">Created</th>
+<th class="px-4 py-3 font-semibold text-gray-700 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100">
+<tr>
+<td class="px-4 py-4 font-medium">CLI Key</td>
+<td class="px-4 py-4 font-mono text-gray-400 text-xs tracking-wider">bb_cli_••••••••34a1</td>
+<td class="px-4 py-4 text-gray-500">Oct 12, 2023</td>
+<td class="px-4 py-4 text-right">
+<button class="text-red-600 font-semibold hover:underline">Revoke</button>
+</td>
+</tr>
+<tr>
+<td class="px-4 py-4 font-medium">CI/CD Key</td>
+<td class="px-4 py-4 font-mono text-gray-400 text-xs tracking-wider">bb_ci_••••••••7f92</td>
+<td class="px-4 py-4 text-gray-500">Nov 04, 2023</td>
+<td class="px-4 py-4 text-right">
+<button class="text-red-600 font-semibold hover:underline">Revoke</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+<div class="p-6 border-b border-gray-100">
+<h2 class="text-base font-semibold text-gray-900">Members</h2>
+</div>
+<div class="p-6">
+<div class="flex gap-2 mb-8">
+<input class="flex-1 rounded-md border-gray-200 text-sm focus:border-black focus:ring-black" placeholder="email@example.com" type="email"/>
+<button class="bg-black text-white text-sm font-semibold px-4 py-2 rounded-md hover:bg-gray-800 transition-colors">
+                                    Invite Member
+                                </button>
+</div>
+<div class="space-y-5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img alt="Sarah Johnson" class="h-9 w-9 rounded-full object-cover ring-1 ring-gray-100" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBThkjMo_xyr_u_IzP7jEKjFn8Uh-txafByMjP4qJ9ZCftFv62uN_o6LEV6LZkCAICRgLwOtsCbKgzzTPX8oka4_-BhwkYxjctDMA3wAwY_cBeyUojMmtMh-sVEWfQCquSEEZHAGIl7Pvw4h9_YImdmVnZejv1xdJJ2pgIAIJ49ot4pCz99XZqrqHHxCgh-01Rpg7wesSGMprr5SFHB1xCnfOXAt1KSXsDjqaP4ro2AHNRiV2BkgKowhxt1b53sJ_O4LXgBLGrlEVMf"/>
+<div>
+<p class="text-sm font-semibold text-gray-900">Sarah Johnson</p>
+<p class="text-xs text-gray-500">sarah@bumblebee.io</p>
+</div>
+</div>
+<span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Owner</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img alt="Mike Chen" class="h-9 w-9 rounded-full object-cover ring-1 ring-gray-100" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtOpztqHL1anF8GwL7E6wY09bLhmr-cnhpWHDSVL4CYB3nt0_BfkknNKyAJW1_jOx7VijA-ybnfQrt2RvezOEkHv1cuVyz2p8KFCxcshfARGx5K0PIh72pT4pNt_a1tN3s7opylBhObmPeJ8oBMcLhdYcuW2u3QQGMcw06kdYZZi8x66CabYOV6UBBY6SA-PCwQWVr_C9Jlqn4kaPsNMZ7Wubd4zAgJu0oTIhwxNhUG7-Im3wCiG98swTlTuHmGTM6ZDWchX_jEtMn"/>
+<div>
+<p class="text-sm font-semibold text-gray-900">Mike Chen</p>
+<p class="text-xs text-gray-500">m.chen@bumblebee.io</p>
+</div>
+</div>
+<span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Member</span>
+</div>
+</div>
+</div>
+</section>
+<section class="bg-red-50 rounded-xl border border-red-200 overflow-hidden">
+<div class="p-6">
+<h2 class="text-base font-bold text-red-700 mb-1">Delete Project</h2>
+<p class="text-sm text-red-600 mb-6">
+                                Once you delete a project, there is no going back. All deployments, analytics, and keys will be permanently erased.
+                            </p>
+<button class="bg-red-600 text-white text-sm font-semibold px-4 py-2 rounded-md hover:bg-red-700 transition-colors">
+                                Delete this project
+                            </button>
+</div>
+</section>
+</div>
+<footer class="mt-12 py-8 border-t border-gray-100 text-center">
+<p class="text-xs text-gray-400">© 2024 Bumblebee Platform. All rights reserved.</p>
+</footer>
+</div>
+</main>
+</div>
+
+</body></html>

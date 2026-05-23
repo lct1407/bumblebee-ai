@@ -1,0 +1,703 @@
+{"ts":"2026-05-22T11:57:46.462Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T11:57:46.461Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T11:57:53.203Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T11:58:00.372Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T11:58:00.371Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/scripts/capture-settings-and-whatsnew.py\""}
+{"ts":"2026-05-22T11:58:00.588Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T11:58:00.590Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T11:58:00.592Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T11:58:01.460Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T11:58:01.470Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T11:58:22.494Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T11:58:27.594Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli/plans/reports/post-mvp-polish-screenshots/01-light-settings-workspace.png\""}
+{"ts":"2026-05-22T11:58:27.596Z","hook":"privacy-block","event":"PreToolUse","tool":"Read","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T11:58:28.578Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli/plans/reports/post-mvp-polish-screenshots/02-dark-settings-members.png\""}
+{"ts":"2026-05-22T11:58:28.578Z","hook":"privacy-block","event":"PreToolUse","tool":"Read","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T11:58:28.922Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli/plans/reports/post-mvp-polish-screenshots/03-light-whatsnew-modal.png\""}
+{"ts":"2026-05-22T11:58:28.922Z","hook":"privacy-block","event":"PreToolUse","tool":"Read","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T11:58:44.195Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T11:58:44.197Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T11:58:52.740Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T11:58:58.037Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T11:58:58.037Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T11:59:08.731Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T11:59:16.545Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T11:59:16.546Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T11:59:16.726Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T11:59:16.924Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T11:59:16.938Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T11:59:27.317Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T11:59:46.595Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T11:59:46.595Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T11:59:53.348Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T11:59:58.327Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/routers/changelog.py\""}
+{"ts":"2026-05-22T11:59:58.341Z","hook":"privacy-block","event":"PreToolUse","tool":"Read","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:00:11.039Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:00:11.043Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/routers/changelog.py\""}
+{"ts":"2026-05-22T12:00:11.213Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T12:00:11.213Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T12:00:11.213Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:00:13.337Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:00:13.341Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/routers/changelog.py\""}
+{"ts":"2026-05-22T12:00:13.517Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:00:13.515Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T12:00:14.062Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"fetched","dur":547,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:00:14.982Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:00:14.985Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:00:21.816Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T12:00:27.716Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:00:27.722Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":8,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:00:33.334Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T12:00:40.601Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:00:40.602Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T12:00:40.824Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T12:00:47.326Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:00:47.325Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:00:59.031Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T12:01:12.617Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:01:12.622Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:01:18.947Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T12:01:32.586Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T12:01:32.590Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:01:38.252Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T12:01:52.327Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:01:52.327Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/routers/changelog.py\""}
+{"ts":"2026-05-22T12:01:52.527Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T12:01:52.530Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:01:52.533Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T12:01:53.908Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:01:53.917Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:02:02.468Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T12:02:11.760Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:02:11.761Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T12:02:17.367Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T12:02:25.478Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":3,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:02:25.486Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:02:31.172Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T12:02:39.195Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:02:39.197Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T12:02:39.374Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T12:02:39.540Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:02:39.547Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":8,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:02:49.866Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T12:03:03.688Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:03:03.689Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T12:03:09.287Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T12:03:20.775Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:03:20.776Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:03:27.047Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T12:03:38.480Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:03:38.482Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:03:45.345Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T12:03:57.153Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":3,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:03:57.158Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:04:02.789Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T12:04:52.054Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/CHANGELOG.md\""}
+{"ts":"2026-05-22T12:04:52.054Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:04:52.271Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T12:04:52.272Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T12:04:52.272Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:09:56.303Z","hook":"dev-rules-reminder","event":"UserPromptSubmit","tool":"","target":"","note":"context-injected","dur":201,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:09:56.623Z","hook":"usage-context-awareness","event":"UserPromptSubmit","tool":"","target":"","note":"fetched","dur":505,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:10:46.622Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:10:46.624Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:11:47.086Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:11:47.247Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:11:47.248Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:11:52.925Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:12:21.186Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:12:21.192Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":".env","note":"bash-sensitive-file","dur":8,"status":"warn","exit":0,"error":""}
+{"ts":"2026-05-22T13:12:27.059Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:12:41.882Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":".env","note":"bash-sensitive-file","dur":6,"status":"warn","exit":0,"error":""}
+{"ts":"2026-05-22T13:12:41.883Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/.env\""}
+{"ts":"2026-05-22T13:12:47.436Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:12:47.594Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:12:47.595Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:12:53.745Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:13:01.928Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:13:01.930Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:13:10.175Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:13:16.367Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/scripts/stripe-setup-catalog.py\""}
+{"ts":"2026-05-22T13:13:16.367Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:13:16.592Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:13:16.598Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:13:16.594Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:13:17.414Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/scripts/stripe-setup-catalog.py\""}
+{"ts":"2026-05-22T13:13:17.417Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:13:17.626Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:13:17.628Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:13:17.625Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:13:19.015Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/scripts/stripe-setup-catalog.py\""}
+{"ts":"2026-05-22T13:13:19.016Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:13:19.250Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:13:19.254Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:13:19.254Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:13:19.909Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:13:19.917Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:13:30.133Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:13:40.548Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"allowed-command","dur":1,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:13:40.561Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":8,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:13:46.292Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:14:23.983Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":3,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:14:23.986Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:14:23.988Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/routers/billing.py\""}
+{"ts":"2026-05-22T13:14:24.270Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:14:24.268Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"tracked-edit","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:14:24.270Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:14:45.531Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:14:45.553Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/services/billing/quota.py\""}
+{"ts":"2026-05-22T13:14:45.554Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:14:45.782Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:14:45.788Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"reminder-injected","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:14:45.792Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:12.804Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":3,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:12.812Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/routers/stripe_webhooks.py\""}
+{"ts":"2026-05-22T13:15:12.818Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:13.046Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"tracked-edit","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:13.042Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:13.573Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"fetched","dur":532,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:19.115Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/services/execution/harness.py\""}
+{"ts":"2026-05-22T13:15:19.115Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:19.310Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:19.322Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:19.314Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:23.318Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/services/execution/harness.py\""}
+{"ts":"2026-05-22T13:15:23.319Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:23.517Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:23.525Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:23.525Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:31.466Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":9,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:31.465Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:15:39.031Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:44.526Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/main.py\""}
+{"ts":"2026-05-22T13:15:44.526Z","hook":"privacy-block","event":"PreToolUse","tool":"Read","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:52.821Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/main.py\""}
+{"ts":"2026-05-22T13:15:52.829Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:53.014Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:53.018Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:53.013Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:54.919Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/main.py\""}
+{"ts":"2026-05-22T13:15:54.919Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:55.120Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:55.126Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":9,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:55.129Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:15:56.617Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:15:56.618Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:16:04.312Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:16:45.472Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:16:45.486Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/tests/test_billing_phase_d.py\""}
+{"ts":"2026-05-22T13:16:45.488Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":8,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:16:45.746Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"tracked-edit","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:16:45.751Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:16:45.752Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:16:46.737Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:16:46.737Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:17:03.934Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:17:43.770Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:17:43.774Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/tests/test_billing_phase_d.py\""}
+{"ts":"2026-05-22T13:17:43.997Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:17:43.997Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:17:43.994Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:17:44.789Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:17:44.796Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:18:01.284Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:18:16.714Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/tests/conftest.py\""}
+{"ts":"2026-05-22T13:18:16.715Z","hook":"privacy-block","event":"PreToolUse","tool":"Read","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:18:21.407Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/tests/conftest.py\""}
+{"ts":"2026-05-22T13:18:21.407Z","hook":"privacy-block","event":"PreToolUse","tool":"Read","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:18:29.753Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:18:29.752Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/tests/conftest.py\""}
+{"ts":"2026-05-22T13:18:29.946Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:18:29.952Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:18:29.956Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:18:31.133Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":8,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:18:31.134Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:18:47.410Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:18:53.208Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:18:53.208Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:20:02.363Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:20:15.457Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":3,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:20:15.469Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/web/src/lib/billing-api.ts\""}
+{"ts":"2026-05-22T13:20:15.469Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:20:15.680Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:20:15.683Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"tracked-edit","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:20:16.188Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"fetched","dur":501,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:21:03.505Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":3,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:21:03.519Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/web/src/app/(app)/settings/billing/page.tsx\""}
+{"ts":"2026-05-22T13:21:03.522Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:21:03.800Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:21:03.810Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:21:03.809Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"tracked-edit","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:21:04.554Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:21:04.555Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/web\""}
+{"ts":"2026-05-22T13:21:21.592Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:21:34.488Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":3,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:21:34.506Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/scripts/capture-billing-page.py\""}
+{"ts":"2026-05-22T13:21:34.506Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:21:34.712Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:21:34.717Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:21:34.721Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"tracked-edit","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:21:35.448Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:21:35.449Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:21:47.975Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:21:54.867Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli/plans/reports/phase-d-billing-screenshots\""}
+{"ts":"2026-05-22T13:21:54.869Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:21:55.888Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli/plans/reports/phase-d-billing-screenshots/01-dark-billing.png\""}
+{"ts":"2026-05-22T13:21:55.888Z","hook":"privacy-block","event":"PreToolUse","tool":"Read","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:22:00.430Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:22:12.734Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/CHANGELOG.md\""}
+{"ts":"2026-05-22T13:22:12.734Z","hook":"privacy-block","event":"PreToolUse","tool":"Read","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:22:35.851Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:22:35.852Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/CHANGELOG.md\""}
+{"ts":"2026-05-22T13:22:36.064Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:22:36.070Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:22:36.066Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:30:51.291Z","hook":"dev-rules-reminder","event":"UserPromptSubmit","tool":"","target":"","note":"context-injected","dur":183,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:30:51.648Z","hook":"usage-context-awareness","event":"UserPromptSubmit","tool":"","target":"","note":"fetched","dur":525,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:31:44.952Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/web/src/app/login\""}
+{"ts":"2026-05-22T13:31:44.950Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:31:50.492Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:32:19.325Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:32:19.335Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/web/src/app/(public)/login/page.tsx\""}
+{"ts":"2026-05-22T13:32:19.336Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:32:19.611Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"reminder-injected","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:32:19.616Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:32:19.616Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:32:38.143Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:32:38.146Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/web/src/app/(public)/register/page.tsx\""}
+{"ts":"2026-05-22T13:32:38.147Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:32:38.375Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:32:38.380Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"tracked-edit","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:32:38.387Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:32:38.950Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/web\""}
+{"ts":"2026-05-22T13:32:38.951Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:32:56.387Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:33:14.144Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"allowed-command","dur":1,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:33:14.151Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:33:25.740Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:33:38.495Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:33:38.499Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/alembic/versions/20260522_0001_oauth_user_columns.py\""}
+{"ts":"2026-05-22T13:33:38.499Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:33:38.711Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:33:38.715Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"tracked-edit","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:33:38.720Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:33:39.290Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:33:39.297Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:33:46.114Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:33:51.340Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/models/user.py\""}
+{"ts":"2026-05-22T13:33:51.339Z","hook":"privacy-block","event":"PreToolUse","tool":"Read","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:34:03.917Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/models/user.py\""}
+{"ts":"2026-05-22T13:34:03.917Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:34:04.115Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:34:04.113Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:34:04.113Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:34:08.660Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:34:08.661Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/config.py\""}
+{"ts":"2026-05-22T13:34:08.852Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:34:08.854Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:34:08.860Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:34:41.251Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:34:41.269Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:34:41.269Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/routers/oauth_google.py\""}
+{"ts":"2026-05-22T13:34:41.520Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"tracked-edit","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:34:41.526Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:34:41.526Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:34:53.368Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":3,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:34:53.382Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/web/src/app/auth/google/complete/page.tsx\""}
+{"ts":"2026-05-22T13:34:53.382Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:34:53.602Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:34:53.607Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"tracked-edit","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:34:53.616Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:02.852Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:02.858Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/web/src/components/app/google-signin-button.tsx\""}
+{"ts":"2026-05-22T13:35:02.859Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:03.064Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"tracked-edit","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:03.074Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:03.066Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:04.938Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/web/src/app/(public)/login/page.tsx\""}
+{"ts":"2026-05-22T13:35:04.951Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":8,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:05.260Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:05.262Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:05.267Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:10.753Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:10.753Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/web/src/app/(public)/login/page.tsx\""}
+{"ts":"2026-05-22T13:35:11.123Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:11.128Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:11.141Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:12.848Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:12.853Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/web/src/app/(public)/register/page.tsx\""}
+{"ts":"2026-05-22T13:35:13.028Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":3,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:13.035Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:13.033Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:17.528Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:17.528Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/web/src/app/(public)/register/page.tsx\""}
+{"ts":"2026-05-22T13:35:17.744Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:17.750Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:17.751Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:18.580Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:18.581Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/web\""}
+{"ts":"2026-05-22T13:35:35.897Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:42.613Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/main.py\""}
+{"ts":"2026-05-22T13:35:42.614Z","hook":"privacy-block","event":"PreToolUse","tool":"Read","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:53.741Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:53.743Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/main.py\""}
+{"ts":"2026-05-22T13:35:53.920Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:53.920Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:54.779Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"fetched","dur":860,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:55.803Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:55.803Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/main.py\""}
+{"ts":"2026-05-22T13:35:56.012Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:56.014Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:56.016Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:57.471Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":9,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:35:57.473Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:36:05.409Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:36:40.538Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:36:40.555Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/scripts/capture-e2e-walkthrough.py\""}
+{"ts":"2026-05-22T13:36:40.555Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:36:40.832Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"tracked-edit","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:36:40.834Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:36:40.838Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:36:41.879Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:36:41.881Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":8,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:36:48.697Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:36:54.284Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:36:54.287Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:37:00.842Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:37:06.789Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:37:06.790Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:37:26.589Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:37:34.880Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:37:34.880Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/scripts/capture-e2e-walkthrough.py\""}
+{"ts":"2026-05-22T13:37:35.104Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:37:35.109Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:37:35.104Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:37:35.967Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:37:35.968Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli/docs/guide-screenshots\""}
+{"ts":"2026-05-22T13:37:41.646Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:37:47.946Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:37:47.948Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:38:36.990Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:39:14.941Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:39:14.956Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:39:14.959Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/scripts/capture-e2e-walkthrough.py\""}
+{"ts":"2026-05-22T13:39:15.196Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"tracked-edit","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:39:15.204Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:39:15.197Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:39:16.249Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:39:16.250Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":8,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:40:23.158Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:40:29.707Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli/docs/guide-screenshots/04-register-filled.png\""}
+{"ts":"2026-05-22T13:40:29.709Z","hook":"privacy-block","event":"PreToolUse","tool":"Read","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:40:30.324Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli/docs/guide-screenshots/08-onboard-step3-feature-picked.png\""}
+{"ts":"2026-05-22T13:40:30.330Z","hook":"privacy-block","event":"PreToolUse","tool":"Read","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:41:37.377Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":3,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:41:37.389Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli/docs/getting-started-guide.md\""}
+{"ts":"2026-05-22T13:41:37.390Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:41:37.617Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"tracked-edit","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:41:37.619Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:41:38.169Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"fetched","dur":540,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:42:03.597Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:42:03.602Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli/docs/security/google-oauth-setup.md\""}
+{"ts":"2026-05-22T13:42:03.602Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:42:03.827Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:42:03.831Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"tracked-edit","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:42:03.837Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:42:12.264Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"allowed-command","dur":1,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:42:12.271Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:42:37.930Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:42:47.563Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/config.py\""}
+{"ts":"2026-05-22T13:42:47.563Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:42:47.786Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:42:47.793Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:42:47.786Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"reminder-injected","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:42:48.687Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/services/execution/llm_provider.py\""}
+{"ts":"2026-05-22T13:42:48.687Z","hook":"privacy-block","event":"PreToolUse","tool":"Read","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:42:54.340Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/services/execution/llm_provider.py\""}
+{"ts":"2026-05-22T13:42:54.339Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:42:59.943Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:43:05.469Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/services/execution/llm_provider.py\""}
+{"ts":"2026-05-22T13:43:05.469Z","hook":"privacy-block","event":"PreToolUse","tool":"Read","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:43:27.046Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:43:27.046Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/services/execution/llm_provider.py\""}
+{"ts":"2026-05-22T13:43:27.268Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:43:27.268Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:43:27.268Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:43:32.034Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":".env","note":"bash-sensitive-file","dur":6,"status":"warn","exit":0,"error":""}
+{"ts":"2026-05-22T13:43:32.038Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/.env\""}
+{"ts":"2026-05-22T13:43:37.721Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:43:37.868Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:43:37.866Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:43:47.501Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:44:52.822Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:44:52.836Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee_mcp/gemini_tools.py\""}
+{"ts":"2026-05-22T13:44:52.836Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":8,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:44:53.113Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:44:53.121Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:44:53.114Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"tracked-edit","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:44:57.832Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:44:57.831Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:45:04.731Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:45:11.492Z","hook":"privacy-block","event":"PreToolUse","tool":"Read","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:45:11.496Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee_mcp/tools.py\""}
+{"ts":"2026-05-22T13:45:26.013Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:45:26.019Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee_mcp/tools.py\""}
+{"ts":"2026-05-22T13:45:31.657Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:45:37.413Z","hook":"privacy-block","event":"PreToolUse","tool":"Read","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:45:37.416Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee_mcp/tools.py\""}
+{"ts":"2026-05-22T13:45:45.335Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:45:45.339Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee_mcp/tools.py\""}
+{"ts":"2026-05-22T13:45:45.532Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:45:45.536Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:45:45.531Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:45:46.487Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"allowed-command","dur":1,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:45:46.493Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:45:59.429Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:46:05.418Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":3,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:46:05.421Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":8,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:46:12.809Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:46:18.821Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/services/execution/llm_provider.py\""}
+{"ts":"2026-05-22T13:46:18.822Z","hook":"privacy-block","event":"PreToolUse","tool":"Read","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:46:47.345Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:46:47.346Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/services/execution/llm_provider.py\""}
+{"ts":"2026-05-22T13:46:47.596Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:46:47.603Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:46:48.188Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"fetched","dur":588,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:46:51.748Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:46:51.750Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:46:59.831Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:47:20.658Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:47:20.661Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/services/execution/llm_provider.py\""}
+{"ts":"2026-05-22T13:47:20.841Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:47:20.847Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:47:20.842Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:47:27.888Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:47:27.889Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee/services/execution/llm_provider.py\""}
+{"ts":"2026-05-22T13:47:28.127Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:47:28.129Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:47:28.129Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:47:31.648Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:47:31.651Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:47:40.181Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:48:24.177Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":3,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:48:24.189Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/tests/test_mcp_gemini_tools.py\""}
+{"ts":"2026-05-22T13:48:24.189Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:48:24.446Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"tracked-edit","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:48:24.454Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:48:24.446Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:48:25.195Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:48:25.197Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:48:37.239Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:48:45.757Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:48:45.760Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:48:52.573Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:49:11.989Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:49:11.990Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee_mcp/tools.py\""}
+{"ts":"2026-05-22T13:49:12.198Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:49:12.205Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:49:12.207Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:49:13.279Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:49:13.281Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:49:19.989Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:49:25.741Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:49:25.743Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:49:37.309Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:50:00.925Z","hook":"privacy-block","event":"PreToolUse","tool":"Read","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:50:00.926Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee_mcp/__init__.py\""}
+{"ts":"2026-05-22T13:50:07.326Z","hook":"privacy-block","event":"PreToolUse","tool":"Read","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:50:07.327Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee_mcp/gemini_tools.py\""}
+{"ts":"2026-05-22T13:50:14.487Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:50:14.488Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee_mcp/gemini_tools.py\""}
+{"ts":"2026-05-22T13:50:14.680Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:50:14.685Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:50:14.680Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:50:16.166Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:50:16.169Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee_mcp/gemini_tools.py\""}
+{"ts":"2026-05-22T13:50:16.345Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:50:16.347Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:50:16.349Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:50:19.146Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee_mcp/gemini_tools.py\""}
+{"ts":"2026-05-22T13:50:19.147Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:50:19.318Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:50:19.321Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:50:19.319Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:50:27.568Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:50:27.570Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:50:39.075Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:50:56.240Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee_mcp/gemini_tools.py\""}
+{"ts":"2026-05-22T13:50:56.243Z","hook":"privacy-block","event":"PreToolUse","tool":"Read","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:51:02.343Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee_mcp/gemini_tools.py\""}
+{"ts":"2026-05-22T13:51:02.343Z","hook":"privacy-block","event":"PreToolUse","tool":"Read","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:51:10.986Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee_mcp/gemini_tools.py\""}
+{"ts":"2026-05-22T13:51:10.987Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:51:11.181Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:51:11.183Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:51:11.188Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:51:15.778Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:51:15.781Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/bumblebee_mcp/tools.py\""}
+{"ts":"2026-05-22T13:51:15.968Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:51:15.971Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:51:15.968Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:51:17.131Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:51:17.132Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:51:28.804Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:51:34.750Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:51:34.753Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:52:47.801Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"fetched","dur":542,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:52:58.803Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:52:58.804Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3/tests/test_mcp_server.py\""}
+{"ts":"2026-05-22T13:52:59.008Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"reminder-injected","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:52:59.010Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:52:59.019Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T13:52:59.471Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T13:52:59.477Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-22T13:54:11.789Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-22T15:08:42.428Z","hook":"dev-rules-reminder","event":"UserPromptSubmit","tool":"","target":"","note":"context-injected","dur":208,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-22T15:08:42.736Z","hook":"usage-context-awareness","event":"UserPromptSubmit","tool":"","target":"","note":"fetched","dur":507,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:09:24.778Z","hook":"dev-rules-reminder","event":"UserPromptSubmit","tool":"","target":"","note":"recently-injected","dur":122,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:09:25.343Z","hook":"usage-context-awareness","event":"UserPromptSubmit","tool":"","target":"","note":"fetched","dur":682,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:10:02.503Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:10:02.504Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-23T02:10:09.208Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:10:09.362Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli/docs\""}
+{"ts":"2026-05-23T02:10:09.364Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":8,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:10:15.262Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:10:36.976Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:10:36.982Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli/docs/README.md\""}
+{"ts":"2026-05-23T02:10:36.992Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":8,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:10:37.215Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:10:37.217Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"tracked-edit","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:10:37.223Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:11:58.862Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":3,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:11:58.876Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli/docs/architecture-overview.md\""}
+{"ts":"2026-05-23T02:11:58.877Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:11:59.128Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"tracked-edit","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:11:59.130Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:11:59.127Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:13:14.074Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:13:14.088Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli/docs/database-schema.md\""}
+{"ts":"2026-05-23T02:13:14.091Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:13:14.369Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"tracked-edit","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:13:14.376Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:13:14.367Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:14:41.054Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":3,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:14:41.064Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":9,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:14:41.065Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli/docs/flow-walkthroughs.md\""}
+{"ts":"2026-05-23T02:14:41.284Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"tracked-edit","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:14:41.293Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:14:41.984Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"fetched","dur":691,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:14:42.198Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-23T02:14:42.208Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:14:47.716Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:14:55.404Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:14:55.415Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-23T02:15:01.159Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:15:06.904Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-23T02:15:06.903Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":".env","note":"bash-sensitive-file","dur":6,"status":"warn","exit":0,"error":""}
+{"ts":"2026-05-23T02:15:13.033Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:15:19.090Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:15:19.091Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-23T02:15:27.483Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:15:50.217Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:15:50.217Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-23T02:15:57.056Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:16:02.394Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":8,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:16:02.399Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli\""}
+{"ts":"2026-05-23T02:16:13.252Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:16:13.254Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli\""}
+{"ts":"2026-05-23T02:16:19.007Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:16:36.816Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:16:36.823Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-23T02:16:42.994Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:16:49.131Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:16:49.134Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee-v3\""}
+{"ts":"2026-05-23T02:16:59.080Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:17:06.968Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli\""}
+{"ts":"2026-05-23T02:17:06.966Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:17:12.694Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:17:18.141Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:17:18.144Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli\""}
+{"ts":"2026-05-23T02:17:26.836Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:17:44.219Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:17:44.219Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli\""}
+{"ts":"2026-05-23T02:17:50.203Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:18:02.860Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:18:02.865Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli\""}
+{"ts":"2026-05-23T02:18:08.949Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:18:14.512Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:18:14.513Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli\""}
+{"ts":"2026-05-23T02:18:27.101Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:20:32.155Z","hook":"dev-rules-reminder","event":"UserPromptSubmit","tool":"","target":"","note":"context-injected","dur":188,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:20:32.528Z","hook":"usage-context-awareness","event":"UserPromptSubmit","tool":"","target":"","note":"fetched","dur":551,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:21:06.899Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli\""}
+{"ts":"2026-05-23T02:21:06.902Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:21:12.695Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:21:18.792Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:21:18.799Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee/.git/config\""}
+{"ts":"2026-05-23T02:21:24.691Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:21:30.955Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:21:30.957Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/bumblebee\""}
+{"ts":"2026-05-23T02:21:36.674Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:22:46.090Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":3,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:22:46.099Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli/docs/source-layout.md\""}
+{"ts":"2026-05-23T02:22:46.108Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:22:46.346Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"reminder-injected","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:22:46.348Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:22:46.348Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:23:50.232Z","hook":"descriptive-name","event":"PreToolUse","tool":"Write","target":"","note":"","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:23:50.239Z","hook":"privacy-block","event":"PreToolUse","tool":"Write","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:23:50.239Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli/docs/getting-started-guide-vi.md\""}
+{"ts":"2026-05-23T02:23:50.498Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Write","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:23:50.497Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Write","target":"","note":"tracked-edit","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:23:50.505Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Write","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:23:51.076Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli/docs/README.md\""}
+{"ts":"2026-05-23T02:23:51.080Z","hook":"privacy-block","event":"PreToolUse","tool":"Read","target":"","note":"","dur":8,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:24:08.068Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:24:08.068Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli/docs/README.md\""}
+{"ts":"2026-05-23T02:24:08.356Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:24:08.358Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:24:08.367Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:24:11.194Z","hook":"privacy-block","event":"PreToolUse","tool":"Edit","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:24:11.195Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli/docs/README.md\""}
+{"ts":"2026-05-23T02:24:11.376Z","hook":"post-edit-simplify-reminder","event":"PostToolUse","tool":"Edit","target":"","note":"tracked-edit","dur":4,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:24:11.385Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Edit","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:24:11.377Z","hook":"plan-format-kanban","event":"PostToolUse","tool":"Edit","target":"","note":"non-plan-file","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:24:18.687Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:24:18.690Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli\""}
+{"ts":"2026-05-23T02:24:24.837Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:24:30.650Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:24:30.652Z","hook":"scout-block","event":"PreToolUse","tool":"","target":"","note":"","dur":0,"status":"crash","exit":0,"error":"path should be a `path.relative()`d string, but got \"D:/Source/Bumblebee-cli\""}
+{"ts":"2026-05-23T02:24:39.635Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:37:55.161Z","hook":"session-init","event":"SessionStart","tool":"","target":"","note":"compact","dur":352,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:37:55.968Z","hook":"dev-rules-reminder","event":"UserPromptSubmit","tool":"","target":"","note":"recently-injected","dur":118,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:37:56.396Z","hook":"usage-context-awareness","event":"UserPromptSubmit","tool":"","target":"","note":"fetched","dur":544,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:43:35.149Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:43:35.149Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:43:41.405Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"fetched","dur":505,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:43:41.599Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":8,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:43:41.598Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:43:47.224Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:43:47.370Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:43:47.369Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:43:53.079Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:43:53.227Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:43:53.228Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:44:16.278Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:44:16.278Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:44:17.754Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:44:17.759Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:45:43.318Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:45:52.377Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":8,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:45:52.387Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":7,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:45:53.467Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:45:53.468Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:45:58.364Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":1,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:45:59.472Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:46:53.724Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:46:53.726Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:47:00.831Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:47:07.432Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:47:07.432Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:47:14.463Z","hook":"usage-context-awareness","event":"PostToolUse","tool":"Bash","target":"","note":"throttled","dur":0,"status":"skip","exit":0,"error":""}
+{"ts":"2026-05-23T02:47:14.619Z","hook":"scout-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":6,"status":"ok","exit":0,"error":""}
+{"ts":"2026-05-23T02:47:14.632Z","hook":"privacy-block","event":"PreToolUse","tool":"Bash","target":"","note":"","dur":5,"status":"ok","exit":0,"error":""}

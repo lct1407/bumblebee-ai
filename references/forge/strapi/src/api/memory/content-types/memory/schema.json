@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "memories",
+  "info": {
+    "singularName": "memory",
+    "pluralName": "memories",
+    "displayName": "Memory"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "userKey": {
+      "type": "string",
+      "required": true
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": ["preference", "context", "correction"],
+      "required": true
+    },
+    "content": {
+      "type": "string",
+      "required": true
+    },
+    "source": {
+      "type": "enumeration",
+      "enum": ["auto", "manual"],
+      "default": "auto"
+    },
+    "useCount": {
+      "type": "integer",
+      "default": 1
+    },
+    "lastUsedAt": {
+      "type": "datetime"
+    },
+    "project": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::project.project"
+    }
+  }
+}

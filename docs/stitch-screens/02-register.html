@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bumblebee Registration Screen</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        amber: {
+                            500: '#f59e0b',
+                        },
+                        gray: {
+                            50: '#f9fafb',
+                            200: '#e5e7eb',
+                            900: '#111827',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply bg-gray-50 font-sans text-gray-900 antialiased;
+            }
+        }
+        .input-field {
+            @apply w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-[14px] leading-6 outline-none transition-all placeholder:text-gray-400 focus:border-amber-500 focus:ring-1 focus:ring-amber-500;
+        }
+        .label-text {
+            @apply text-[14px] font-medium text-gray-700 mb-1.5 block;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+<div class="sm:mx-auto sm:w-full sm:max-w-[448px]">
+<div class="flex flex-col items-center mb-8">
+<div class="flex items-center justify-center size-12 rounded-xl bg-amber-500 text-white shadow-sm mb-4">
+<span class="material-symbols-outlined text-3xl">hive</span>
+</div>
+<h1 class="text-2xl font-bold tracking-tight text-gray-900">Create your account</h1>
+<p class="mt-2 text-sm text-gray-500">Join Bumblebee to start managing tasks.</p>
+</div>
+<div class="bg-white px-8 py-10 shadow-sm border border-gray-200 rounded-xl">
+<form action="#" class="space-y-5" method="POST">
+<div>
+<label class="label-text" for="full-name">Full Name</label>
+<input autocomplete="name" class="input-field" id="full-name" name="full-name" placeholder="John Doe" required="" type="text"/>
+</div>
+<div>
+<label class="label-text" for="email">Email address</label>
+<input autocomplete="email" class="input-field" id="email" name="email" placeholder="name@company.com" required="" type="email"/>
+</div>
+<div>
+<label class="label-text" for="password">Password</label>
+<div class="relative">
+<input class="input-field pr-10" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+<button class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600" type="button">
+<span class="material-symbols-outlined text-xl">visibility</span>
+</button>
+</div>
+</div>
+<div>
+<label class="label-text" for="confirm-password">Confirm Password</label>
+<input class="input-field" id="confirm-password" name="confirm-password" placeholder="••••••••" required="" type="password"/>
+</div>
+<div class="pt-2">
+<button class="flex w-full justify-center rounded-lg bg-black px-3 py-2.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black transition-colors" type="submit">
+                        Create Account
+                    </button>
+</div>
+</form>
+<div class="mt-8 pt-6 border-t border-gray-100">
+<p class="text-center text-sm text-gray-600">
+                    Already have an account? 
+                    <a class="font-semibold text-amber-500 hover:text-amber-600 transition-colors" href="#">Sign in</a>
+</p>
+</div>
+</div>
+<div class="mt-8 text-center">
+<p class="text-xs text-gray-400">
+                By creating an account, you agree to our 
+                <a class="underline hover:text-gray-600" href="#">Terms</a> and 
+                <a class="underline hover:text-gray-600" href="#">Privacy Policy</a>.
+            </p>
+<p class="mt-4 text-[10px] text-gray-400 uppercase tracking-widest">© 2024 Bumblebee System</p>
+</div>
+</div>
+
+</body></html>

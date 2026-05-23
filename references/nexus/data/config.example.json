@@ -1,0 +1,22 @@
+{
+  "gateway": { "port": 3100 },
+  "providers": {
+    "gemini": {
+      "apiKey": "your-gemini-api-key",
+      "defaultModel": "gemini-2.0-flash"
+    }
+  },
+  "agent": { "defaultProvider": "gemini" },
+  "channels": {
+    "telegram": {
+      "token": "your-telegram-bot-token",
+      "allowFrom": ["your-telegram-user-id"],
+      "dmPolicy": "pairing"
+    }
+  },
+  "strapi": {
+    "baseUrl": "http://localhost:1337/api",
+    "corsOrigins": ["http://localhost:3000"]
+  },
+  "session": {}
+}

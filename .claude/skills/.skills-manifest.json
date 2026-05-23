@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "structure": "categorized",
+  "timestamp": "2026-04-01T02:35:36.366Z",
+  "skills": [
+    {
+      "name": "nextjs",
+      "category": "web-frameworks",
+      "hash": "e5ab19a569d3101242c625366f5d9cf5e96449312749865254e834edd7ad0a48"
+    }
+  ]
+}

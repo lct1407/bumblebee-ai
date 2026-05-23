@@ -1,0 +1,101 @@
+{
+  "kind": "collectionType",
+  "collectionName": "projects",
+  "info": {
+    "singularName": "project",
+    "pluralName": "projects",
+    "displayName": "Project"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "description": {
+      "type": "text"
+    },
+    "apiKey": {
+      "type": "string"
+    },
+    "defaultProvider": {
+      "type": "enumeration",
+      "enum": ["anthropic", "openai", "gemini"],
+      "default": "anthropic"
+    },
+    "issues": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::issue.issue",
+      "mappedBy": "project"
+    },
+    "tasks": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::task.task",
+      "mappedBy": "project"
+    },
+    "chatSessions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::chat-session.chat-session",
+      "mappedBy": "project"
+    },
+    "agentPrompt": {
+      "type": "text"
+    },
+    "agentProvider": {
+      "type": "enumeration",
+      "enum": ["anthropic", "openai", "gemini"],
+      "default": "gemini"
+    },
+    "agentMemoryEnabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "knowledgeIndex": {
+      "type": "json"
+    },
+    "repos": {
+      "type": "json",
+      "default": []
+    },
+    "coolifyUrl": {
+      "type": "string"
+    },
+    "coolifyApiKey": {
+      "type": "string",
+      "private": true
+    },
+    "coolifyResources": {
+      "type": "json",
+      "default": []
+    },
+    "webhookUrl": {
+      "type": "string"
+    },
+    "webhookSecret": {
+      "type": "string",
+      "private": true
+    },
+    "webhookStatuses": {
+      "type": "json",
+      "default": []
+    },
+    "sentryProject": {
+      "type": "string"
+    },
+    "agents": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::agent.agent",
+      "mappedBy": "project"
+    }
+  }
+}

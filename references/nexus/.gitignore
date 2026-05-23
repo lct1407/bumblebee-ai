@@ -1,0 +1,14 @@
+node_modules/
+dist/
+*.js.map
+
+# Environment
+.env
+
+# Data (sessions, transcripts, config with secrets)
+data/config.json
+data/sessions/
+data/workspace/MEMORY.md
+
+# OS
+.DS_Store

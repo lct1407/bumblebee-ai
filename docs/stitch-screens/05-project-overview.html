@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bumblebee Project Overview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#000000",
+                        "accent": "#f59e0b", // Amber-500
+                    },
+                    fontFamily: {
+                        "sans": ["Inter", "sans-serif"]
+                    },
+                    fontSize: {
+                        'base': '14px',
+                    }
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        body { font-family: 'Inter', sans-serif; font-size: 14px; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20; font-size: 20px; }
+        .tabular-nums { font-variant-numeric: tabular-nums; }
+    </style>
+</head>
+<body class="bg-white text-gray-900 font-sans antialiased">
+<div class="flex min-h-screen">
+<aside class="w-56 border-r border-gray-200 bg-gray-50 flex flex-col fixed inset-y-0 left-0">
+<div class="p-5 flex items-center gap-2.5">
+<div class="w-6 h-6 bg-amber-500 rounded flex items-center justify-center text-white font-bold text-xs">B</div>
+<span class="font-bold text-base tracking-tight">Bumblebee</span>
+</div>
+<nav class="flex-1 px-3 space-y-0.5 mt-2">
+<div class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider px-3 py-2">General</div>
+<a class="flex items-center gap-3 px-3 py-1.5 rounded text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+<span>Home</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-1.5 rounded text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined">inbox</span>
+<span>Inbox</span>
+</a>
+<div class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider px-3 py-2 mt-4">Project</div>
+<a class="flex items-center gap-3 px-3 py-1.5 rounded bg-gray-200 text-gray-900 font-medium" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span>Overview</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-1.5 rounded text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined">list_alt</span>
+<span>Items</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-1.5 rounded text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined">view_kanban</span>
+<span>Board</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-1.5 rounded text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined">bolt</span>
+<span>Sprints</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-1.5 rounded text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span>Agent</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-1.5 rounded text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined">sell</span>
+<span>Labels</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-1.5 rounded text-gray-600 hover:bg-gray-100 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="p-4 mt-auto border-t border-gray-200">
+<div class="flex items-center gap-2.5 px-1">
+<div class="w-7 h-7 rounded-full bg-gray-200 bg-cover" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAfOXbrK_TKYl0_1RrJRX1PDRHbjVHGIYImHXs8TbWiSCWcFMxHbksOomZqmDrX3HNwZh7Mz0Gz5wWtDw2PfAuSQA1AaD7Fv-F19IpKBGEBy_6rIKSeTx7W4f4cjPdAK3DZYtXkOEf9UB3VXJPMTCnpLBhUsFwOz-qPZGiss9m356V4CdMjqkjUAKNdQjEkJiqaYzCFryofuvO1Pw8VEJWIVH5EESEcfLzyGqS_kpxEJHHjaiHJPkNOvEYUAQVMSxMpBaJnAWdS4YY7')"></div>
+<div class="flex flex-col min-w-0">
+<span class="text-xs font-medium truncate">Alex Rivera</span>
+<span class="text-[10px] text-gray-500">Free Plan</span>
+</div>
+</div>
+</div>
+</aside>
+<main class="flex-1 bg-white ml-56 overflow-y-auto min-h-screen">
+<div class="max-w-6xl mx-auto px-8 py-8">
+<nav class="flex items-center gap-2 text-sm text-gray-400 mb-4">
+<span>Projects</span>
+<span class="material-symbols-outlined !text-xs">chevron_right</span>
+<span class="text-gray-400">bumblebee</span>
+</nav>
+<div class="flex items-start justify-between mb-10">
+<div class="flex items-start gap-4">
+<div class="mt-1 flex items-center justify-center w-8 h-8 rounded bg-amber-100 text-amber-700 font-bold text-sm border border-amber-200">BB</div>
+<div>
+<div class="flex items-center gap-3">
+<h1 class="text-2xl font-bold tracking-tight text-gray-900">Bumblebee</h1>
+</div>
+<p class="text-gray-500 mt-1 max-w-xl">Dev task management platform for scaling engineering teams.</p>
+<div class="flex items-center gap-3 mt-3">
+<a class="flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-600 transition-colors" href="#">
+<span class="material-symbols-outlined !text-sm">link</span>
+                                github.com/user/bumblebee
+                            </a>
+</div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="px-3.5 py-1.5 border border-gray-200 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors">Share</button>
+<button class="px-3.5 py-1.5 bg-black text-white rounded-md text-sm font-medium hover:bg-gray-800 transition-colors">New Issue</button>
+</div>
+</div>
+<div class="grid grid-cols-5 gap-4 mb-10">
+<div class="bg-white border border-gray-200 rounded-lg p-5">
+<p class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Open</p>
+<p class="text-2xl font-bold tabular-nums">12</p>
+</div>
+<div class="bg-white border border-gray-200 rounded-lg p-5">
+<p class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">In Progress</p>
+<p class="text-2xl font-bold tabular-nums">5</p>
+</div>
+<div class="bg-white border border-gray-200 rounded-lg p-5">
+<p class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">In Review</p>
+<p class="text-2xl font-bold tabular-nums">3</p>
+</div>
+<div class="bg-white border border-gray-200 rounded-lg p-5">
+<p class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Resolved</p>
+<p class="text-2xl font-bold tabular-nums text-green-600">18</p>
+</div>
+<div class="bg-white border border-gray-200 rounded-lg p-5">
+<p class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Total Items</p>
+<p class="text-2xl font-bold tabular-nums">38</p>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-10">
+<div class="col-span-2">
+<h2 class="text-sm font-bold text-gray-900 mb-4">Quick Access</h2>
+<div class="grid grid-cols-2 gap-4">
+<a class="group p-5 bg-white border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition-all" href="#">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-gray-900 mb-3 block">list_alt</span>
+<h3 class="font-semibold text-gray-900 text-sm mb-1">Items</h3>
+<p class="text-xs text-gray-500 leading-relaxed">Browse and filter all project tasks and issues.</p>
+</a>
+<a class="group p-5 bg-white border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition-all" href="#">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-gray-900 mb-3 block">view_kanban</span>
+<h3 class="font-semibold text-gray-900 text-sm mb-1">Board</h3>
+<p class="text-xs text-gray-500 leading-relaxed">Visualize workflow and drag-and-drop tasks.</p>
+</a>
+<a class="group p-5 bg-white border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition-all" href="#">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-gray-900 mb-3 block">bolt</span>
+<h3 class="font-semibold text-gray-900 text-sm mb-1">Sprints</h3>
+<p class="text-xs text-gray-500 leading-relaxed">Plan upcoming work cycles and set goals.</p>
+</a>
+<a class="group p-5 bg-white border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition-all" href="#">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-gray-900 mb-3 block">smart_toy</span>
+<h3 class="font-semibold text-gray-900 text-sm mb-1">Agent</h3>
+<p class="text-xs text-gray-500 leading-relaxed">AI-powered assistant for task automation.</p>
+</a>
+<a class="group p-5 bg-white border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition-all" href="#">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-gray-900 mb-3 block">sell</span>
+<h3 class="font-semibold text-gray-900 text-sm mb-1">Labels</h3>
+<p class="text-xs text-gray-500 leading-relaxed">Manage tags and categories for organization.</p>
+</a>
+<a class="group p-5 bg-white border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition-all" href="#">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-gray-900 mb-3 block">settings</span>
+<h3 class="font-semibold text-gray-900 text-sm mb-1">Settings</h3>
+<p class="text-xs text-gray-500 leading-relaxed">Configure project preferences and members.</p>
+</a>
+</div>
+</div>
+<div class="col-span-1">
+<h2 class="text-sm font-bold text-gray-900 mb-4">Recent Activity</h2>
+<div class="space-y-5">
+<div class="flex gap-3">
+<div class="mt-1 w-2 h-2 rounded-full bg-green-500 shrink-0"></div>
+<div class="flex flex-col gap-1">
+<p class="text-sm leading-tight">
+<span class="font-medium">Sarah Chen</span> changed status of <span class="font-medium text-gray-900 hover:underline cursor-pointer">BB-102</span> to <span class="text-green-600 font-medium">Done</span>
+</p>
+<span class="text-xs text-gray-400">2 hours ago</span>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="mt-1 w-2 h-2 rounded-full bg-gray-400 shrink-0"></div>
+<div class="flex flex-col gap-1">
+<p class="text-sm leading-tight">
+<span class="font-medium">Alex Rivera</span> created task <span class="font-medium text-gray-900 hover:underline cursor-pointer">BB-145: API docs</span>
+</p>
+<span class="text-xs text-gray-400">4 hours ago</span>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="mt-1 w-2 h-2 rounded-full bg-amber-500 shrink-0"></div>
+<div class="flex flex-col gap-1">
+<p class="text-sm leading-tight">
+<span class="font-medium">Agent</span> assigned <span class="font-medium text-gray-900 hover:underline cursor-pointer">BB-122</span> to <span class="font-medium">Marco Polo</span>
+</p>
+<span class="text-xs text-gray-400">Yesterday</span>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="mt-1 w-2 h-2 rounded-full bg-purple-500 shrink-0"></div>
+<div class="flex flex-col gap-1">
+<p class="text-sm leading-tight">
+<span class="font-medium">Sarah Chen</span> moved <span class="font-medium text-gray-900 hover:underline cursor-pointer">BB-77</span> to <span class="text-purple-600 font-medium">In Review</span>
+</p>
+<span class="text-xs text-gray-400">Oct 23, 09:15 AM</span>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="mt-1 w-2 h-2 rounded-full bg-gray-200 shrink-0"></div>
+<div class="flex flex-col gap-1">
+<p class="text-sm leading-tight">
+<span class="font-medium text-gray-500">System</span> updated project configuration
+                                </p>
+<span class="text-xs text-gray-400">2 days ago</span>
+</div>
+</div>
+</div>
+<button class="w-full mt-8 py-2 text-xs font-medium text-gray-500 hover:text-gray-900 border border-gray-200 rounded-md transition-colors">View all activity</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>

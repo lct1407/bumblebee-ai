@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bumblebee Labels Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                font-family: 'Inter', sans-serif;
+                font-size: 14px;
+            }
+        }
+        :root {
+            --accent-amber: #f59e0b;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        amber: {
+                            500: '#f59e0b',
+                        },
+                        gray: {
+                            50: '#f9fafb',
+                            200: '#e5e7eb',
+                        }
+                    },
+                    borderRadius: {
+                        'xl': '0.75rem',
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-white text-slate-900 min-h-screen">
+<div class="flex h-screen">
+<aside class="w-56 fixed inset-y-0 left-0 bg-gray-50 border-r border-gray-200 flex flex-col">
+<div class="p-6">
+<div class="flex items-center gap-2 mb-8">
+<div class="w-8 h-8 bg-amber-500 rounded flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-xl">dataset</span>
+</div>
+<span class="font-bold text-lg tracking-tight">Bumblebee</span>
+</div>
+<div class="mb-8">
+<p class="px-3 mb-2 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Main</p>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">grid_view</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">inbox</span>
+<span>Inbox</span>
+</a>
+</nav>
+</div>
+<div>
+<p class="px-3 mb-2 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Project</p>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">layers</span>
+<span>Issues</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-amber-500/10 text-amber-500 font-medium rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px] fill-1">label</span>
+<span>Labels</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span>Team</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+</div>
+</div>
+</aside>
+<main class="ml-56 flex-1 overflow-y-auto bg-white p-10">
+<div class="max-w-5xl mx-auto">
+<header class="flex items-center justify-between mb-8">
+<h1 class="text-2xl font-bold">Labels</h1>
+<button class="bg-black text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-800 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span>
+                        New Label
+                    </button>
+</header>
+<div class="border border-gray-200 rounded-xl p-4 mb-10 flex items-center gap-4 bg-white">
+<div class="flex-1">
+<input class="w-full border-gray-200 rounded-lg focus:ring-amber-500 focus:border-amber-500 text-sm" placeholder="Label name (e.g. backend)" type="text"/>
+</div>
+<div class="flex items-center gap-2 px-3">
+<span class="text-xs text-gray-400 font-bold uppercase mr-1">Color</span>
+<div class="flex gap-2">
+<button class="w-5 h-5 rounded-full bg-blue-500 ring-2 ring-offset-2 ring-blue-500"></button>
+<button class="w-5 h-5 rounded-full bg-green-500 hover:scale-110 transition-transform"></button>
+<button class="w-5 h-5 rounded-full bg-purple-500 hover:scale-110 transition-transform"></button>
+<button class="w-5 h-5 rounded-full bg-amber-500 hover:scale-110 transition-transform"></button>
+<button class="w-5 h-5 rounded-full bg-red-500 hover:scale-110 transition-transform"></button>
+</div>
+</div>
+<button class="bg-black text-white px-6 py-2 rounded-lg font-medium hover:bg-gray-800 transition-colors">
+                        Create
+                    </button>
+</div>
+<div class="grid grid-cols-3 gap-6">
+<div class="group border border-gray-200 rounded-xl p-5 bg-white relative overflow-hidden transition-all hover:border-gray-300">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-blue-500"></div>
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-blue-500"></div>
+<span class="font-semibold">backend</span>
+</div>
+<span class="text-xs text-gray-400">12 items</span>
+</div>
+<div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1 hover:bg-gray-100 rounded transition-colors">
+<span class="material-symbols-outlined text-lg text-gray-500">edit_note</span>
+</button>
+<button class="p-1 hover:bg-red-50 rounded transition-colors">
+<span class="material-symbols-outlined text-lg text-red-500">delete</span>
+</button>
+</div>
+</div>
+</div>
+<div class="group border border-gray-200 rounded-xl p-5 bg-white relative overflow-hidden transition-all hover:border-gray-300">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-green-500"></div>
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-green-500"></div>
+<span class="font-semibold">frontend</span>
+</div>
+<span class="text-xs text-gray-400">24 items</span>
+</div>
+<div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1 hover:bg-gray-100 rounded transition-colors">
+<span class="material-symbols-outlined text-lg text-gray-500">edit_note</span>
+</button>
+<button class="p-1 hover:bg-red-50 rounded transition-colors">
+<span class="material-symbols-outlined text-lg text-red-500">delete</span>
+</button>
+</div>
+</div>
+</div>
+<div class="group border border-gray-200 rounded-xl p-5 bg-white relative overflow-hidden transition-all hover:border-gray-300">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-purple-500"></div>
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-purple-500"></div>
+<span class="font-semibold">api</span>
+</div>
+<span class="text-xs text-gray-400">8 items</span>
+</div>
+<div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1 hover:bg-gray-100 rounded transition-colors">
+<span class="material-symbols-outlined text-lg text-gray-500">edit_note</span>
+</button>
+<button class="p-1 hover:bg-red-50 rounded transition-colors">
+<span class="material-symbols-outlined text-lg text-red-500">delete</span>
+</button>
+</div>
+</div>
+</div>
+<div class="group border border-gray-200 rounded-xl p-5 bg-white relative overflow-hidden transition-all hover:border-gray-300">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-amber-500"></div>
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-amber-500"></div>
+<span class="font-semibold">auth</span>
+</div>
+<span class="text-xs text-gray-400">5 items</span>
+</div>
+<div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1 hover:bg-gray-100 rounded transition-colors">
+<span class="material-symbols-outlined text-lg text-gray-500">edit_note</span>
+</button>
+<button class="p-1 hover:bg-red-50 rounded transition-colors">
+<span class="material-symbols-outlined text-lg text-red-500">delete</span>
+</button>
+</div>
+</div>
+</div>
+<div class="group border border-gray-200 rounded-xl p-5 bg-white relative overflow-hidden transition-all hover:border-gray-300">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-red-500"></div>
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-red-500"></div>
+<span class="font-semibold">database</span>
+</div>
+<span class="text-xs text-gray-400">16 items</span>
+</div>
+<div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1 hover:bg-gray-100 rounded transition-colors">
+<span class="material-symbols-outlined text-lg text-gray-500">edit_note</span>
+</button>
+<button class="p-1 hover:bg-red-50 rounded transition-colors">
+<span class="material-symbols-outlined text-lg text-red-500">delete</span>
+</button>
+</div>
+</div>
+</div>
+<div class="group border border-gray-200 rounded-xl p-5 bg-white relative overflow-hidden transition-all hover:border-gray-300">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-pink-500"></div>
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-pink-500"></div>
+<span class="font-semibold">ui</span>
+</div>
+<span class="text-xs text-gray-400">31 items</span>
+</div>
+<div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1 hover:bg-gray-100 rounded transition-colors">
+<span class="material-symbols-outlined text-lg text-gray-500">edit_note</span>
+</button>
+<button class="p-1 hover:bg-red-50 rounded transition-colors">
+<span class="material-symbols-outlined text-lg text-red-500">delete</span>
+</button>
+</div>
+</div>
+</div>
+<div class="group border border-gray-200 rounded-xl p-5 bg-white relative overflow-hidden transition-all hover:border-gray-300">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-teal-500"></div>
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-teal-500"></div>
+<span class="font-semibold">testing</span>
+</div>
+<span class="text-xs text-gray-400">19 items</span>
+</div>
+<div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1 hover:bg-gray-100 rounded transition-colors">
+<span class="material-symbols-outlined text-lg text-gray-500">edit_note</span>
+</button>
+<button class="p-1 hover:bg-red-50 rounded transition-colors">
+<span class="material-symbols-outlined text-lg text-red-500">delete</span>
+</button>
+</div>
+</div>
+</div>
+<div class="group border border-gray-200 rounded-xl p-5 bg-white relative overflow-hidden transition-all hover:border-gray-300">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-gray-500"></div>
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-gray-500"></div>
+<span class="font-semibold">documentation</span>
+</div>
+<span class="text-xs text-gray-400">11 items</span>
+</div>
+<div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1 hover:bg-gray-100 rounded transition-colors">
+<span class="material-symbols-outlined text-lg text-gray-500">edit_note</span>
+</button>
+<button class="p-1 hover:bg-red-50 rounded transition-colors">
+<span class="material-symbols-outlined text-lg text-red-500">delete</span>
+</button>
+</div>
+</div>
+</div>
+<div class="group border border-gray-200 rounded-xl p-5 bg-white relative overflow-hidden transition-all hover:border-gray-300">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-orange-500"></div>
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-orange-500"></div>
+<span class="font-semibold">performance</span>
+</div>
+<span class="text-xs text-gray-400">7 items</span>
+</div>
+<div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1 hover:bg-gray-100 rounded transition-colors">
+<span class="material-symbols-outlined text-lg text-gray-500">edit_note</span>
+</button>
+<button class="p-1 hover:bg-red-50 rounded transition-colors">
+<span class="material-symbols-outlined text-lg text-red-500">delete</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>

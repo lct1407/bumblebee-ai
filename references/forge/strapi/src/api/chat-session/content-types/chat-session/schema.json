@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "chat_sessions",
+  "info": {
+    "singularName": "chat-session",
+    "pluralName": "chat-sessions",
+    "displayName": "ChatSession"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "messages": {
+      "type": "json"
+    },
+    "source": {
+      "type": "enumeration",
+      "enum": ["web", "widget"],
+      "default": "web"
+    },
+    "metadata": {
+      "type": "json"
+    },
+    "project": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::project.project",
+      "inversedBy": "chatSessions"
+    }
+  }
+}

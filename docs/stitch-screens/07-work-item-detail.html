@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bumblebee Work Item Detail View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        amber: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            200: '#fde68a',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        },
+                        gray: {
+                            50: '#f9fafb',
+                            100: '#f3f4f6',
+                            200: '#e5e7eb',
+                            300: '#d1d5db',
+                            400: '#9ca3af',
+                            500: '#6b7280',
+                            600: '#4b5563',
+                            700: '#374151',
+                            800: '#1f2937',
+                            900: '#111827',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    fontSize: {
+                        'base': '14px',
+                    }
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply text-gray-900 bg-white font-sans;
+                font-size: 14px;
+            }
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            @apply bg-gray-200 rounded-full;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+        }
+    </style>
+</head>
+<body class="h-screen flex overflow-hidden">
+<aside class="w-56 flex-shrink-0 bg-gray-50 border-r border-gray-200 flex flex-col">
+<div class="p-4 mb-2 flex items-center gap-2">
+<div class="w-8 h-8 rounded bg-amber-500 flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-xl">token</span>
+</div>
+<span class="font-bold text-gray-900 tracking-tight">Bumblebee</span>
+</div>
+<nav class="flex-1 px-2 space-y-0.5">
+<div class="px-2 py-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Project</div>
+<a class="flex items-center gap-2.5 px-3 py-1.5 text-gray-600 hover:bg-gray-100 rounded transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">space_dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-2.5 px-3 py-1.5 text-amber-600 bg-amber-50 font-medium rounded transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">layers</span>
+                Items
+            </a>
+<a class="flex items-center gap-2.5 px-3 py-1.5 text-gray-600 hover:bg-gray-100 rounded transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">update</span>
+                Sprints
+            </a>
+<a class="flex items-center gap-2.5 px-3 py-1.5 text-gray-600 hover:bg-gray-100 rounded transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">checklist</span>
+                Backlog
+            </a>
+<div class="pt-4 mt-4 border-t border-gray-200">
+<div class="px-2 py-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider">System</div>
+<a class="flex items-center gap-2.5 px-3 py-1.5 text-gray-600 hover:bg-gray-100 rounded transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+                    Settings
+                </a>
+</div>
+</nav>
+<div class="p-4 border-t border-gray-200">
+<div class="flex items-center gap-2.5 px-1">
+<img alt="John's Profile" class="w-7 h-7 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxMWn5DjJe8Rav4LymMMsVZXXST4M1iV_DjbizUF5bG80RvcaKtej47xx8iO4Z7PoxiJr0teOwqMAyj48KEJlq9iPGn3dCJpvG_kF_MMaE_WdBi8jI68X2WjtwcBWoYK7nSqHZ5DpWrMnrI4qyu4ek535bFOKhd2aW3K95AoMP9shHJ4S-q5022N9MwVEohjyn-yfRECr5A8fk8-zNq2fPReffimIevVmv5QmP9ak9im4VB-ZujE8g-WEVzyIitr0LmdaZBWCpHjKk"/>
+<div class="min-w-0">
+<p class="text-xs font-semibold truncate">John Doe</p>
+<p class="text-[10px] text-gray-500 truncate">Senior Engineer</p>
+</div>
+</div>
+</div>
+</aside>
+<main class="flex-1 flex overflow-hidden">
+<div class="flex-1 overflow-y-auto custom-scrollbar bg-white">
+<div class="max-w-4xl mx-auto px-10 py-8">
+<div class="flex items-center gap-2 text-xs text-gray-400 mb-6">
+<a class="hover:text-gray-600 transition-colors" href="#">Items</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-gray-600 font-medium">BB-42</span>
+</div>
+<div class="mb-8">
+<div class="flex items-center gap-3 mb-2">
+<span class="text-sm font-medium text-gray-400">BB-42</span>
+<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-50 text-blue-600 border border-blue-100">Story</span>
+<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-orange-50 text-orange-600 border border-orange-100">High</span>
+</div>
+<h1 class="text-2xl font-bold text-gray-900">Add user authentication with OAuth</h1>
+</div>
+<div class="mb-10">
+<h3 class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-3">Description</h3>
+<div class="prose prose-sm max-w-none text-gray-700 leading-relaxed">
+<p>We need to implement a robust OAuth 2.0 flow to allow users to sign in using their Google or GitHub accounts. This will replace the current legacy email/password system in the next milestone.</p>
+<p class="mt-4">The implementation should follow security best practices, including PKCE for client-side flows and proper state token validation to prevent CSRF attacks.</p>
+</div>
+</div>
+<div class="border-t border-gray-100 my-8"></div>
+<div class="mb-10">
+<h3 class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-4">Acceptance Criteria</h3>
+<ul class="space-y-3">
+<li class="flex items-start gap-3 group">
+<span class="material-symbols-outlined text-amber-500 text-[20px]">check_box</span>
+<span class="text-gray-700">Users can successfully authenticate via Google OAuth2.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-amber-500 text-[20px]">check_box</span>
+<span class="text-gray-700">Users can successfully authenticate via GitHub OAuth2.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-gray-300 text-[20px]">check_box_outline_blank</span>
+<span class="text-gray-700">Session tokens are securely stored in HttpOnly cookies.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-gray-300 text-[20px]">check_box_outline_blank</span>
+<span class="text-gray-700">New user records are created automatically in the database upon first successful login.</span>
+</li>
+</ul>
+</div>
+<div class="mb-10 p-6 bg-amber-50 border border-amber-100 rounded-lg">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-amber-600 text-[20px]">bolt</span>
+<h3 class="text-xs font-bold text-amber-800 uppercase tracking-wide">AI Suggested Plan</h3>
+</div>
+<div class="space-y-4 text-amber-900/80">
+<div class="flex gap-4">
+<span class="font-bold text-amber-600/60">01</span>
+<p>Setup developer applications in Google Cloud Console and GitHub Settings.</p>
+</div>
+<div class="flex gap-4">
+<span class="font-bold text-amber-600/60">02</span>
+<p>Configure Passport.js middleware to handle the redirect URI and token exchange.</p>
+</div>
+<div class="flex gap-4">
+<span class="font-bold text-amber-600/60">03</span>
+<p>Develop the callback handlers and link external profiles to local user IDs.</p>
+</div>
+</div>
+</div>
+<div class="border-t border-gray-100 my-8"></div>
+<div class="mb-12">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-3">
+<h3 class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Sub-items</h3>
+<div class="flex items-center gap-2 bg-gray-50 px-2 py-0.5 rounded border border-gray-100">
+<div class="w-16 h-1 bg-gray-200 rounded-full overflow-hidden">
+<div class="w-1/3 h-full bg-amber-500"></div>
+</div>
+<span class="text-[10px] font-bold text-gray-500">33%</span>
+</div>
+</div>
+<button class="text-xs font-semibold text-amber-600 hover:text-amber-700 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">add</span> Add task
+                        </button>
+</div>
+<div class="border border-gray-100 rounded divide-y divide-gray-100">
+<div class="flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors">
+<span class="material-symbols-outlined text-emerald-500 text-[18px]">check_circle</span>
+<span class="text-xs font-medium text-gray-400 w-12">BB-43</span>
+<span class="flex-1 text-gray-400 line-through">Setup Google Cloud app</span>
+<span class="px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-50 text-emerald-600 border border-emerald-100 uppercase">Done</span>
+<img alt="Assignee" class="w-5 h-5 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATLTr6WkcZqV37RnclpcYYInXBWpw-TIi4qSMZt6Z6td5RurhRbRe48GmOvCJVh1T78qEUJKHBolDzi1NosVQ65t8erjEQ3Ze3wKJ_5uDKljbM_oa_s2rP7bLCUt0XHeTMMKjsZZLfJlqezz4QIaYlbyvSi68qNBJfesX4-PDATUyMT4ExJKSNnYTI6yP4Yz5X8FHbEWQOf4D004u-beJhGkHCOycP7a0CbjfcjfHHjmpIcNT7RZtpf6-95VfD_Sr3kXr8OC-jY4hN"/>
+</div>
+<div class="flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors">
+<span class="material-symbols-outlined text-amber-500 text-[18px]">progress_activity</span>
+<span class="text-xs font-medium text-gray-500 w-12">BB-44</span>
+<span class="flex-1 font-medium">Implement Passport strategies</span>
+<span class="px-2 py-0.5 rounded text-[10px] font-medium bg-amber-50 text-amber-600 border border-amber-100 uppercase">In Progress</span>
+<img alt="Assignee" class="w-5 h-5 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1id1d5_cDFQTJ7kRgmnbNZ5mxbXxOx-Z2vgeaMarMkTVr0sEoncI7Tff0oIxavQamsa3lbzYuifXyNJZBRBaom0gGIQT2vQ311KbYOoA6A4r1swkcF9bcnbSN_jfo3FJlohKi2P9I7m5lzsRXrd39ty398nSOqDjdKiRVAAPLGV8AB-D13iguES1Zuvd5mXxLTwG1PRozyiZ9J73spURjl3poI5pMXTYy-SQ77dMcs3Mh3-WRmx2JprFQW8-iBs5BCMk_f7PXXn4Z"/>
+</div>
+</div>
+</div>
+<div class="mb-20">
+<div class="flex items-center gap-3 mb-6">
+<h3 class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Comments</h3>
+<span class="bg-gray-100 text-gray-500 text-[10px] font-bold px-1.5 py-0.5 rounded">4</span>
+</div>
+<div class="space-y-8">
+<div class="flex gap-4">
+<img alt="John" class="w-8 h-8 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkCRETVcYikkVJWx8VCrwE_fCaUK1O6BnzCiP-inRG7gw-T1YWB_r9F7OMqvIU85AqmSSAaKMu0va16uqtyaZQPuLEEcm-uGW74p5CpGY2Yyj7kDe-wvTk2fWMwbvF-xywyLiZMtdyF82bNZolrh3UE5bb4o5QMUaigbFHbiYTEhAen6sBLh91aoiObsRg-tw1jW1P1H40s4VwAEklyQwD-4rvj5mLbroqzRGFLML3LtNxCqeK0knagnDDtqZSrzGzgcv4b1M8buIa"/>
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="font-bold">John Doe</span>
+<span class="text-xs text-gray-400">2h ago</span>
+</div>
+<div class="text-gray-700">I've started setting up the Google API credentials.</div>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="w-8 h-8 rounded-full bg-gray-900 flex items-center justify-center text-amber-500">
+<span class="material-symbols-outlined text-[18px]">smart_toy</span>
+</div>
+<div class="flex-1 bg-gray-50 border border-gray-100 rounded-lg p-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="font-bold">bb-agent</span>
+<span class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-amber-500 text-white">AI</span>
+<span class="text-xs text-gray-400">1h ago</span>
+</div>
+<div class="text-gray-700 prose prose-sm">
+<p>Reviewed current auth logic. Note: add <code>"openid profile email"</code> to scope for Google.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sticky bottom-0 bg-white border-t border-gray-200 p-4">
+<div class="max-w-4xl mx-auto flex gap-4">
+<img alt="John" class="w-8 h-8 rounded-full flex-shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxMWn5DjJe8Rav4LymMMsVZXXST4M1iV_DjbizUF5bG80RvcaKtej47xx8iO4Z7PoxiJr0teOwqMAyj48KEJlq9iPGn3dCJpvG_kF_MMaE_WdBi8jI68X2WjtwcBWoYK7nSqHZ5DpWrMnrI4qyu4ek535bFOKhd2aW3K95AoMP9shHJ4S-q5022N9MwVEohjyn-yfRECr5A8fk8-zNq2fPReffimIevVmv5QmP9ak9im4VB-ZujE8g-WEVzyIitr0LmdaZBWCpHjKk"/>
+<div class="flex-1 relative">
+<textarea class="w-full border-gray-200 rounded-lg text-sm focus:ring-amber-500 focus:border-amber-500 min-h-[44px] py-2 px-3 resize-none" placeholder="Leave a comment..."></textarea>
+<div class="mt-2 flex items-center justify-between">
+<div class="flex items-center gap-3 text-gray-400">
+<button class="hover:text-gray-600"><span class="material-symbols-outlined text-[20px]">image</span></button>
+<button class="hover:text-gray-600"><span class="material-symbols-outlined text-[20px]">alternate_email</span></button>
+<div class="w-px h-4 bg-gray-200 mx-1"></div>
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-bold uppercase tracking-wider">AI Assist</span>
+<button class="w-8 h-4 bg-amber-500 rounded-full relative">
+<div class="absolute right-0.5 top-0.5 w-3 h-3 bg-white rounded-full"></div>
+</button>
+</div>
+</div>
+<button class="bg-black hover:bg-gray-800 text-white text-xs font-bold px-4 py-2 rounded transition-colors shadow-sm">Post Comment</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<aside class="w-64 flex-shrink-0 bg-gray-50 border-l border-gray-200 p-6 overflow-y-auto">
+<h3 class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-6">Properties</h3>
+<div class="space-y-6">
+<div>
+<label class="text-[10px] text-gray-500 uppercase font-semibold tracking-wider block mb-2">Status</label>
+<button class="w-full flex items-center justify-between px-2.5 py-1.5 bg-white border border-gray-200 rounded hover:border-gray-300 transition-colors">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-amber-500 text-[18px]">progress_activity</span>
+<span class="text-sm font-medium">In Progress</span>
+</div>
+<span class="material-symbols-outlined text-[16px] text-gray-400">expand_more</span>
+</button>
+</div>
+<div>
+<label class="text-[10px] text-gray-500 uppercase font-semibold tracking-wider block mb-2">Priority</label>
+<div class="flex items-center gap-2 px-2.5 py-1.5 bg-white border border-gray-200 rounded">
+<span class="material-symbols-outlined text-orange-500 text-[18px]">signal_cellular_alt</span>
+<span class="text-sm font-medium">High</span>
+</div>
+</div>
+<div>
+<label class="text-[10px] text-gray-500 uppercase font-semibold tracking-wider block mb-2">Assignee</label>
+<div class="flex items-center gap-2.5 px-2.5 py-1.5 bg-white border border-gray-200 rounded">
+<img alt="John" class="w-5 h-5 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARPrMWOJNfRHAv9CwtbsjEUblS-0GHidZMvKFgd12kE--9-GHn1WdxkBJjRu5U24RY1pxq9e1B5Df6HSbv-pGDHx93J7uWrdwgKJvqSq1MMI6RjnA6rcLgn7-Yh37-fQSoEnrLRNc-yO7sCmeZ5M4sv-F6eQsEm_qUE5WZqBnAjXC0_aLdn10k4qUHB8HgjJZxVaMcguDXxIByY6VaK5biuc_JniniBF7cu0GPyRyUN1hPqsDzi9AmVAmTLSpIPqMbG34P3H4WwaIb"/>
+<span class="text-sm font-medium">John Doe</span>
+</div>
+</div>
+<div>
+<label class="text-[10px] text-gray-500 uppercase font-semibold tracking-wider block mb-2">Sprint</label>
+<div class="flex items-center gap-2 px-2.5 py-1.5 bg-white border border-gray-200 rounded text-sm font-medium">
+<span class="material-symbols-outlined text-gray-400 text-[18px]">event</span>
+                        Sprint 3
+                    </div>
+</div>
+<div>
+<label class="text-[10px] text-gray-500 uppercase font-semibold tracking-wider block mb-2">Labels</label>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-gray-100 text-gray-600 border border-gray-200">Auth</span>
+<span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-gray-100 text-gray-600 border border-gray-200">Security</span>
+<button class="w-6 h-6 flex items-center justify-center rounded border border-dashed border-gray-300 text-gray-400 hover:text-gray-600 hover:border-gray-400 transition-colors">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+</div>
+</div>
+<div class="mt-12 pt-8 border-t border-gray-200">
+<h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-4">Metadata</h3>
+<div class="space-y-3">
+<div class="flex justify-between text-[11px]">
+<span class="text-gray-400">Created</span>
+<span class="text-gray-600 font-medium">Feb 25, 2026</span>
+</div>
+<div class="flex justify-between text-[11px]">
+<span class="text-gray-400">Updated</span>
+<span class="text-gray-600 font-medium">2 hours ago</span>
+</div>
+<div class="flex justify-between text-[11px]">
+<span class="text-gray-400">Parent</span>
+<span class="text-amber-600 font-bold hover:underline cursor-pointer">BB-1</span>
+</div>
+</div>
+</div>
+</aside>
+</main>
+
+</body></html>

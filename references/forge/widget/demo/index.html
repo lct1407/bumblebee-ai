@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forge Widget Demo</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 800px; margin: 60px auto; padding: 0 20px; }
+    h1 { color: #1f2937; }
+    p { color: #6b7280; line-height: 1.6; }
+    code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <h1>Forge Widget Demo</h1>
+  <p>The widget button should appear in the bottom-right corner. Click it to open the issue reporter.</p>
+  <p>This page demonstrates the embeddable widget. In production, include the script tag and call <code>ForgeWidget.init()</code>.</p>
+
+  <h2>Sample Page Content</h2>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. This page simulates a third-party site with the Forge widget embedded.</p>
+
+  <script type="module">
+    import { ForgeWidget } from '../src/index.ts';
+
+    ForgeWidget.init({
+      apiKey: 'forge_pk_demo_key',
+      apiUrl: 'http://localhost:1337',
+      position: 'bottom-right',
+      theme: {
+        primaryColor: '#6366f1',
+      },
+      defaultFields: {
+        category: 'bug',
+        reportedBy: 'demo@example.com',
+      },
+    });
+  </script>
+</body>
+</html>
