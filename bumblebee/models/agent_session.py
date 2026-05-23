@@ -8,7 +8,7 @@ from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 import enum
 
-from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin
+from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin
 
 
 class SessionStatus(str, enum.Enum):
@@ -33,7 +33,7 @@ class FailureReason(str, enum.Enum):
     UNKNOWN = "unknown"
 
 
-class AgentSession(Base, UUIDPKMixin, TimestampMixin):
+class AgentSession(Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin):
     __tablename__ = "agent_sessions"
 
     status: Mapped[SessionStatus] = mapped_column(

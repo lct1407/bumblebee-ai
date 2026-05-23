@@ -1,0 +1,34 @@
+name: prompt-validator
+
+# Runs bumblebee.prompts.validator on every PR + push to main.
+# Fails the build if any prompt YAML is malformed, any few-shot example violates
+# its declared output_schema, or the assembled prompt is suspiciously sized.
+# No LLM cost — pure static validation.
+
+on:
+  push:
+    branches: [main, master, release/*]
+    paths:
+      - "bumblebee/prompts/**"
+      - "bumblebee/prompts/validator.py"
+  pull_request:
+    paths:
+      - "bumblebee/prompts/**"
+      - "bumblebee/prompts/validator.py"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install deps
+        run: |
+          pip install -e .
+          pip install pyyaml jsonschema pydantic pydantic-settings
+      - name: Run prompt validator
+        run: python -m bumblebee.prompts.validator
+      - name: Run prompt tests
+        run: pytest tests/test_prompts_validator.py -v

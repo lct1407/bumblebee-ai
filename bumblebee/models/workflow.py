@@ -4,10 +4,10 @@ from sqlalchemy import String, Text, Integer, ForeignKey, Boolean
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin
+from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin
 
 
-class Workflow(Base, UUIDPKMixin, TimestampMixin):
+class Workflow(Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin):
     __tablename__ = "workflows"
 
     name: Mapped[str] = mapped_column(String(200), nullable=False, index=True)

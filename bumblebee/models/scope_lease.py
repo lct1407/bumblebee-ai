@@ -8,7 +8,7 @@ from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 import enum
 
-from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin
+from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin
 
 
 class LeaseStatus(str, enum.Enum):
@@ -18,7 +18,7 @@ class LeaseStatus(str, enum.Enum):
     REVOKED = "revoked"
 
 
-class ScopeLease(Base, UUIDPKMixin, TimestampMixin):
+class ScopeLease(Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin):
     __tablename__ = "scope_leases"
 
     status: Mapped[LeaseStatus] = mapped_column(

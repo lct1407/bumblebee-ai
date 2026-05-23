@@ -7,7 +7,7 @@ from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 import enum
 
-from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin, SoftDeleteMixin
+from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin, SoftDeleteMixin, WorkspaceScopedMixin
 
 
 class IssueType(str, enum.Enum):
@@ -55,7 +55,7 @@ class IssueComplexity(str, enum.Enum):
     COMPLEX = "complex"
 
 
-class Issue(Base, UUIDPKMixin, TimestampMixin, SoftDeleteMixin):
+class Issue(Base, UUIDPKMixin, TimestampMixin, SoftDeleteMixin, WorkspaceScopedMixin):
     __tablename__ = "issues"
 
     number: Mapped[int] = mapped_column(Integer, nullable=False)  # per-project numbering

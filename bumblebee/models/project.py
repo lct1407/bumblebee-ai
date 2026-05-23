@@ -3,10 +3,10 @@ from sqlalchemy import String, Text, Boolean
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin, SoftDeleteMixin
+from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin, SoftDeleteMixin, WorkspaceScopedMixin
 
 
-class Project(Base, UUIDPKMixin, TimestampMixin, SoftDeleteMixin):
+class Project(Base, UUIDPKMixin, TimestampMixin, SoftDeleteMixin, WorkspaceScopedMixin):
     __tablename__ = "projects"
 
     name: Mapped[str] = mapped_column(String(200), nullable=False)

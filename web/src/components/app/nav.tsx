@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ProjectSwitcher } from "@/components/app/project-switcher";
 
 const NAV = [
   { href: "/dashboard", label: "Dashboard", icon: "📊" },
@@ -14,7 +15,7 @@ export function AppNav() {
   const pathname = usePathname();
   return (
     <header className="sticky top-0 z-40 border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-lg">
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center gap-8">
+      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center gap-6">
         <Link href="/" className="flex items-center gap-2 group">
           <motion.span
             whileHover={{ rotate: [0, -10, 10, 0] }}
@@ -31,7 +32,10 @@ export function AppNav() {
           </span>
         </Link>
 
-        <nav className="flex items-center gap-1 flex-1">
+        <div className="h-6 w-px bg-zinc-300 dark:bg-zinc-700" />
+        <ProjectSwitcher />
+
+        <nav className="flex items-center gap-1 flex-1 justify-center">
           {NAV.map((item) => {
             const active = pathname?.startsWith(item.href);
             return (
@@ -61,14 +65,11 @@ export function AppNav() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Link
-            href="/"
-            className="text-xs text-zinc-500 hover:text-amber-500 transition"
-          >
+          <Link href="/" className="text-xs text-zinc-500 hover:text-amber-500 transition">
             ← Landing
           </Link>
           <div className="w-px h-6 bg-zinc-300 dark:bg-zinc-700" />
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-500 to-rose-500 flex items-center justify-center text-white text-sm font-bold">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-500 to-rose-500 flex items-center justify-center text-white text-sm font-bold ring-2 ring-amber-500/30">
             A
           </div>
         </div>

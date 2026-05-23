@@ -2,9 +2,9 @@
 import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import DateTime, String
+from sqlalchemy import DateTime, ForeignKey, String
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.orm import DeclarativeBase, Mapped, declared_attr, mapped_column
 
 
 def utcnow() -> datetime:
@@ -37,3 +37,24 @@ class SoftDeleteMixin:
     deleted_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
+
+
+class WorkspaceScopedMixin:
+    """Adds workspace_id FK + index. Every tenant-scoped model uses this.
+
+    Pattern:
+        class Issue(Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin):
+            ...
+
+    NOTE: api_keys deliberately omits this — keys can be system-scoped (no workspace)
+    for the CLI daemon / MCP standalone server.
+    """
+
+    @declared_attr
+    def workspace_id(cls) -> Mapped[uuid.UUID]:
+        return mapped_column(
+            UUID(as_uuid=True),
+            ForeignKey("workspaces.id", ondelete="CASCADE"),
+            nullable=False,
+            index=True,
+        )

@@ -8,7 +8,7 @@ from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 import enum
 
-from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin
+from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin
 
 
 class KnowledgeCategory(str, enum.Enum):
@@ -18,7 +18,7 @@ class KnowledgeCategory(str, enum.Enum):
     FACT = "fact"
 
 
-class KnowledgeEntry(Base, UUIDPKMixin, TimestampMixin):
+class KnowledgeEntry(Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin):
     __tablename__ = "knowledge_entries"
 
     title: Mapped[str] = mapped_column(String(500), nullable=False)

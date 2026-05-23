@@ -28,6 +28,46 @@ app.add_typer(plugins_app)
 app.add_typer(issue_app)
 app.add_typer(chat_app)
 
+# MCP server commands (Phase B)
+try:
+    from bumblebee_mcp.cli import app as mcp_app
+    app.add_typer(mcp_app, name="mcp", help="MCP server (Claude Code / Desktop / Cursor integration)")
+except ImportError:
+    pass
+
+# Eval commands (Phase C)
+eval_app = typer.Typer(name="eval", help="Prompt + workflow evaluation harness")
+app.add_typer(eval_app)
+
+
+@eval_app.command("prompts")
+def eval_prompts() -> None:
+    """Validate all YAML prompts against schema + few-shot examples. Exits 1 on error."""
+    from bumblebee.prompts.validator import main as run_validator
+    raise typer.Exit(run_validator())
+
+
+@eval_app.command("list-roles")
+def eval_list_roles() -> None:
+    """Print available agent roles + their key metrics."""
+    from bumblebee.prompts import list_roles, get_prompt
+    table = Table(title="Bumblebee agent roles")
+    table.add_column("role", style="cyan")
+    table.add_column("display name")
+    table.add_column("tokens_max", justify="right")
+    table.add_column("$ max", justify="right")
+    table.add_column("tools", justify="right")
+    for r in list_roles():
+        p = get_prompt(r)
+        table.add_row(
+            r,
+            p.display_name,
+            str(p.budgets.get("tokens_max", "—")),
+            f"${p.budgets.get('dollars_max', 0):.2f}",
+            str(len(p.tools_allowed)),
+        )
+    console.print(table)
+
 console = Console()
 
 

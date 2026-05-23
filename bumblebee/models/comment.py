@@ -7,7 +7,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 import enum
 
-from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin
+from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin
 
 
 class CommentType(str, enum.Enum):
@@ -19,7 +19,7 @@ class CommentType(str, enum.Enum):
     SYSTEM = "system"
 
 
-class Comment(Base, UUIDPKMixin, TimestampMixin):
+class Comment(Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin):
     __tablename__ = "comments"
 
     body: Mapped[str] = mapped_column(Text, nullable=False)

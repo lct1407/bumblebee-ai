@@ -8,7 +8,7 @@ from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 import enum
 
-from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin
+from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin
 
 
 class RunStatus(str, enum.Enum):
@@ -20,7 +20,7 @@ class RunStatus(str, enum.Enum):
     CANCELED = "canceled"
 
 
-class WorkflowRun(Base, UUIDPKMixin, TimestampMixin):
+class WorkflowRun(Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin):
     __tablename__ = "workflow_runs"
 
     status: Mapped[RunStatus] = mapped_column(

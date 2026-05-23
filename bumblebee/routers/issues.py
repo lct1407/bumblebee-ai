@@ -108,19 +108,51 @@ async def update_issue(
     if not issue:
         raise HTTPException(404, "issue_not_found")
 
-    old_status = issue.status
-    for k, v in body.model_dump(exclude_unset=True).items():
-        setattr(issue, k, v)
+    # Phase E: emit one field_changed event per mutated field for audit trail.
+    # Status change keeps its dedicated event type for backward compat.
+    patch = body.model_dump(exclude_unset=True)
+    AUDITED_FIELDS = {
+        "status", "priority", "type", "title", "description", "complexity",
+        "scope_hints", "acceptance_criteria", "ai_summary",
+    }
 
-    if body.status is not None and body.status != old_status:
-        await append_event(
-            db,
-            type="status_change",
-            issue_id=issue.id,
-            project_id=project.id,
-            payload={"from": old_status.value, "to": body.status.value},
-            source="user",
-        )
+    def _normalize(v):
+        # Enum → its value; preserves JSON-shape in event payload
+        return v.value if hasattr(v, "value") else v
+
+    for k, v in patch.items():
+        if k not in AUDITED_FIELDS:
+            setattr(issue, k, v)
+            continue
+        old = getattr(issue, k, None)
+        if _normalize(old) == _normalize(v):
+            # No-op change; don't pollute audit log
+            setattr(issue, k, v)
+            continue
+
+        if k == "status":
+            await append_event(
+                db,
+                type="status_change",
+                issue_id=issue.id,
+                project_id=project.id,
+                payload={"from": _normalize(old), "to": _normalize(v)},
+                source="user",
+            )
+        else:
+            await append_event(
+                db,
+                type="field_changed",
+                issue_id=issue.id,
+                project_id=project.id,
+                payload={
+                    "field": k,
+                    "from": _normalize(old),
+                    "to": _normalize(v),
+                },
+                source="user",
+            )
+        setattr(issue, k, v)
 
     await db.commit()
     await db.refresh(issue)

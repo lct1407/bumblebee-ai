@@ -7,7 +7,7 @@ from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 import enum
 
-from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin
+from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin
 
 
 class ChatSource(str, enum.Enum):
@@ -16,7 +16,7 @@ class ChatSource(str, enum.Enum):
     API = "api"
 
 
-class ChatSession(Base, UUIDPKMixin, TimestampMixin):
+class ChatSession(Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin):
     __tablename__ = "chat_sessions"
 
     title: Mapped[str | None] = mapped_column(String(500))

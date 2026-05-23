@@ -48,18 +48,33 @@ async def run_role(
     user_msg = (input_state or {}).get("user_message")
     prompt = await assemble_context(db, session, user_message=user_msg)
 
-    # Budget pre-check
+    # Budget pre-check (per-session/issue/project)
     try:
         await check_session_budget(db, session)
     except BudgetExceeded as e:
         await _finalize_failed(db, session, role, FailureReason.BUDGET_EXCEEDED, str(e))
         return HarnessResult(ok=False, output={"error": str(e)})
 
+    # Workspace quota pre-check (Phase D) — separate from per-session budget.
+    # Free/Pro plans have a monthly LLM spend cap; Team is unlimited (passthrough).
+    if session.workspace_id:
+        try:
+            from bumblebee.services.billing.quota import check_workspace_quota, QuotaExceeded
+            await check_workspace_quota(db, session.workspace_id)
+        except QuotaExceeded as e:
+            await _finalize_failed(db, session, role, FailureReason.BUDGET_EXCEEDED, str(e))
+            return HarnessResult(ok=False, output={"error": str(e), "upgrade_required": True})
+
     # LLM call (provider selected via BUMBLEBEE_PROVIDER env, default stub)
     import os
     provider_name = os.environ.get("BUMBLEBEE_PROVIDER", "stub")
     provider = get_provider(provider_name)
-    response = await provider.invoke(prompt)
+
+    streaming_enabled = os.environ.get("BUMBLEBEE_STREAMING", "1") != "0"
+    if streaming_enabled and getattr(provider, "supports_streaming", False):
+        response = await _invoke_with_streaming(db, session, role, provider, prompt)
+    else:
+        response = await provider.invoke(prompt)
 
     cost = estimate_cost(response.tokens_in or 1000, response.tokens_out or 200,
                          model=response.model or "stub")
@@ -82,6 +97,18 @@ async def run_role(
         payload={"amount_usd": cost, "cumulative_usd": session.dollars_used},
         source="system",
     )
+
+    # Phase D: record workspace usage + Stripe metered passthrough (Team plan only)
+    if session.workspace_id and cost > 0:
+        try:
+            from bumblebee.services.billing.quota import record_usage
+            await record_usage(
+                db, session.workspace_id, cost,
+                event_idempotency_key=f"session-{session.id}-{session.tokens_in + session.tokens_out}",
+            )
+        except Exception as exc:
+            import logging
+            logging.getLogger(__name__).warning("usage record failed: %s", exc)
 
     # Loop detector
     if await detect_loop(db, session.id):
@@ -139,6 +166,56 @@ def _parse_output(text: str, role: str) -> dict:
         # Old format for back-compat with existing tests
         return {"complexity": "simple", "summary": "Stub triage: small fix", "ai_confidence": 0.85}
     return {"text": text}
+
+
+async def _invoke_with_streaming(db, session, role, provider, prompt):
+    """Run provider.invoke_streaming and broadcast each chunk over WebSocket.
+
+    Chunks are ephemeral (not persisted). Only the final llm_call event hits the DB.
+    The web UI consumes chunks via /ws and assembles them client-side.
+    """
+    from bumblebee.services.websocket.manager import get_manager
+    from sqlalchemy import select
+    from bumblebee.models.project import Project
+    from bumblebee.models.issue import Issue
+    import uuid
+
+    # Resolve project slug once
+    slug = None
+    if session.issue_id:
+        iss = (await db.execute(select(Issue).where(Issue.id == session.issue_id))).scalar_one_or_none()
+        if iss:
+            proj = (await db.execute(select(Project).where(Project.id == iss.project_id))).scalar_one_or_none()
+            if proj:
+                slug = proj.slug
+
+    mgr = get_manager()
+    chunk_seq = 0
+
+    async def on_chunk(chunk: dict) -> None:
+        nonlocal chunk_seq
+        chunk_seq += 1
+        if not slug:
+            return
+        await mgr.broadcast(slug, {
+            "id": f"chunk-{session.id}-{chunk_seq}",
+            "type": "llm.chunk",
+            "session_id": str(session.id),
+            "issue_id": str(session.issue_id) if session.issue_id else None,
+            "actor": role,
+            "payload": {**chunk, "seq": chunk_seq},
+            "occurred_at": datetime.now(timezone.utc).isoformat(),
+        })
+
+    # Announce stream start so UI can clear/prepare its buffer
+    await on_chunk({"type": "stream_started", "role": role})
+    try:
+        response = await provider.invoke_streaming(prompt, on_chunk)
+    except Exception as exc:
+        await on_chunk({"type": "error", "message": str(exc)})
+        raise
+    await on_chunk({"type": "stream_ended", "role": role})
+    return response
 
 
 async def _finalize_failed(

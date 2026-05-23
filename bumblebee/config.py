@@ -19,7 +19,13 @@ class Settings(BaseSettings):
     anthropic_api_key: str = ""
     openai_api_key: str = ""
     gemini_api_key: str = ""
+    gemini_model: str = "gemini-2.0-flash"  # cheap + fast for MCP tools
     claude_cli_path: str = "claude"
+
+    # Vertex AI (alternative auth path; if set, used instead of gemini_api_key)
+    vertex_ai_project: str = ""
+    vertex_ai_location: str = "global"
+    vertex_ai_api_key: str = ""
 
     # Workspaces
     workspace_root: str = "~/.bumblebee/workspaces"
@@ -38,6 +44,21 @@ class Settings(BaseSettings):
     # Observability
     otel_exporter_otlp_endpoint: str = ""
     eval_golden_dataset_path: str = "./eval/golden.jsonl"
+
+    # Google OAuth (optional — when set, "Sign in with Google" button works)
+    google_client_id: str = ""
+    google_client_secret: str = ""
+    google_oauth_redirect_url: str = "http://localhost:8000/api/auth/google/callback"
+    web_base_url: str = "http://localhost:3000"  # for post-OAuth redirect
+
+    # Stripe billing (Phase D activates these; Phase A scaffolds with empty values)
+    stripe_secret_key: str = ""           # sk_test_... in dev, sk_live_... in prod
+    stripe_publishable_key: str = ""      # pk_test_... / pk_live_... (frontend reads)
+    stripe_webhook_secret: str = ""       # whsec_... from `stripe listen` or Dashboard
+    stripe_price_pro_id: str = ""         # price_... (created by scripts/stripe_setup_catalog.py)
+    stripe_price_team_id: str = ""
+    stripe_price_team_usage_id: str = ""  # metered LLM-cost passthrough
+    billing_enabled: bool = False         # gate live Stripe calls until Phase D is ready
 
 
 @lru_cache

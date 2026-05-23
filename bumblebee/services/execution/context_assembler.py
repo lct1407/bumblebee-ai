@@ -11,6 +11,7 @@ from bumblebee.models.issue import Issue
 from bumblebee.models.knowledge_entry import KnowledgeEntry
 from bumblebee.models.skill import Skill
 from bumblebee.services.knowledge.defense_baseline import DEFENSE_BASELINE
+from bumblebee.prompts.loader import get_prompt as get_yaml_prompt
 from bumblebee.services.state.issue_memory import project_issue_memory
 from bumblebee.services.tool.registry import TOOLS, tools_for_role
 
@@ -44,16 +45,37 @@ async def assemble_context(
     """
     parts: list[str] = [DEFENSE_BASELINE]
 
-    # 2. AgentDefinition
+    # 2. Role prompt — Phase C prefers externalised YAML over inline AgentDefinition.
+    # If a YAML prompt exists for this role, use it. Falls back to DB AgentDefinition
+    # for backwards compatibility (legacy roles seeded but not yet externalised).
     agent_def = None
+    role_for_prompt = session.role
     if session.agent_definition_id:
         agent_def = await db.get(AgentDefinition, session.agent_definition_id)
+        if agent_def and agent_def.role:
+            role_for_prompt = agent_def.role
     elif session.role:
         stmt = select(AgentDefinition).where(
             AgentDefinition.role == session.role, AgentDefinition.is_global == True
         )
         agent_def = (await db.execute(stmt)).scalar_one_or_none()
-    if agent_def:
+
+    yaml_prompt = None
+    if role_for_prompt:
+        try:
+            yaml_prompt = get_yaml_prompt(role_for_prompt)
+        except KeyError:
+            yaml_prompt = None
+
+    if yaml_prompt:
+        parts.append(f"## Role: {yaml_prompt.display_name}\n\n{yaml_prompt.system.strip()}")
+        if yaml_prompt.output_schema:
+            import json as _json
+            parts.append(
+                f"## Output schema (MUST match exactly)\n```json\n"
+                f"{_json.dumps(yaml_prompt.output_schema, indent=2)}\n```"
+            )
+    elif agent_def:
         parts.append(f"## Role: {agent_def.name}\n\n{agent_def.prompt_template}")
 
     # 3. Skills (if AgentDefinition has skill refs)

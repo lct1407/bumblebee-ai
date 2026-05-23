@@ -6,7 +6,7 @@ from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column
 import enum
 
-from bumblebee.models.base import Base, UUIDPKMixin, utcnow
+from bumblebee.models.base import Base, UUIDPKMixin, utcnow, WorkspaceScopedMixin
 
 
 class EventType(str, enum.Enum):
@@ -60,7 +60,7 @@ class EventType(str, enum.Enum):
     PLAN_COMPLETE = "plan_complete"
 
 
-class Event(Base, UUIDPKMixin):
+class Event(Base, UUIDPKMixin, WorkspaceScopedMixin):
     """Append-only. NEVER updated."""
     __tablename__ = "events"
     __table_args__ = (

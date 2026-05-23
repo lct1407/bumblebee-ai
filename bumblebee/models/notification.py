@@ -8,7 +8,7 @@ from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 import enum
 
-from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin
+from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin
 
 
 class NotificationType(str, enum.Enum):
@@ -22,7 +22,7 @@ class NotificationType(str, enum.Enum):
     ISSUE_BLOCKED = "issue_blocked"
 
 
-class Notification(Base, UUIDPKMixin, TimestampMixin):
+class Notification(Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin):
     __tablename__ = "notifications"
 
     recipient: Mapped[str] = mapped_column(String(200), nullable=False, index=True)

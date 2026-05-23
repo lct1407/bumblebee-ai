@@ -6,35 +6,37 @@ export function StatCard({
   value,
   hint,
   trend,
-  color = "amber",
+  accent = false,
 }: {
   label: string;
   value: string | number;
   hint?: string;
   trend?: { value: string; direction: "up" | "down" | "flat" };
-  color?: "amber" | "emerald" | "blue" | "purple" | "rose";
+  /** @deprecated kept for backwards compat — color prop now no-ops */
+  color?: string;
+  accent?: boolean;
 }) {
-  const colorMap = {
-    amber: "from-amber-500/20 to-orange-500/5 border-amber-500/30",
-    emerald: "from-emerald-500/20 to-teal-500/5 border-emerald-500/30",
-    blue: "from-blue-500/20 to-cyan-500/5 border-blue-500/30",
-    purple: "from-purple-500/20 to-pink-500/5 border-purple-500/30",
-    rose: "from-rose-500/20 to-amber-500/5 border-rose-500/30",
-  };
-  const trendColor = trend?.direction === "up" ? "text-emerald-500" : trend?.direction === "down" ? "text-rose-500" : "text-zinc-500";
+  const trendColor =
+    trend?.direction === "up" ? "var(--status-success)" :
+    trend?.direction === "down" ? "var(--status-danger)" :
+    "var(--text-tertiary)";
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
-      whileHover={{ y: -2 }}
-      className={`rounded-2xl border bg-gradient-to-br ${colorMap[color]} backdrop-blur p-5 transition`}
+      transition={{ duration: 0.3 }}
+      whileHover={{ y: -1 }}
+      className="rounded-xl border p-4 transition"
+      style={{
+        background: "var(--bg-surface)",
+        borderColor: "var(--border)",
+      }}
     >
-      <div className="flex items-baseline justify-between">
-        <div className="text-xs uppercase tracking-widest text-zinc-500 font-semibold">{label}</div>
+      <div className="flex items-center justify-between">
+        <div className="t-overline" style={{ color: "var(--text-tertiary)" }}>{label}</div>
         {trend && (
-          <div className={`text-xs font-semibold ${trendColor} flex items-center gap-0.5`}>
+          <div className="text-[11px] font-semibold flex items-center gap-0.5" style={{ color: trendColor }}>
             {trend.direction === "up" && "↗"}
             {trend.direction === "down" && "↘"}
             {trend.direction === "flat" && "→"}
@@ -42,8 +44,13 @@ export function StatCard({
           </div>
         )}
       </div>
-      <div className="mt-2 text-3xl font-bold text-zinc-900 dark:text-white">{value}</div>
-      {hint && <div className="mt-1 text-xs text-zinc-500">{hint}</div>}
+      <div
+        className="mt-2 text-2xl font-semibold tabular-nums tracking-tight"
+        style={{ color: accent ? "var(--accent)" : "var(--text-primary)" }}
+      >
+        {value}
+      </div>
+      {hint && <div className="mt-0.5 t-small" style={{ color: "var(--text-tertiary)" }}>{hint}</div>}
     </motion.div>
   );
 }

@@ -4,10 +4,10 @@ from sqlalchemy import String, Text, ForeignKey, Boolean
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin
+from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin
 
 
-class Skill(Base, UUIDPKMixin, TimestampMixin):
+class Skill(Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin):
     __tablename__ = "skills"
 
     name: Mapped[str] = mapped_column(String(200), nullable=False, index=True)

@@ -1,10 +1,23 @@
 "use client";
-import { use } from "react";
+import { use, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import { EventsApi, IssuesApi, WorkflowApi, type AgentEvent } from "@/lib/api-client";
+import { motion } from "framer-motion";
+import { EventsApi, IssuesApi, WorkflowApi, getActiveProject, type Issue } from "@/lib/api-client";
+import { StatusBadge, PriorityBadge } from "@/components/ui/badge";
+import { Sheet } from "@/components/ui/sheet";
+import { IssueForm } from "@/components/issues/issue-form";
+import { ActivityTimeline } from "@/components/issues/activity-timeline";
+import { WorkflowRuns } from "@/components/issues/workflow-runs";
+import { AcceptanceChecklist } from "@/components/issues/acceptance-checklist";
+import { LiveStream } from "@/components/issues/live-stream";
+import { useEventStream } from "@/lib/event-stream";
+import { parseDescription, serializeDescription, acceptanceProgress } from "@/lib/issue-sections";
+import { TYPE_ICONS, formatRelativeTime, cn } from "@/lib/utils";
 
-export default function IssueDetail({
+type Tab = "overview" | "activity" | "runs";
+
+export default function IssueDetailPage({
   params,
 }: {
   params: Promise<{ number: string }>;
@@ -12,17 +25,56 @@ export default function IssueDetail({
   const { number } = use(params);
   const num = parseInt(number, 10);
   const qc = useQueryClient();
+  const project = typeof window !== "undefined" ? getActiveProject() : "bb";
+
+  const [tab, setTab] = useState<Tab>("overview");
+  const [editOpen, setEditOpen] = useState(false);
 
   const issue = useQuery({
-    queryKey: ["issue", "bb", num],
-    queryFn: () => IssuesApi.get("bb", num),
+    queryKey: ["issue", project, num],
+    queryFn: () => IssuesApi.get(project, num),
   });
 
   const events = useQuery({
     queryKey: ["events", issue.data?.id],
-    queryFn: () => EventsApi.forIssue(issue.data!.id, 100),
+    queryFn: () => EventsApi.forIssue(issue.data!.id, 200),
     enabled: !!issue.data?.id,
-    refetchInterval: 3000,
+    refetchInterval: 5000,
+  });
+
+  // Live WebSocket stream (chunks + pushed events)
+  const stream = useEventStream({
+    project,
+    issueId: issue.data?.id,
+    enabled: !!issue.data?.id,
+  });
+
+  // Merge polled + streamed events, dedupe by id, newest first
+  const mergedEvents = (() => {
+    const polled = events.data ?? [];
+    const seen = new Set(polled.map((e) => e.id));
+    // Stream events need to be normalized to AgentEvent shape (source default)
+    const extra = stream.events
+      .filter((e) => !seen.has(e.id))
+      .map((e) => ({
+        id: e.id,
+        type: e.type,
+        payload: e.payload ?? {},
+        source: (e as any).source ?? "system",
+        actor: e.actor ?? null,
+        occurred_at: e.occurred_at,
+      }));
+    return [...extra, ...polled].sort(
+      (a, b) => new Date(b.occurred_at).getTime() - new Date(a.occurred_at).getTime(),
+    );
+  })();
+
+  const update = useMutation({
+    mutationFn: (patch: Partial<Issue>) => IssuesApi.update(project, num, patch),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["issue", project, num] });
+      qc.invalidateQueries({ queryKey: ["issues"] });
+    },
   });
 
   const trigger = useMutation({
@@ -33,104 +85,385 @@ export default function IssueDetail({
     },
   });
 
-  if (issue.isLoading) return <p className="text-zinc-500">loading…</p>;
-  if (issue.isError || !issue.data) return <p className="text-red-600">Issue not found</p>;
+  if (issue.isLoading) {
+    return (
+      <div className="space-y-3">
+        <div className="h-8 w-1/3 rounded animate-pulse" style={{ background: "var(--bg-subtle)" }} />
+        <div className="h-4 w-1/4 rounded animate-pulse" style={{ background: "var(--bg-subtle)" }} />
+      </div>
+    );
+  }
+  if (issue.isError || !issue.data) {
+    return (
+      <div className="text-center py-12" style={{ color: "var(--text-tertiary)" }}>
+        Issue not found.{" "}
+        <Link href="/issues" className="text-[var(--accent)] hover:underline">Back to issues</Link>
+      </div>
+    );
+  }
 
   const i = issue.data;
+  const sections = parseDescription(i.description);
+  const acceptance = acceptanceProgress(sections.acceptance);
+
+  const totalCost = mergedEvents
+    .filter((e) => e.type === "llm_call")
+    .reduce((sum, e) => sum + (e.payload?.cost_usd ?? 0), 0);
+  const totalCalls = mergedEvents.filter((e) => e.type === "llm_call").length;
+
+  const updateAcceptance = (next: string) => {
+    const newDescription = serializeDescription({ ...sections, acceptance: next }, i.type);
+    update.mutate({ description: newDescription });
+  };
 
   return (
-    <div className="space-y-6 max-w-5xl">
-      <Link href="/issues" className="text-sm text-zinc-500 hover:underline">
-        ← Back to issues
-      </Link>
-
+    <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">
-          <span className="font-mono text-amber-600">BB-{i.number}</span>{" "}
-          {i.title}
-        </h1>
-        <div className="mt-2 flex gap-4 text-sm text-zinc-500">
-          <span>status: <strong>{i.status}</strong></span>
-          <span>priority: <strong>{i.priority}</strong></span>
-          <span>type: <strong>{i.type}</strong></span>
-          {i.complexity && <span>complexity: <strong>{i.complexity}</strong></span>}
-          {i.ai_confidence != null && (
-            <span>confidence: <strong>{(i.ai_confidence * 100).toFixed(0)}%</strong></span>
+        <Link
+          href="/issues"
+          className="t-small inline-flex items-center gap-1 transition hover:text-[var(--text-primary)]"
+          style={{ color: "var(--text-tertiary)" }}
+        >
+          <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+          All issues
+        </Link>
+      </div>
+
+      <header className="flex items-start justify-between gap-4 flex-wrap">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-2 flex-wrap">
+            <span className="font-mono text-sm font-semibold" style={{ color: "var(--accent)" }}>
+              {project.toUpperCase()}-{i.number}
+            </span>
+            <span className="text-sm" style={{ color: "var(--text-tertiary)" }}>·</span>
+            <span className="inline-flex items-center gap-1 text-sm" style={{ color: "var(--text-secondary)" }}>
+              <span style={{ opacity: 0.7 }}>{TYPE_ICONS[i.type] || "·"}</span>
+              {i.type}
+            </span>
+            {i.complexity && (
+              <>
+                <span className="text-sm" style={{ color: "var(--text-tertiary)" }}>·</span>
+                <span className="text-sm" style={{ color: "var(--text-tertiary)" }}>
+                  {i.complexity}
+                </span>
+              </>
+            )}
+          </div>
+          <h1 className="t-display" style={{ color: "var(--text-primary)" }}>{i.title}</h1>
+          <div className="flex items-center gap-4 mt-3 flex-wrap">
+            <StatusBadge status={i.status} />
+            <PriorityBadge priority={i.priority} />
+            {i.ai_confidence != null && (
+              <span className="inline-flex items-center gap-1.5 text-xs" style={{ color: "var(--text-tertiary)" }}>
+                AI confidence
+                <span
+                  className="font-mono tabular-nums font-medium"
+                  style={{ color: "var(--text-primary)" }}
+                >
+                  {Math.round(i.ai_confidence * 100)}%
+                </span>
+              </span>
+            )}
+            <span className="text-xs" style={{ color: "var(--text-tertiary)" }}>
+              Updated {formatRelativeTime(i.updated_at)}
+            </span>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <button
+            onClick={() => setEditOpen(true)}
+            className="px-3 py-1.5 rounded-md text-sm font-medium border transition hover:bg-[var(--bg-subtle)]"
+            style={{ borderColor: "var(--border)", color: "var(--text-secondary)" }}
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => trigger.mutate()}
+            disabled={trigger.isPending}
+            className="px-3 py-1.5 rounded-md text-sm font-medium transition disabled:opacity-50"
+            style={{ background: "var(--accent)", color: "var(--accent-fg)" }}
+          >
+            {trigger.isPending ? "Triggering…" : "Trigger workflow"}
+          </button>
+        </div>
+      </header>
+
+      <nav className="border-b" style={{ borderColor: "var(--border)" }}>
+        <div className="flex gap-6 -mb-px">
+          <TabBtn active={tab === "overview"} onClick={() => setTab("overview")}>
+            Overview
+          </TabBtn>
+          <TabBtn active={tab === "activity"} onClick={() => setTab("activity")}>
+            Activity
+            <span className="ml-1.5 t-tiny tabular-nums" style={{ color: "var(--text-tertiary)" }}>
+              {mergedEvents.length}
+            </span>
+            {Object.values(stream.sessions).some((s) => s.status === "streaming") && (
+              <span
+                className="ml-1.5 w-1.5 h-1.5 rounded-full animate-pulse"
+                style={{ background: "var(--accent)" }}
+                title="Live"
+              />
+            )}
+          </TabBtn>
+          <TabBtn active={tab === "runs"} onClick={() => setTab("runs")}>
+            Runs
+          </TabBtn>
+        </div>
+      </nav>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 space-y-6">
+          {tab === "overview" && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+              <Section title="Overview">
+                <Body text={sections.overview} placeholder="No overview yet." />
+              </Section>
+
+              {sections.acceptance && (
+                <Section
+                  title="Acceptance criteria"
+                  badge={acceptance ? `${acceptance.done}/${acceptance.total}` : undefined}
+                >
+                  <AcceptanceChecklist text={sections.acceptance} onChange={updateAcceptance} />
+                </Section>
+              )}
+
+              {i.type === "bug" && (
+                <>
+                  {sections.reproduction && (
+                    <Section title="Reproduction steps">
+                      <Body text={sections.reproduction} mono />
+                    </Section>
+                  )}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {sections.expected && (
+                      <Section title="Expected">
+                        <Body text={sections.expected} />
+                      </Section>
+                    )}
+                    {sections.actual && (
+                      <Section title="Actual">
+                        <Body text={sections.actual} />
+                      </Section>
+                    )}
+                  </div>
+                  {sections.environment && (
+                    <Section title="Environment">
+                      <Body text={sections.environment} mono />
+                    </Section>
+                  )}
+                  {sections.root_cause && (
+                    <Section title="Root cause" accent>
+                      <Body text={sections.root_cause} />
+                    </Section>
+                  )}
+                </>
+              )}
+
+              {i.ai_summary && (
+                <Section title="AI summary" accent>
+                  <p className="text-sm leading-relaxed" style={{ color: "var(--text-primary)" }}>
+                    {i.ai_summary}
+                  </p>
+                </Section>
+              )}
+            </motion.div>
+          )}
+
+          {tab === "activity" && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-5">
+              <LiveStream sessions={stream.sessions} status={stream.status} />
+              <ActivityTimeline events={mergedEvents} />
+            </motion.div>
+          )}
+
+          {tab === "runs" && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <WorkflowRuns events={mergedEvents} />
+            </motion.div>
           )}
         </div>
-      </div>
 
-      <div className="flex gap-2">
-        <button
-          onClick={() => trigger.mutate()}
-          disabled={trigger.isPending}
-          className="rounded bg-amber-500 text-white px-4 py-2 text-sm font-medium hover:bg-amber-600 disabled:opacity-50"
-        >
-          {trigger.isPending ? "Triggering…" : "▶ Trigger Workflow"}
-        </button>
-      </div>
+        {/* Metadata sidebar */}
+        <aside className="space-y-4">
+          <MetadataCard>
+            <MetaRow label="Status"><StatusBadge status={i.status} /></MetaRow>
+            <MetaRow label="Priority"><PriorityBadge priority={i.priority} /></MetaRow>
+            <MetaRow label="Type">
+              <span className="text-sm" style={{ color: "var(--text-primary)" }}>{i.type}</span>
+            </MetaRow>
+            {i.complexity && (
+              <MetaRow label="Complexity">
+                <span className="text-sm" style={{ color: "var(--text-primary)" }}>{i.complexity}</span>
+              </MetaRow>
+            )}
+            <MetaRow label="Created">
+              <span className="text-sm" style={{ color: "var(--text-secondary)" }}>
+                {formatRelativeTime(i.created_at)}
+              </span>
+            </MetaRow>
+            <MetaRow label="Updated">
+              <span className="text-sm" style={{ color: "var(--text-secondary)" }}>
+                {formatRelativeTime(i.updated_at)}
+              </span>
+            </MetaRow>
+          </MetadataCard>
 
-      {i.description && (
-        <section className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4">
-          <h2 className="text-sm font-semibold text-zinc-500 uppercase tracking-wide mb-2">Description</h2>
-          <p className="whitespace-pre-wrap">{i.description}</p>
-        </section>
-      )}
+          {(events.data?.length ?? 0) > 0 && (
+            <MetadataCard title="Workflow stats">
+              <MetaRow label="LLM calls">
+                <span className="text-sm font-mono tabular-nums" style={{ color: "var(--text-primary)" }}>
+                  {totalCalls}
+                </span>
+              </MetaRow>
+              <MetaRow label="Total cost">
+                <span className="text-sm font-mono tabular-nums" style={{ color: "var(--accent)" }}>
+                  ${totalCost.toFixed(4)}
+                </span>
+              </MetaRow>
+              <MetaRow label="Events">
+                <span className="text-sm font-mono tabular-nums" style={{ color: "var(--text-primary)" }}>
+                  {events.data?.length ?? 0}
+                </span>
+              </MetaRow>
+            </MetadataCard>
+          )}
 
-      {i.ai_summary && (
-        <section className="rounded-lg border border-amber-200 dark:border-amber-900 bg-amber-50 dark:bg-amber-950/30 p-4">
-          <h2 className="text-sm font-semibold text-amber-700 dark:text-amber-300 uppercase tracking-wide mb-2">
-            AI Summary
-          </h2>
-          <p className="whitespace-pre-wrap text-sm">{i.ai_summary}</p>
-        </section>
-      )}
-
-      {i.scope_hints?.length > 0 && (
-        <section className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4">
-          <h2 className="text-sm font-semibold text-zinc-500 uppercase tracking-wide mb-2">Scope Hints</h2>
-          <div className="flex gap-2 flex-wrap">
-            {i.scope_hints.map((s) => (
-              <code key={s} className="px-2 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-xs">{s}</code>
-            ))}
-          </div>
-        </section>
-      )}
-
-      <section>
-        <h2 className="text-xl font-semibold mb-3">Event Stream {events.data && `(${events.data.length})`}</h2>
-        {events.isLoading && <p className="text-zinc-500">loading…</p>}
-        {events.data && (
-          <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
-            <table className="w-full text-xs">
-              <thead className="bg-zinc-100 dark:bg-zinc-900 text-left">
-                <tr>
-                  <th className="px-3 py-2">Time</th>
-                  <th className="px-3 py-2">Type</th>
-                  <th className="px-3 py-2">Actor</th>
-                  <th className="px-3 py-2">Payload</th>
-                </tr>
-              </thead>
-              <tbody>
-                {events.data.map((e: AgentEvent) => (
-                  <tr key={e.id} className="border-t border-zinc-200 dark:border-zinc-800">
-                    <td className="px-3 py-2 font-mono text-zinc-500">
-                      {new Date(e.occurred_at).toLocaleTimeString()}
-                    </td>
-                    <td className="px-3 py-2">
-                      <span className="font-mono text-amber-600">{e.type}</span>
-                    </td>
-                    <td className="px-3 py-2 text-zinc-500">{e.actor || "—"}</td>
-                    <td className="px-3 py-2 max-w-md truncate font-mono text-zinc-500">
-                      {JSON.stringify(e.payload).slice(0, 100)}
-                    </td>
-                  </tr>
+          {(i.scope_hints?.length ?? 0) > 0 && (
+            <MetadataCard title="Scope hints">
+              <div className="flex flex-wrap gap-1.5">
+                {i.scope_hints.map((s) => (
+                  <code
+                    key={s}
+                    className="px-1.5 py-0.5 rounded text-[11px] font-mono"
+                    style={{ background: "var(--bg-subtle)", color: "var(--text-secondary)" }}
+                  >
+                    {s}
+                  </code>
                 ))}
-              </tbody>
-            </table>
-          </div>
+              </div>
+            </MetadataCard>
+          )}
+        </aside>
+      </div>
+
+      <Sheet open={editOpen} onOpenChange={setEditOpen} title={`Edit ${project.toUpperCase()}-${i.number}`}>
+        <IssueForm
+          mode="edit"
+          initial={i}
+          submitting={update.isPending}
+          onCancel={() => setEditOpen(false)}
+          onSubmit={(payload) => {
+            update.mutate(payload as any, {
+              onSuccess: () => setEditOpen(false),
+            });
+          }}
+        />
+      </Sheet>
+    </div>
+  );
+}
+
+function TabBtn({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
+  return (
+    <button
+      onClick={onClick}
+      className="relative pb-2.5 text-sm font-medium transition inline-flex items-baseline"
+      style={{ color: active ? "var(--text-primary)" : "var(--text-tertiary)" }}
+    >
+      {children}
+      {active && (
+        <motion.span
+          layoutId="issue-tab-active"
+          className="absolute -bottom-px left-0 right-0 h-[2px]"
+          style={{ background: "var(--accent)" }}
+        />
+      )}
+    </button>
+  );
+}
+
+function Section({
+  title,
+  badge,
+  accent = false,
+  children,
+}: {
+  title: string;
+  badge?: string;
+  accent?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <section
+      className={cn("rounded-xl border p-5 relative", accent && "pl-6")}
+      style={{ background: "var(--bg-surface)", borderColor: "var(--border)" }}
+    >
+      {accent && (
+        <span
+          className="absolute left-0 top-5 bottom-5 w-[2px] rounded-r"
+          style={{ background: "var(--accent)" }}
+        />
+      )}
+      <div className="flex items-baseline justify-between mb-3">
+        <h2 className="t-overline" style={{ color: "var(--text-tertiary)" }}>{title}</h2>
+        {badge && (
+          <span
+            className="text-[11px] font-mono tabular-nums px-1.5 py-0.5 rounded"
+            style={{ background: "var(--bg-subtle)", color: "var(--text-secondary)" }}
+          >
+            {badge}
+          </span>
         )}
-      </section>
+      </div>
+      {children}
+    </section>
+  );
+}
+
+function Body({ text, placeholder, mono = false }: { text: string; placeholder?: string; mono?: boolean }) {
+  if (!text) {
+    return (
+      <p className="t-small italic" style={{ color: "var(--text-tertiary)" }}>
+        {placeholder || "—"}
+      </p>
+    );
+  }
+  return (
+    <pre
+      className={cn(
+        "text-sm whitespace-pre-wrap leading-relaxed",
+        mono ? "font-mono text-[13px]" : "font-sans",
+      )}
+      style={{ color: "var(--text-primary)" }}
+    >
+      {text}
+    </pre>
+  );
+}
+
+function MetadataCard({ title, children }: { title?: string; children: React.ReactNode }) {
+  return (
+    <div
+      className="rounded-xl border p-4"
+      style={{ background: "var(--bg-surface)", borderColor: "var(--border)" }}
+    >
+      {title && (
+        <h3 className="t-overline mb-3" style={{ color: "var(--text-tertiary)" }}>{title}</h3>
+      )}
+      <dl className="space-y-2.5">{children}</dl>
+    </div>
+  );
+}
+
+function MetaRow({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="flex items-center justify-between gap-3">
+      <dt className="text-xs" style={{ color: "var(--text-tertiary)" }}>{label}</dt>
+      <dd className="flex-shrink-0">{children}</dd>
     </div>
   );
 }
