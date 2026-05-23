@@ -109,6 +109,61 @@ echo "$LATEST"
 | Ransomware on backup host | Off-host encrypted S3 backup recoverable |
 | Lost JWT secret key | Rotate `API_SECRET_KEY`, all sessions invalidated, users re-login |
 
+## Secret rotation
+
+`.env.example` ships with empty placeholders. Production `.env` must replace
+every placeholder with a freshly generated value **before** the first boot
+against real traffic. Treat any leak (laptop loss, repo accident, CI dump,
+ex-employee with `.env` access) as cause for immediate rotation.
+
+| Secret | Source of truth | How to generate / fetch |
+|---|---|---|
+| `API_SECRET_KEY` | self-issued (JWT signing) | `openssl rand -hex 32` |
+| `STRIPE_WEBHOOK_SECRET` | Stripe Dashboard | Developers → Webhooks → endpoint → "Reveal signing secret" |
+
+### Rotate `API_SECRET_KEY`
+
+JWTs are signed with this key. Rotation invalidates every active session.
+
+```bash
+NEW_KEY=$(openssl rand -hex 32)
+# 1. Stage in secret store (1Password / Vault / KMS), not the repo.
+# 2. Update prod .env (or k8s Secret), then:
+sudo systemctl restart bumblebee-api  # or: kubectl rollout restart deploy/bumblebee-api
+# 3. Confirm via: curl -s https://api.bumblebee.example.com/api/health
+# 4. Announce forced re-login in #status — users see 401 on next request.
+```
+
+Rotate at least every 90 days, and immediately on any suspected exposure.
+
+### Rotate `STRIPE_WEBHOOK_SECRET`
+
+Stripe issues the signing secret per webhook endpoint. Rotation is a
+Dashboard action, not an `openssl` call.
+
+1. Stripe Dashboard → **Developers → Webhooks** → select the
+   `https://api.bumblebee.example.com/api/stripe/webhook` endpoint.
+2. Click **Roll secret**. Choose an overlap window (recommended: 24h) so the
+   old secret keeps verifying while you deploy the new one.
+3. Copy the new `whsec_...` into the secret store, update prod `.env`, restart
+   the API.
+4. Send a test event from the Dashboard (`Send test webhook`) and confirm a
+   `200` in the API logs. Investigate any `400 invalid signature` before the
+   overlap window closes.
+5. Once verified, expire the old secret from the Dashboard.
+
+If the secret is suspected leaked, roll **without** an overlap window — the
+short window of webhook failures is preferable to accepting forged events.
+
+### Rotation cadence
+
+| Secret | Routine | Trigger-based |
+|---|---|---|
+| `API_SECRET_KEY` | every 90 days | leak, ex-staff with `.env`, repo exposure |
+| `STRIPE_WEBHOOK_SECRET` | annually | leak, Stripe security advisory, endpoint URL change |
+
+Log each rotation in the ops journal with date, operator, and reason.
+
 ## Unresolved
 
 - WAL archiving + point-in-time recovery (PITR) not yet enabled — Phase E-future
