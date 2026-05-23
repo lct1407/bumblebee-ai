@@ -153,6 +153,31 @@ async def create_issue(db: AsyncSession, ctx: McpAuthContext, args: dict) -> dic
         )
     ).scalar() or 0
 
+    # Resolve parent issue by number (string id allowed) for hierarchy support.
+    parent_id_arg = args.get("parent_id") or args.get("parent_number")
+    parent_uuid = None
+    if parent_id_arg:
+        # Accept int (parent_number) or UUID string
+        try:
+            parent_n = int(parent_id_arg)
+            parent = (
+                await db.execute(
+                    select(Issue).where(
+                        Issue.workspace_id == ctx.workspace_id,
+                        Issue.project_id == project.id,
+                        Issue.number == parent_n,
+                    )
+                )
+            ).scalar_one_or_none()
+            if parent:
+                parent_uuid = parent.id
+        except (ValueError, TypeError):
+            import uuid as _uuid
+            try:
+                parent_uuid = _uuid.UUID(str(parent_id_arg))
+            except ValueError:
+                pass
+
     issue = Issue(
         workspace_id=ctx.workspace_id,
         project_id=project.id,
@@ -163,6 +188,7 @@ async def create_issue(db: AsyncSession, ctx: McpAuthContext, args: dict) -> dic
         priority=IssuePriority(args.get("priority", "medium")),
         status=IssueStatus.NEW,
         scope_hints=args.get("scope_hints", []),
+        parent_id=parent_uuid,
     )
     db.add(issue)
     await db.commit()
