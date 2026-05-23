@@ -16,21 +16,27 @@ async def enqueue(
     issue_id: uuid.UUID | None = None,
     workflow_run_id: uuid.UUID | None = None,
     required_provider: str | None = None,
+    required_project_id: uuid.UUID | None = None,
     priority: int = 2,
     idempotency_key: str | None = None,
     max_attempts: int = 3,
 ) -> uuid.UUID:
-    """Insert a task. Returns task id."""
+    """Insert a task. Returns task id.
+
+    BB-18: `required_project_id` constrains which devices can claim this task —
+    only daemons whose bound_project_ids include this id will see it.
+    """
     task_id = uuid.uuid4()
     await db.execute(
         text("""
             INSERT INTO task_queue (
                 id, status, priority, payload, idempotency_key,
-                issue_id, workflow_run_id, required_provider,
+                issue_id, workflow_run_id, required_provider, required_project_id,
                 attempts, max_attempts, created_at, updated_at
             ) VALUES (
                 :id, 'queued', :priority, CAST(:payload AS JSONB), :key,
-                :issue_id, :run_id, :provider, 0, :max_attempts, NOW(), NOW()
+                :issue_id, :run_id, :provider, :project_id, 0, :max_attempts,
+                NOW(), NOW()
             )
             ON CONFLICT (idempotency_key) DO NOTHING
         """),
@@ -42,6 +48,7 @@ async def enqueue(
             "issue_id": issue_id,
             "run_id": workflow_run_id,
             "provider": required_provider,
+            "project_id": required_project_id,
             "max_attempts": max_attempts,
         },
     )
@@ -53,9 +60,15 @@ async def claim_next(
     *,
     claimed_by: str,
     required_provider: str | None = None,
+    bound_project_ids: list | None = None,
     lease_seconds: int | None = None,
 ) -> dict | None:
-    """Atomic claim via SKIP LOCKED. Returns dict with task details or None."""
+    """Atomic claim via SKIP LOCKED. Returns dict with task details or None.
+
+    BB-18: when `bound_project_ids` is provided, only return tasks whose
+    `required_project_id` matches one of them OR is NULL (any-project tasks).
+    Empty list means accept any project (generalist worker, legacy behaviour).
+    """
     lease_seconds = lease_seconds or settings.lease_ttl_seconds
     expires_at = datetime.now(timezone.utc) + timedelta(seconds=lease_seconds)
 
@@ -63,11 +76,26 @@ async def claim_next(
     if required_provider is None:
         provider_clause = ""
 
+    project_clause = ""
+    proj_params: dict = {}
+    if bound_project_ids:
+        # Dynamic IN clause — one named bind per UUID to avoid asyncpg array binding pain
+        placeholders = []
+        for idx, pid in enumerate(bound_project_ids):
+            key = f"proj_{idx}"
+            placeholders.append(f":{key}")
+            proj_params[key] = str(pid)
+        project_clause = (
+            f"AND (required_project_id IS NULL OR "
+            f"required_project_id IN ({', '.join(placeholders)}))"
+        )
+
     sql = f"""
         WITH next_task AS (
             SELECT id FROM task_queue
             WHERE status = 'queued'
               {provider_clause}
+              {project_clause}
             ORDER BY priority ASC, created_at ASC
             FOR UPDATE SKIP LOCKED
             LIMIT 1
@@ -80,12 +108,14 @@ async def claim_next(
             attempts = attempts + 1,
             updated_at = NOW()
         WHERE id = (SELECT id FROM next_task)
-        RETURNING id, payload, issue_id, workflow_run_id, attempts, required_provider
+        RETURNING id, payload, issue_id, workflow_run_id, attempts,
+                  required_provider, required_project_id
     """
 
     params = {"claimed_by": claimed_by, "expires_at": expires_at}
     if required_provider:
         params["provider"] = required_provider
+    params.update(proj_params)
 
     result = await db.execute(text(sql), params)
     row = result.fetchone()
@@ -98,6 +128,7 @@ async def claim_next(
         "workflow_run_id": row.workflow_run_id,
         "attempts": row.attempts,
         "required_provider": row.required_provider,
+        "required_project_id": row.required_project_id,
     }
 
 

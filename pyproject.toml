@@ -41,6 +41,8 @@ dependencies = [
     "opentelemetry-instrumentation-fastapi>=0.50b0",
     "rich>=13.9.0",
     "typer>=0.15.0",
+    "strawberry-graphql[fastapi]>=0.250.0",
+    "stripe>=11.0.0",
 ]
 
 [project.optional-dependencies]

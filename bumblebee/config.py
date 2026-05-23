@@ -60,6 +60,17 @@ class Settings(BaseSettings):
     stripe_price_team_usage_id: str = ""  # metered LLM-cost passthrough
     billing_enabled: bool = False         # gate live Stripe calls until Phase D is ready
 
+    # GitHub webhook (Phase I3)
+    github_webhook_secret: str = ""       # HMAC-SHA256 secret for /api/webhooks/github
+
+    # Default staging branch for projects (Phase I1)
+    default_staging_branch: str = "stg"
+
+    # BB-9 ops baseline
+    sentry_dsn: str = ""                       # Sentry SDK DSN — empty disables
+    metrics_enabled: bool = True               # /metrics endpoint
+    backup_s3_bucket: str = ""                 # cron pg_dump target
+
 
 @lru_cache
 def get_settings() -> Settings:

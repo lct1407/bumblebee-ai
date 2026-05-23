@@ -54,10 +54,14 @@ def _node_handler_factory(
         if role in ("terminator", "done"):
             return {"current_node": node_id, "nodes_completed": state.get("nodes_completed", []) + [node_id]}
 
+        # Provider selection: env BUMBLEBEE_LLM_PROVIDER overrides default.
+        # Default = "stub" for safety; set to "claude-cli" or "gemini" to call real LLMs.
+        import os
+        provider = os.environ.get("BUMBLEBEE_LLM_PROVIDER", "stub")
         sess = AgentSession(
             role=role,
             phase=node_id,
-            provider="stub",
+            provider=provider,
             issue_id=issue.id,
             workflow_run_id=run.id,
             budget_wall_min=60,

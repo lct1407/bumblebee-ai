@@ -115,7 +115,7 @@ async def assemble_context(
         except Exception:
             pass
 
-    # 6. Issue context
+    # 6. Issue context + BB-5: source-aware (read files matching scope_hints)
     user_parts: list[str] = []
     if issue:
         user_parts.append(f"# Issue: BB-{issue.number}: {issue.title}")
@@ -125,6 +125,13 @@ async def assemble_context(
             user_parts.append(f"Scope hints: {', '.join(issue.scope_hints)}")
         if issue.acceptance_criteria:
             user_parts.append(f"Acceptance: {issue.acceptance_criteria}")
+
+        # BB-5: pull actual file contents matching scope_hints (best-effort,
+        # bounded budget). Only kicks in if project has repo_path and globs
+        # resolve to real files. Skipped when running on server without repo.
+        snippets = _collect_source_snippets(issue)
+        if snippets:
+            user_parts.append("## Source code (scoped)\n" + snippets)
 
     # 7. User message
     if user_message:
@@ -140,6 +147,12 @@ async def assemble_context(
     return Prompt(system=system, user=user, tools=tool_defs)
 
 
+# BB-5 — top-level helper for daemon-side reuse.
+SOURCE_BUDGET_BYTES = 200_000          # ~50K tokens
+PER_FILE_HEAD_BYTES = 16_000           # avoid 1 big file eating budget
+SKIP_DIRS = {".git", "node_modules", ".venv", "__pycache__", "dist", ".next"}
+
+
 async def _relevant_knowledge(
     db: AsyncSession, issue: Issue, limit: int = 5
 ) -> list[KnowledgeEntry]:
@@ -153,7 +166,6 @@ async def _relevant_knowledge(
     candidates = (await db.execute(stmt)).scalars().all()
     if not issue.scope_hints:
         return list(candidates[:limit])
-    # Filter by scope overlap (prefix match) — KISS for now
     scored: list[tuple[int, KnowledgeEntry]] = []
     for k in candidates:
         score = 0
@@ -166,3 +178,76 @@ async def _relevant_knowledge(
         scored.append((score, k))
     scored.sort(key=lambda x: (-x[0], -(x[1].use_count or 0)))
     return [k for _, k in scored[:limit]]
+
+
+def _collect_source_snippets(issue) -> str:
+    """Read up to SOURCE_BUDGET_BYTES of source matching issue.scope_hints.
+
+    Returns concatenated `# path\n```\n<contents>\n``` blocks, oldest first.
+    Skipped silently if project.repo_path is None or not on local fs (server
+    runs context assembly — files only present when on the worker device).
+    """
+    from pathlib import Path
+    import fnmatch
+    project = getattr(issue, "project", None)
+    if not project:
+        return ""
+    repo = getattr(project, "repo_path", None)
+    if not repo:
+        return ""
+    base = Path(repo).expanduser()
+    if not base.exists() or not base.is_dir():
+        return ""
+    hints = issue.scope_hints or []
+    if not hints:
+        return ""
+
+    selected: list[Path] = []
+    seen: set[Path] = set()
+    for hint in hints:
+        # Allow both 'src/x.py' and 'src/**/*.py' style
+        try:
+            matches = list(base.glob(hint)) if any(c in hint for c in "*?[") else \
+                      [base / hint] if (base / hint).exists() else []
+        except Exception:
+            matches = []
+        # Also fnmatch against the file walk (cheap, bounded)
+        if not matches:
+            for path in base.rglob("*"):
+                if any(skip in path.parts for skip in SKIP_DIRS):
+                    continue
+                rel = path.relative_to(base).as_posix()
+                if fnmatch.fnmatch(rel, hint):
+                    matches.append(path)
+                if len(matches) >= 50:
+                    break
+        for m in matches[:20]:
+            if m in seen or not m.is_file():
+                continue
+            seen.add(m)
+            selected.append(m)
+
+    if not selected:
+        return ""
+
+    out_chunks: list[str] = []
+    used = 0
+    for p in selected:
+        try:
+            data = p.read_bytes()
+        except Exception:
+            continue
+        head = data[:PER_FILE_HEAD_BYTES]
+        if used + len(head) > SOURCE_BUDGET_BYTES:
+            break
+        try:
+            text_body = head.decode("utf-8", errors="replace")
+        except Exception:
+            continue
+        rel = p.relative_to(base).as_posix()
+        ext = p.suffix.lstrip(".") or ""
+        out_chunks.append(f"### {rel}\n```{ext}\n{text_body}\n```")
+        used += len(head)
+    return "\n\n".join(out_chunks)
+
+

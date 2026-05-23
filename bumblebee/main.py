@@ -13,6 +13,10 @@ from bumblebee.routers import (
     audit as audit_router, changelog as changelog_router,
     billing as billing_router,
     oauth_google as oauth_google_router,
+    devices as devices_router,
+    tasks as tasks_router,
+    webhooks_github as webhooks_github_router,
+    metrics as metrics_router,
 )
 from bumblebee.services.obs.trace_emitter import init_tracing
 from bumblebee.services.rbac.auto_scope import register_auto_scope_listeners
@@ -62,6 +66,17 @@ def create_app() -> FastAPI:
     app.include_router(audit_router.router)
     app.include_router(changelog_router.router)
     app.include_router(ws_router.router)
+    app.include_router(devices_router.router)
+    app.include_router(tasks_router.router)
+    app.include_router(webhooks_github_router.router)
+    app.include_router(metrics_router.router)
+    # BB-9: Sentry SDK init (no-op if SENTRY_DSN empty)
+    from bumblebee.services.obs.sentry_init import init_sentry
+    init_sentry()
+
+    # GraphQL surface (primary API as of 2026-05-23)
+    from bumblebee.graphql import graphql_router
+    app.include_router(graphql_router, prefix="")
     init_tracing()
     return app
 

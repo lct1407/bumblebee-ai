@@ -9,6 +9,7 @@ const NAV = [
   { href: "/issues", label: "Issues", icon: "🎯" },
   { href: "/plugins", label: "Plugins", icon: "🧩" },
   { href: "/notifications", label: "Notifications", icon: "🔔" },
+  { href: "/help", label: "Help", icon: "📖" },
 ];
 
 export function AppNav() {

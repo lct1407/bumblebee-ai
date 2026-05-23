@@ -10,12 +10,17 @@ import yaml
 from sqlalchemy import select
 
 from bumblebee.database import SessionLocal
+from bumblebee.models.workspace import Workspace, WorkspaceMember, WorkspaceRole, WorkspacePlan
+from bumblebee.models.user import User, ApiKey  # noqa: F401  (load FK target)
 from bumblebee.models.project import Project
 from bumblebee.models.agent_definition import AgentDefinition
 from bumblebee.models.skill import Skill
 from bumblebee.models.workflow import Workflow
 from bumblebee.models.issue import Issue, IssueType, IssueStatus, IssuePriority
 from bumblebee.models.knowledge_entry import KnowledgeEntry, KnowledgeCategory
+from bumblebee.services.rbac.auto_scope import register_auto_scope_listeners
+
+register_auto_scope_listeners()
 
 
 WORKFLOWS_DIR = Path(__file__).parent.parent / "workflows"
@@ -204,8 +209,53 @@ def hash_graph(graph: dict) -> str:
     return hashlib.sha256(json.dumps(graph, sort_keys=True).encode()).hexdigest()
 
 
+async def _ensure_default_workspace(db) -> Workspace:
+    """Bootstrap a system user + default workspace if none exists.
+
+    Required since Phase A — projects/workflows/etc. need a workspace_id. The
+    auto-scope listener uses the first workspace as fallback for legacy seeded rows.
+    """
+    ws = (
+        await db.execute(select(Workspace).order_by(Workspace.created_at.asc()).limit(1))
+    ).scalar_one_or_none()
+    if ws:
+        print(f"[skip] workspace exists ({ws.slug})")
+        return ws
+
+    owner = (
+        await db.execute(select(User).where(User.email == "system@bumblebee.local"))
+    ).scalar_one_or_none()
+    if not owner:
+        owner = User(
+            email="system@bumblebee.local",
+            username="system",
+            full_name="System (seed owner)",
+            is_active=True,
+            is_admin=True,
+        )
+        db.add(owner)
+        await db.flush()
+        print(f"[ok] created system user ({owner.id})")
+
+    ws = Workspace(
+        name="Default Workspace",
+        slug="default",
+        owner_user_id=owner.id,
+        plan=WorkspacePlan.FREE,
+    )
+    db.add(ws)
+    await db.flush()
+    db.add(WorkspaceMember(workspace_id=ws.id, user_id=owner.id, role=WorkspaceRole.OWNER))
+    await db.flush()
+    print(f"[ok] created default workspace ({ws.id})")
+    return ws
+
+
 async def seed() -> None:
     async with SessionLocal() as db:
+        # 0. Default workspace (Phase A requirement)
+        default_ws = await _ensure_default_workspace(db)
+
         # 1. Default project
         existing = (
             await db.execute(select(Project).where(Project.slug == "bb"))

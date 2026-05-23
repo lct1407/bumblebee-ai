@@ -20,8 +20,11 @@ def _truncate_for_bcrypt(s: str) -> bytes:
     return s.encode("utf-8")[:72]
 
 
+BCRYPT_ROUNDS = 13  # BB-2: bumped from 12 (~200ms on modern CPU)
+
+
 def hash_password(plain: str) -> str:
-    salt = bcrypt.gensalt(rounds=12)
+    salt = bcrypt.gensalt(rounds=BCRYPT_ROUNDS)
     return bcrypt.hashpw(_truncate_for_bcrypt(plain), salt).decode("utf-8")
 
 

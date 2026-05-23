@@ -50,6 +50,10 @@ class Permission(str, enum.Enum):
     READ_AUDIT_LOG = "read_audit_log"
     EXPORT_AUDIT_LOG = "export_audit_log"
 
+    # Agent nodes (Phase G — device pairing & worker daemon)
+    READ_NODES = "read_nodes"
+    MANAGE_NODES = "manage_nodes"
+
 
 # Role → set[Permission] mapping. Owner > Admin > Member > Viewer.
 ROLE_PERMISSIONS: dict[WorkspaceRole, set[Permission]] = {
@@ -70,6 +74,7 @@ ROLE_PERMISSIONS: dict[WorkspaceRole, set[Permission]] = {
         Permission.READ_PLUGINS,
         Permission.READ_API_KEYS,
         Permission.MANAGE_API_KEYS,  # users manage their own
+        Permission.READ_NODES,
     },
     WorkspaceRole.ADMIN: {
         # All member permissions...
@@ -91,6 +96,8 @@ ROLE_PERMISSIONS: dict[WorkspaceRole, set[Permission]] = {
         Permission.MANAGE_PLUGINS,
         Permission.READ_AUDIT_LOG,
         Permission.EXPORT_AUDIT_LOG,
+        Permission.READ_NODES,
+        Permission.MANAGE_NODES,
     },
     WorkspaceRole.OWNER: {p for p in Permission},  # all
 }

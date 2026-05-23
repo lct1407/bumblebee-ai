@@ -85,6 +85,53 @@ export default function IssueDetailPage({
     },
   });
 
+  // Approve: GraphQL approveIssue mutation
+  const approve = useMutation({
+    mutationFn: async () => {
+      const apiBase = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+      const token = typeof window !== "undefined" ? localStorage.getItem("bumblebee.token") : null;
+      const r = await fetch(`${apiBase}/graphql`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({
+          query: "mutation($id: UUID!) { approveIssue(id: $id) { number status } }",
+          variables: { id: issue.data!.id },
+        }),
+      });
+      const body = await r.json();
+      if (body.errors) throw new Error(body.errors[0].message);
+      return body.data.approveIssue;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["issue"] });
+      qc.invalidateQueries({ queryKey: ["events"] });
+    },
+  });
+
+  // Plan: force feature-complex-flow (has 'plan' node = Coordinator/Planner)
+  const planMutation = useMutation({
+    mutationFn: async () => {
+      const apiBase = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+      const r = await fetch(`${apiBase}/api/workflow-runs/trigger`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          issue_id: issue.data!.id,
+          workflow_name: "feature-complex-flow",
+        }),
+      });
+      if (!r.ok) throw new Error(`HTTP ${r.status}: ${await r.text()}`);
+      return r.json();
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["issue"] });
+      qc.invalidateQueries({ queryKey: ["events"] });
+    },
+  });
+
   if (issue.isLoading) {
     return (
       <div className="space-y-3">
@@ -171,7 +218,7 @@ export default function IssueDetailPage({
             </span>
           </div>
         </div>
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="flex items-center gap-2 flex-shrink-0 flex-wrap">
           <button
             onClick={() => setEditOpen(true)}
             className="px-3 py-1.5 rounded-md text-sm font-medium border transition hover:bg-[var(--bg-subtle)]"
@@ -180,15 +227,68 @@ export default function IssueDetailPage({
             Edit
           </button>
           <button
+            onClick={() => planMutation.mutate()}
+            disabled={planMutation.isPending}
+            title="Run Planner (Coordinator role) — picks feature-complex-flow"
+            className="px-3 py-1.5 rounded-md text-sm font-medium border transition hover:bg-[var(--bg-subtle)] disabled:opacity-50"
+            style={{ borderColor: "var(--border)", color: "var(--text-secondary)" }}
+          >
+            {planMutation.isPending ? "Planning…" : "🧠 Plan"}
+          </button>
+          <button
+            onClick={() => approve.mutate()}
+            disabled={approve.isPending || i.status === "approved"}
+            title="Approve issue → unblock workflow dispatch"
+            className="px-3 py-1.5 rounded-md text-sm font-medium border transition hover:bg-[var(--bg-subtle)] disabled:opacity-50"
+            style={{
+              borderColor: i.status === "approved" ? "var(--success, #10b981)" : "var(--border)",
+              color: i.status === "approved" ? "var(--success, #10b981)" : "var(--text-secondary)",
+            }}
+          >
+            {approve.isPending ? "Approving…" : i.status === "approved" ? "✓ Approved" : "✅ Approve"}
+          </button>
+          <button
             onClick={() => trigger.mutate()}
             disabled={trigger.isPending}
+            title="Trigger workflow (H1 router picks based on complexity)"
             className="px-3 py-1.5 rounded-md text-sm font-medium transition disabled:opacity-50"
             style={{ background: "var(--accent)", color: "var(--accent-fg)" }}
           >
-            {trigger.isPending ? "Triggering…" : "Trigger workflow"}
+            {trigger.isPending ? "Triggering…" : "▶ Trigger workflow"}
           </button>
         </div>
       </header>
+
+      {(planMutation.isError || approve.isError || trigger.isError) && (
+        <div
+          className="rounded-md border p-3 text-sm"
+          style={{
+            background: "var(--bg-subtle)",
+            borderColor: "var(--danger, #ef4444)",
+            color: "var(--danger, #ef4444)",
+          }}
+        >
+          {(planMutation.error || approve.error || trigger.error)?.message}
+        </div>
+      )}
+
+      {(planMutation.isSuccess || approve.isSuccess || trigger.isSuccess) && (
+        <div
+          className="rounded-md border p-3 text-sm flex items-center gap-2"
+          style={{ borderColor: "var(--success, #10b981)" }}
+        >
+          <span>✓ Action submitted. Provider:</span>
+          <code
+            className="px-2 py-0.5 rounded text-xs"
+            style={{ background: "var(--bg-subtle)" }}
+          >
+            {process.env.NEXT_PUBLIC_LLM_PROVIDER || "stub"}
+          </code>
+          <span className="text-xs" style={{ color: "var(--text-tertiary)" }}>
+            (stub = canned response · claude-cli = real Claude · gemini = Vertex AI)
+          </span>
+        </div>
+      )}
 
       <nav className="border-b" style={{ borderColor: "var(--border)" }}>
         <div className="flex gap-6 -mb-px">

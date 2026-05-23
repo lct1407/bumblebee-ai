@@ -65,6 +65,8 @@ export function Sidebar({ onCmdK }: { onCmdK: () => void }) {
       label: "System",
       items: [
         { href: "/plugins", label: "Plugins", icon: <Icon d="M14 6V3h-4v3H5v15h14V6h-5zm0 12h-4v-2h4v2zm0-4h-4v-2h4v2zm0-4h-4V8h4v2z" /> },
+        { href: "/settings/devices", label: "Devices", icon: <Icon d="M4 6h16v10H4zM2 20h20M9 16v4M15 16v4" /> },
+        { href: "/help", label: "Help", icon: <Icon d="M12 22a10 10 0 100-20 10 10 0 000 20zM9 9a3 3 0 116 0c0 1.5-2 2-3 3v2M12 18h.01" /> },
       ],
     },
   ];

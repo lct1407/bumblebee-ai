@@ -17,5 +17,64 @@ services:
       timeout: 5s
       retries: 5
 
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: bumblebee-ai:dev
+    container_name: bumblebee-api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://bumblebee:bumblebee@db:5432/bumblebee
+      API_HOST: 0.0.0.0
+      API_PORT: "8000"
+      API_SECRET_KEY: "${API_SECRET_KEY:-change-me-dev-only}"
+      ENVIRONMENT: "${ENVIRONMENT:-development}"
+      ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY:-}"
+      GEMINI_API_KEY: "${GEMINI_API_KEY:-}"
+      VERTEX_AI_PROJECT: "${VERTEX_AI_PROJECT:-}"
+      VERTEX_AI_LOCATION: "${VERTEX_AI_LOCATION:-global}"
+      VERTEX_AI_API_KEY: "${VERTEX_AI_API_KEY:-}"
+      STRIPE_SECRET_KEY: "${STRIPE_SECRET_KEY:-}"
+      STRIPE_PUBLISHABLE_KEY: "${STRIPE_PUBLISHABLE_KEY:-}"
+      STRIPE_WEBHOOK_SECRET: "${STRIPE_WEBHOOK_SECRET:-}"
+      STRIPE_PRICE_PRO_ID: "${STRIPE_PRICE_PRO_ID:-}"
+      STRIPE_PRICE_TEAM_ID: "${STRIPE_PRICE_TEAM_ID:-}"
+      STRIPE_PRICE_TEAM_USAGE_ID: "${STRIPE_PRICE_TEAM_USAGE_ID:-}"
+      BILLING_ENABLED: "${BILLING_ENABLED:-false}"
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8000/health/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    image: bumblebee-web:dev
+    container_name: bumblebee-web
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      NEXT_PUBLIC_API_URL: "${NEXT_PUBLIC_API_URL:-http://localhost:8000}"
+      NODE_ENV: production
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/ >/dev/null 2>&1 || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
 volumes:
   pgdata:

@@ -105,8 +105,7 @@ async def _on_subscription_created(event: dict) -> None:
         await append_event(
             db,
             type="subscription_created",
-            project_id=None,
-            issue_id=None,
+            workspace_id=ws.id,
             payload={"plan": ws.plan.value, "subscription_id": sub.get("id")},
             source="stripe",
         )
@@ -138,6 +137,7 @@ async def _on_subscription_updated(event: dict) -> None:
         await append_event(
             db,
             type="subscription_updated",
+            workspace_id=ws.id,
             payload={"status": status_str, "plan": ws.plan.value},
             source="stripe",
         )
@@ -157,7 +157,7 @@ async def _on_subscription_deleted(event: dict) -> None:
         ws.stripe_subscription_id = None
         await db.commit()
         await append_event(
-            db, type="subscription_canceled", payload={}, source="stripe",
+            db, type="subscription_canceled", workspace_id=ws.id, payload={}, source="stripe",
         )
         await db.commit()
 
@@ -180,6 +180,7 @@ async def _on_invoice_paid(event: dict) -> None:
         await append_event(
             db,
             type="subscription_paid",
+            workspace_id=ws.id,
             payload={
                 "invoice_id": inv.get("id"),
                 "amount_paid": inv.get("amount_paid"),
@@ -205,6 +206,7 @@ async def _on_invoice_payment_failed(event: dict) -> None:
         await append_event(
             db,
             type="payment_failed",
+            workspace_id=ws.id,
             payload={"invoice_id": inv.get("id"), "amount_due": inv.get("amount_due")},
             source="stripe",
         )

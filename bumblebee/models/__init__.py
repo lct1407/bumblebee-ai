@@ -1,4 +1,4 @@
-﻿"""SQLAlchemy ORM models."""
+"""SQLAlchemy ORM models."""
 from bumblebee.models.base import Base
 from bumblebee.models.project import Project
 from bumblebee.models.issue import Issue
@@ -15,6 +15,10 @@ from bumblebee.models.knowledge_entry import KnowledgeEntry
 from bumblebee.models.notification import Notification
 from bumblebee.models.plugin_registration import PluginRegistration
 from bumblebee.models.user import User, ApiKey
+from bumblebee.models.workspace import (
+    Workspace, WorkspaceMember, WorkspaceInvite, WorkspaceRole, WorkspacePlan,
+)
+from bumblebee.models.agent_node import AgentNode, NodeStatus
 
 __all__ = [
     "Base",
@@ -34,4 +38,11 @@ __all__ = [
     "PluginRegistration",
     "User",
     "ApiKey",
+    "Workspace",
+    "WorkspaceMember",
+    "WorkspaceInvite",
+    "WorkspaceRole",
+    "WorkspacePlan",
+    "AgentNode",
+    "NodeStatus",
 ]

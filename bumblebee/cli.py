@@ -136,10 +136,114 @@ def server(
 
 
 @app.command()
-def daemon() -> None:
-    """Start worker daemon (Phase 1.5+ — currently stub)."""
-    console.print("[yellow]daemon: not yet implemented (Phase 1.5+)[/yellow]")
-    raise typer.Exit(1)
+def daemon(
+    server_url: str = typer.Option("http://localhost:8000", "--server"),
+    config: str = typer.Option("~/.bumblebee/node.json", "--config"),
+    poll_interval: float = typer.Option(3.0, "--interval"),
+) -> None:
+    """Start worker daemon: long-poll server for tasks and execute them locally."""
+    from bumblebee.worker.daemon import run_daemon
+    asyncio.run(run_daemon(server_url, Path(config).expanduser(), poll_interval))
+
+
+skills_app = typer.Typer(name="skills", help="Bundle Bumblebee roles for external AI agents")
+app.add_typer(skills_app)
+
+
+@skills_app.command("install")
+def skills_install(
+    target: str = typer.Option(
+        "claude-code", "--target", "-t",
+        help="claude-code | cursor | codex | generic",
+    ),
+    repo: str = typer.Option(".", "--repo", "-r", help="Repo to install into"),
+) -> None:
+    """Install Bumblebee role prompts + workflows into an external AI agent toolchain.
+
+    Examples:
+      bb skills install                                  # Claude Code, current repo
+      bb skills install -t cursor -r ../some-other-repo
+      bb skills install -t codex
+    """
+    from bumblebee.installer import install_bundle, TARGETS
+    if target not in TARGETS:
+        console.print(f"[red]unknown target: {target}[/red]. choices: {list(TARGETS)}")
+        raise typer.Exit(2)
+    written = install_bundle(target, Path(repo).resolve())
+    console.print(f"[green]installed {len(written)} file(s)[/green] for target [cyan]{target}[/cyan]:")
+    for p in written:
+        console.print(f"  • {p}")
+
+
+@skills_app.command("targets")
+def skills_targets() -> None:
+    """List available install targets."""
+    from bumblebee.installer import TARGETS
+    table = Table(title="Bumblebee bundle targets")
+    table.add_column("key", style="cyan")
+    table.add_column("description")
+    for k, t in TARGETS.items():
+        table.add_row(k, t.label)
+    console.print(table)
+
+
+device_app = typer.Typer(name="device", help="Device pairing for worker daemon")
+app.add_typer(device_app)
+
+
+@device_app.command("pair")
+def device_pair(
+    server_url: str = typer.Option("http://localhost:8000", "--server"),
+    name: str = typer.Option(None, "--name", help="Device label (default: hostname)"),
+    workspace: str = typer.Option(None, "--workspace", help="Workspace slug"),
+    config: str = typer.Option("~/.bumblebee/node.json", "--config"),
+) -> None:
+    """Request pairing; print code; wait for user to confirm in web UI."""
+    import platform, socket, httpx, json
+    cfg = Path(config).expanduser()
+    cfg.parent.mkdir(parents=True, exist_ok=True)
+
+    body = {
+        "name": name or socket.gethostname(),
+        "capabilities": ["claude-cli", "git"],
+        "hostname": socket.gethostname(),
+        "platform": platform.system().lower(),
+        "workspace_slug": workspace,
+    }
+    r = httpx.post(f"{server_url}/api/devices/pair-request", json=body, timeout=15)
+    r.raise_for_status()
+    data = r.json()
+    code = data["pairing_code"]
+    node_id = data["node_id"]
+
+    console.print(f"\n[bold yellow]Pairing code: [white on blue] {code} [/white on blue][/bold yellow]")
+    console.print(f"Open {server_url.replace(':8000', ':3000')}/settings/devices and confirm this code (10 min).")
+    console.print(f"Node ID: {node_id}\n")
+    console.print("Waiting for confirmation... (Ctrl+C to cancel)")
+
+    # Poll for confirmation by listing nodes (need a separate auth) — simpler:
+    # write a stub config with node_id; user re-runs `bb device save-token` after confirm.
+    cfg.write_text(json.dumps({
+        "server_url": server_url,
+        "node_id": node_id,
+        "status": "pending",
+        "pairing_code": code,
+    }, indent=2))
+    console.print(f"[dim]stub config written to {cfg}. Run `bb device save-token <token>` after confirming in web.[/dim]")
+
+
+@device_app.command("save-token")
+def device_save_token(
+    token: str = typer.Argument(..., help="Raw node token from web UI"),
+    config: str = typer.Option("~/.bumblebee/node.json", "--config"),
+) -> None:
+    import json
+    cfg = Path(config).expanduser()
+    data = json.loads(cfg.read_text()) if cfg.exists() else {}
+    data["node_token"] = token
+    data["status"] = "active"
+    cfg.write_text(json.dumps(data, indent=2))
+    console.print(f"[green]token saved[/green] at {cfg}")
 
 
 @plugins_app.command("list")
@@ -187,25 +291,36 @@ def plugins_reload() -> None:
 def issue_list(
     project: str = typer.Option("bb", "--project", "-p"),
     status: str | None = typer.Option(None, "--status"),
+    server: str | None = typer.Option(None, "--server"),
 ) -> None:
-    """List issues."""
-    import httpx
+    """List issues (via GraphQL)."""
+    from bumblebee.cli_client import GraphQLClient
 
-    settings = get_settings()
-    url = f"http://{settings.api_host}:{settings.api_port}/api/projects/{project}/issues"
-    if status:
-        url += f"?status={status}"
-    r = httpx.get(url, timeout=10)
-    if r.status_code != 200:
-        console.print(f"[red]error:[/red] {r.text}")
+    client = GraphQLClient.from_env_or_config(server_url=server)
+    # Resolve project by slug to get UUID
+    proj_data = client.query(
+        "query($s: String!) { projects { id slug } }",
+        variables={"s": project},
+    )
+    pid = next((p["id"] for p in proj_data["projects"] if p["slug"] == project), None)
+    if not pid:
+        console.print(f"[red]project not found:[/red] {project}")
         raise typer.Exit(1)
+    issues_data = client.query(
+        "query($pid: UUID!, $status: String) { issues(projectId: $pid, status: $status, limit: 100) { number status title complexity } }",
+        variables={"pid": pid, "status": status},
+    )
     table = Table()
     table.add_column("Key", style="cyan")
     table.add_column("Status", style="yellow")
+    table.add_column("Cx", style="magenta")
     table.add_column("Title")
-    for item in r.json():
+    for item in issues_data["issues"]:
         table.add_row(
-            f"BB-{item['number']}", item["status"], item["title"][:60]
+            f"BB-{item['number']}",
+            item["status"],
+            item.get("complexity") or "-",
+            (item["title"] or "")[:60],
         )
     console.print(table)
 
@@ -214,21 +329,69 @@ def issue_list(
 def issue_create(
     title: str = typer.Argument(...),
     project: str = typer.Option("bb", "--project", "-p"),
-    type: str = typer.Option("task", "--type", "-t"),
-    priority: str = typer.Option("medium", "--priority"),
+    type: str = typer.Option("TASK", "--type", "-t"),
+    priority: str = typer.Option("MEDIUM", "--priority"),
+    server: str | None = typer.Option(None, "--server"),
 ) -> None:
-    """Create an issue."""
-    import httpx
+    """Create an issue (via GraphQL)."""
+    from bumblebee.cli_client import GraphQLClient
 
-    settings = get_settings()
-    url = f"http://{settings.api_host}:{settings.api_port}/api/projects/{project}/issues"
-    r = httpx.post(url, json={"title": title, "type": type, "priority": priority}, timeout=10)
-    if r.status_code == 201:
-        d = r.json()
-        console.print(f"[green]created BB-{d['number']}:[/green] {d['title']}")
-    else:
-        console.print(f"[red]error {r.status_code}:[/red] {r.text}")
+    client = GraphQLClient.from_env_or_config(server_url=server)
+    proj_data = client.query("{ projects { id slug } }")
+    pid = next((p["id"] for p in proj_data["projects"] if p["slug"] == project), None)
+    if not pid:
+        console.print(f"[red]project not found:[/red] {project}")
         raise typer.Exit(1)
+    data = client.query(
+        "mutation($i: IssueCreateInput!) { createIssue(input: $i) { number title status } }",
+        variables={"i": {"projectId": pid, "title": title, "type": type.upper(), "priority": priority.upper()}},
+    )
+    d = data["createIssue"]
+    console.print(f"[green]created BB-{d['number']}:[/green] {d['title']} (status={d['status']})")
+
+
+@app.command()
+def whoami(server: str | None = typer.Option(None, "--server")) -> None:
+    """Print current workspace (via GraphQL `me` query)."""
+    from bumblebee.cli_client import GraphQLClient
+    client = GraphQLClient.from_env_or_config(server_url=server)
+    data = client.query("{ me { id name slug plan paymentOverdue } }")
+    if not data.get("me"):
+        console.print("[yellow]no workspace bound to current token[/yellow]")
+        raise typer.Exit(1)
+    me = data["me"]
+    console.print(f"[cyan]workspace:[/cyan] {me['name']} ({me['slug']})")
+    console.print(f"  id:      {me['id']}")
+    console.print(f"  plan:    {me['plan']}")
+    console.print(f"  overdue: {me['paymentOverdue']}")
+
+
+@app.command()
+def login(
+    username: str = typer.Argument(...),
+    password: str = typer.Option(..., "--password", "-p", prompt=True, hide_input=True),
+    server: str = typer.Option("http://localhost:8000", "--server"),
+    config: str = typer.Option("~/.bumblebee/cli.json", "--config"),
+) -> None:
+    """Login (via GraphQL) and store token in ~/.bumblebee/cli.json."""
+    import json
+    from bumblebee.cli_client import GraphQLClient
+    client = GraphQLClient(endpoint=server.rstrip("/") + "/graphql")
+    data = client.query(
+        "mutation($i: LoginInput!) { login(input: $i) { accessToken user { username } workspace { name slug plan } } }",
+        variables={"i": {"username": username, "password": password}},
+    )
+    out = data["login"]
+    cfg = Path(config).expanduser()
+    cfg.parent.mkdir(parents=True, exist_ok=True)
+    cfg.write_text(json.dumps({
+        "server_url": server, "access_token": out["accessToken"],
+        "username": out["user"]["username"],
+        "workspace": out.get("workspace"),
+    }, indent=2))
+    console.print(f"[green]logged in as[/green] {out['user']['username']}, "
+                  f"workspace={out['workspace']['name'] if out.get('workspace') else 'none'}")
+    console.print(f"[dim]token cached at {cfg}[/dim]")
 
 
 @chat_app.command("send")

@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 const NAV = [
   { href: "/settings/workspace", label: "Workspace" },
   { href: "/settings/members", label: "Members" },
+  { href: "/settings/devices", label: "Devices" },
   { href: "/settings/api-keys", label: "API keys" },
   { href: "/settings/billing", label: "Billing" },
 ];

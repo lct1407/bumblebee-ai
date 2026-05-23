@@ -18,11 +18,16 @@ async def append_event(
     chat_session_id: uuid.UUID | None = None,
     workflow_run_id: uuid.UUID | None = None,
     causation_id: uuid.UUID | None = None,
+    workspace_id: uuid.UUID | None = None,
     source: str = "system",
     actor: str | None = None,
     prompt_hash: str | None = None,
 ) -> Event:
-    """Append a new event to the canonical log. Never updates existing rows."""
+    """Append a new event to the canonical log. Never updates existing rows.
+
+    workspace_id is required for workspace-level events (e.g. Stripe billing)
+    where no parent issue/project/session exists for the auto-scope listener.
+    """
     event = Event(
         type=type,
         payload=payload or {},
@@ -37,6 +42,8 @@ async def append_event(
         prompt_hash=prompt_hash,
         occurred_at=datetime.now(timezone.utc),
     )
+    if workspace_id is not None:
+        event.workspace_id = workspace_id
     db.add(event)
     await db.flush()
     # Best-effort WS broadcast (non-blocking, ignored on error)
