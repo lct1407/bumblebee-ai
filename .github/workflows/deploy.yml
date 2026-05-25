@@ -108,6 +108,10 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment || 'production' }}
+    # Skip auto-deploy unless infra is provisioned (SSH_HOST secret + DEPLOY_ENABLED var).
+    # Enable via: Settings -> Variables -> Actions -> DEPLOY_ENABLED=true
+    # plus add SSH_HOST / SSH_USER / SSH_PRIVATE_KEY repo secrets.
+    if: vars.DEPLOY_ENABLED == 'true' || github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v4
 
@@ -120,6 +124,16 @@ jobs:
           DOMAIN_WEB: ${{ secrets.DOMAIN_WEB }}
           SERVER_IP: ${{ secrets.SERVER_IP }}
         run: bash infra/cloudflare-dns-sync.sh
+
+      - name: Check SSH config exists
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+        run: |
+          if [ -z "$SSH_HOST" ]; then
+            echo "::error::SSH_HOST secret not configured. Add it under Settings → Secrets → Actions."
+            exit 1
+          fi
+          echo "SSH_HOST configured: ${SSH_HOST:0:3}***"
 
       - name: SSH deploy
         uses: appleboy/ssh-action@v1.0.3
