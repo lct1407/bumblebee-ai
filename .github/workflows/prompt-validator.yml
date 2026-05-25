@@ -26,7 +26,7 @@ jobs:
           python-version: "3.12"
       - name: Install deps
         run: |
-          pip install -e .
+          pip install -e ".[dev]"
           pip install pyyaml jsonschema pydantic pydantic-settings
       - name: Run prompt validator
         run: python -m bumblebee.prompts.validator
