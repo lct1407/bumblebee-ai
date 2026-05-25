@@ -1,6 +1,7 @@
 ﻿"""Event log â€” append-only canonical record. Plane 4 / State."""
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -40,7 +41,7 @@ async def append_event(
         source=source,
         actor=actor,
         prompt_hash=prompt_hash,
-        occurred_at=datetime.now(timezone.utc),
+        occurred_at=datetime.now(UTC),
     )
     if workspace_id is not None:
         event.workspace_id = workspace_id
@@ -48,8 +49,8 @@ async def append_event(
     await db.flush()
     # Best-effort WS broadcast (non-blocking, ignored on error)
     try:
-        from bumblebee.services.websocket.manager import get_manager
         from bumblebee.models.project import Project
+        from bumblebee.services.websocket.manager import get_manager
 
         slug = None
         if project_id:

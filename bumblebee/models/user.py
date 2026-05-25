@@ -1,8 +1,8 @@
 """User entity — commercial v0.4.0 auth requirement."""
-from sqlalchemy import String, Boolean
+from sqlalchemy import Boolean, String
 from sqlalchemy.orm import Mapped, mapped_column
 
-from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin
+from bumblebee.models.base import Base, TimestampMixin, UUIDPKMixin
 
 
 class User(Base, UUIDPKMixin, TimestampMixin):

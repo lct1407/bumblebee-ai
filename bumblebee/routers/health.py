@@ -1,11 +1,10 @@
 ﻿"""Health + version endpoints."""
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi import Depends
 
-from bumblebee.database import get_db
 from bumblebee import __version__
+from bumblebee.database import get_db
 
 router = APIRouter(tags=["health"])
 

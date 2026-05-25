@@ -1,10 +1,11 @@
 ﻿"""Workflow: declarative graph definition (loaded into LangGraph StateGraph)."""
 import uuid
-from sqlalchemy import String, Text, Integer, ForeignKey, Boolean
+
+from sqlalchemy import Boolean, ForeignKey, Integer, String, Text
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin
+from bumblebee.models.base import Base, TimestampMixin, UUIDPKMixin, WorkspaceScopedMixin
 
 
 class Workflow(Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin):

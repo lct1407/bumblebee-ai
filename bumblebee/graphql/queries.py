@@ -1,14 +1,18 @@
 """GraphQL Query root."""
 from __future__ import annotations
+
 import uuid
-from typing import Optional
 
 import strawberry
 from sqlalchemy import select
 
 from bumblebee.graphql.context import GraphQLContext
 from bumblebee.graphql.types import (
-    AgentNodeType, EventType, Issue, ProjectType, WorkspaceType,
+    AgentNodeType,
+    EventType,
+    Issue,
+    ProjectType,
+    WorkspaceType,
 )
 from bumblebee.models.agent_node import AgentNode
 from bumblebee.models.event import Event
@@ -26,8 +30,8 @@ def _require_workspace(info) -> uuid.UUID:
 
 def _require_permission(info, permission) -> uuid.UUID:
     """BB-7: enforce role-based permission on a resolver. Returns workspace_id."""
-    from bumblebee.services.rbac.permissions import has_permission
     from bumblebee.models.workspace import WorkspaceRole
+    from bumblebee.services.rbac.permissions import has_permission
     ctx: GraphQLContext = info.context
     if not ctx.workspace or not ctx.role:
         raise PermissionError("workspace_required")
@@ -90,14 +94,14 @@ def _to_node(n: AgentNode) -> AgentNodeType:
 @strawberry.type
 class Query:
     @strawberry.field
-    async def me(self, info: strawberry.Info) -> Optional[WorkspaceType]:
+    async def me(self, info: strawberry.Info) -> WorkspaceType | None:
         ctx: GraphQLContext = info.context
         if not ctx.workspace:
             return None
         return _to_workspace(ctx.workspace)
 
     @strawberry.field
-    async def workspace(self, info: strawberry.Info, id: uuid.UUID) -> Optional[WorkspaceType]:
+    async def workspace(self, info: strawberry.Info, id: uuid.UUID) -> WorkspaceType | None:
         ctx: GraphQLContext = info.context
         ws = await ctx.db.get(WorkspaceModel, id)
         if not ws or ws.deleted_at:
@@ -119,7 +123,7 @@ class Query:
         return [_to_project(p) for p in rows]
 
     @strawberry.field
-    async def project(self, info: strawberry.Info, id: uuid.UUID) -> Optional[ProjectType]:
+    async def project(self, info: strawberry.Info, id: uuid.UUID) -> ProjectType | None:
         ctx: GraphQLContext = info.context
         p = await ctx.db.get(ProjectModel, id)
         if not p or p.deleted_at:
@@ -130,8 +134,8 @@ class Query:
     async def issues(
         self,
         info: strawberry.Info,
-        project_id: Optional[uuid.UUID] = None,
-        status: Optional[str] = None,
+        project_id: uuid.UUID | None = None,
+        status: str | None = None,
         limit: int = 50,
     ) -> list[Issue]:
         ctx: GraphQLContext = info.context
@@ -150,7 +154,7 @@ class Query:
         return [_to_issue(i) for i in rows]
 
     @strawberry.field
-    async def issue(self, info: strawberry.Info, id: uuid.UUID) -> Optional[Issue]:
+    async def issue(self, info: strawberry.Info, id: uuid.UUID) -> Issue | None:
         ctx: GraphQLContext = info.context
         i = await ctx.db.get(IssueModel, id)
         if not i or i.deleted_at:
@@ -161,7 +165,7 @@ class Query:
     async def events(
         self,
         info: strawberry.Info,
-        issue_id: Optional[uuid.UUID] = None,
+        issue_id: uuid.UUID | None = None,
         limit: int = 100,
     ) -> list[EventType]:
         ctx: GraphQLContext = info.context

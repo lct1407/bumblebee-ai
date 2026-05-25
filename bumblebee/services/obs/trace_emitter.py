@@ -4,9 +4,11 @@ Phase 2 scaffold: provides span helpers + auto-init from OTEL_EXPORTER_OTLP_ENDP
 NoOp when endpoint unset (default for dev/test).
 """
 from __future__ import annotations
+
 import os
+from collections.abc import Iterator
 from contextlib import contextmanager
-from typing import Any, Iterator
+from typing import Any
 
 try:
     from opentelemetry import trace

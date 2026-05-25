@@ -5,6 +5,7 @@ webhook handler skeleton). Webhook handlers (`bumblebee/routers/stripe_webhooks.
 flip workspace.plan / payment_overdue based on Stripe events.
 """
 from __future__ import annotations
+
 import logging
 import uuid
 from typing import Literal
@@ -15,7 +16,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from bumblebee.config import get_settings
 from bumblebee.database import get_db
-from bumblebee.models.workspace import Workspace, WorkspacePlan
+from bumblebee.models.workspace import Workspace
 from bumblebee.services.billing import StripeNotConfigured, get_stripe, is_configured
 from bumblebee.services.billing.plans import PLANS, plan_for
 from bumblebee.services.billing.stripe_client import new_idempotency_key
@@ -123,7 +124,7 @@ async def create_checkout_session(
     except StripeNotConfigured as e:
         raise HTTPException(503, str(e))
 
-    s = get_settings()
+    get_settings()
     base_price, usage_price = _resolve_price_id(body.plan)
 
     # Idempotently ensure a Stripe Customer exists for this workspace

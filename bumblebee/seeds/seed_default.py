@@ -6,18 +6,18 @@ import asyncio
 import hashlib
 import json
 from pathlib import Path
+
 import yaml
 from sqlalchemy import select
 
 from bumblebee.database import SessionLocal
-from bumblebee.models.workspace import Workspace, WorkspaceMember, WorkspaceRole, WorkspacePlan
-from bumblebee.models.user import User, ApiKey  # noqa: F401  (load FK target)
-from bumblebee.models.project import Project
 from bumblebee.models.agent_definition import AgentDefinition
-from bumblebee.models.skill import Skill
+from bumblebee.models.issue import Issue, IssuePriority, IssueStatus, IssueType
+from bumblebee.models.knowledge_entry import KnowledgeCategory, KnowledgeEntry
+from bumblebee.models.project import Project
+from bumblebee.models.user import ApiKey, User  # noqa: F401  (load FK target)
 from bumblebee.models.workflow import Workflow
-from bumblebee.models.issue import Issue, IssueType, IssueStatus, IssuePriority
-from bumblebee.models.knowledge_entry import KnowledgeEntry, KnowledgeCategory
+from bumblebee.models.workspace import Workspace, WorkspaceMember, WorkspacePlan, WorkspaceRole
 from bumblebee.services.rbac.auto_scope import register_auto_scope_listeners
 
 register_auto_scope_listeners()
@@ -254,7 +254,7 @@ async def _ensure_default_workspace(db) -> Workspace:
 async def seed() -> None:
     async with SessionLocal() as db:
         # 0. Default workspace (Phase A requirement)
-        default_ws = await _ensure_default_workspace(db)
+        await _ensure_default_workspace(db)
 
         # 1. Default project
         existing = (
@@ -287,7 +287,7 @@ async def seed() -> None:
             exists = (
                 await db.execute(
                     select(AgentDefinition).where(
-                        AgentDefinition.role == spec["role"], AgentDefinition.is_global == True
+                        AgentDefinition.role == spec["role"], AgentDefinition.is_global
                     )
                 )
             ).scalar_one_or_none()

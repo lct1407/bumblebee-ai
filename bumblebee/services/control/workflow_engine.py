@@ -1,14 +1,12 @@
 """WorkflowEngine: wraps LangGraph; loads YAML → builds StateGraph. Plane 1."""
 import hashlib
-import json
-import uuid
+from collections.abc import Callable
 from pathlib import Path
-from typing import Any, Callable
-import yaml
+from typing import Any, TypedDict
 
-from langgraph.graph import StateGraph, START, END
+import yaml
 from langgraph.checkpoint.memory import MemorySaver
-from typing import TypedDict
+from langgraph.graph import END, START, StateGraph
 
 
 class WorkflowState(TypedDict, total=False):
@@ -70,7 +68,7 @@ class WorkflowEngine:
         for node in nodes:
             node_id = node["id"]
             on_success = node.get("on_success")
-            on_fail = node.get("on_fail")
+            node.get("on_fail")
             if isinstance(on_success, str):
                 if on_success == "done":
                     graph.add_edge(node_id, END)

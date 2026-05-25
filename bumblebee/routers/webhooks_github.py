@@ -8,6 +8,7 @@ Subscribed events:
 Signature verification: HMAC-SHA256 over raw body with GITHUB_WEBHOOK_SECRET.
 """
 from __future__ import annotations
+
 import hashlib
 import hmac
 import logging
@@ -18,7 +19,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from bumblebee.config import get_settings
 from bumblebee.database import get_db
-from bumblebee.models.issue import Issue, IssueStatus, IssueType, IssuePriority
+from bumblebee.models.issue import Issue, IssuePriority, IssueStatus, IssueType
 from bumblebee.models.project import Project
 from bumblebee.services.state.event_log import append_event
 
@@ -223,7 +224,8 @@ async def receive(
             for marker, title in issues_found:
                 # avoid duplicate creation: idempotent via commit sha
                 from sqlalchemy import func as sqlfunc
-                from bumblebee.models.issue import IssueType, IssuePriority
+
+                from bumblebee.models.issue import IssuePriority, IssueType
                 n = (
                     await db.execute(
                         sqlfunc.coalesce(sqlfunc.max(Issue.number), 0) + 1

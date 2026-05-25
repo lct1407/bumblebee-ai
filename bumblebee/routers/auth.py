@@ -4,6 +4,7 @@ Phase A: signup creates a workspace + owner membership. JWT carries `ws` + `role
 claims so every API request has implicit tenant scope.
 """
 from __future__ import annotations
+
 import re
 import uuid
 
@@ -167,7 +168,7 @@ async def register(body: RegisterRequest, db: AsyncSession = Depends(get_db)):
 async def login(body: LoginRequest, db: AsyncSession = Depends(get_db)):
     user = (
         await db.execute(
-            select(User).where(User.username == body.username, User.is_active == True)
+            select(User).where(User.username == body.username, User.is_active)
         )
     ).scalar_one_or_none()
     if not user or not verify_password(body.password, user.password_hash):

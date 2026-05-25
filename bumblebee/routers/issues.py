@@ -1,13 +1,12 @@
 ﻿"""Issue CRUD + workflow trigger."""
-import uuid
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import select, func
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bumblebee.database import get_db
 from bumblebee.models.issue import Issue, IssueStatus
 from bumblebee.models.project import Project
-from bumblebee.schemas.issue import IssueCreate, IssueUpdate, IssueOut
+from bumblebee.schemas.issue import IssueCreate, IssueOut, IssueUpdate
 from bumblebee.services.state.event_log import append_event
 
 router = APIRouter(prefix="/api/projects/{slug}/issues", tags=["issues"])

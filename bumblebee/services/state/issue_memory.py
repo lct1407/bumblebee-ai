@@ -1,5 +1,6 @@
 ﻿"""IssueMemory: materialized projection from event log (Tier 5, plan Â§4.6)."""
 import uuid
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bumblebee.services.state.event_log import get_events_for_issue

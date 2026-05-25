@@ -12,15 +12,14 @@ NO LLM CALLS in this validator — it's free + deterministic. The slower
 LLM-backed scoring lives in bumblebee.eval.runner.
 """
 from __future__ import annotations
+
 import json
 import sys
 from dataclasses import dataclass
-from pathlib import Path
 
-import yaml
-from jsonschema import Draft202012Validator, ValidationError, SchemaError
+from jsonschema import Draft202012Validator, SchemaError
 
-from bumblebee.prompts.loader import PROMPTS_DIR, assemble_system_prompt, list_roles, get_prompt
+from bumblebee.prompts.loader import assemble_system_prompt, get_prompt, list_roles
 
 
 @dataclass
@@ -130,7 +129,7 @@ def validate_all() -> tuple[list[ValidationIssue], dict]:
 def main() -> int:
     issues, summary = validate_all()
 
-    print(f"\nBumblebee prompt validator")
+    print("\nBumblebee prompt validator")
     print(f"  roles scanned : {summary['roles']}")
     print(f"  few-shots     : {summary['examples']}")
     print(f"  errors        : {summary['errors']}")

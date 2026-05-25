@@ -9,23 +9,22 @@ Side-effects:
 - Terminator nodes return without dispatching agent
 """
 from __future__ import annotations
-import uuid
-from datetime import datetime, timezone
+
+from collections.abc import Callable
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Callable
+from typing import TypedDict
 
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, START, StateGraph
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import TypedDict
 
-from bumblebee.models.agent_session import AgentSession, SessionStatus
+from bumblebee.models.agent_session import AgentSession
 from bumblebee.models.issue import Issue
 from bumblebee.models.workflow import Workflow
 from bumblebee.models.workflow_run import RunStatus, WorkflowRun
 from bumblebee.services.execution.harness import run_role
 from bumblebee.services.state.event_log import append_event
-
 
 WORKFLOWS_DIR = Path(__file__).parent.parent.parent / "workflows"
 
@@ -172,7 +171,7 @@ async def execute_workflow_run(
         )
         run.current_node = final_state.get("current_node") or "done"
         run.status = RunStatus.COMPLETED
-        run.completed_at = datetime.now(timezone.utc)
+        run.completed_at = datetime.now(UTC)
         await append_event(
             db,
             type="workflow_completed",
@@ -188,7 +187,7 @@ async def execute_workflow_run(
         return final_state
     except Exception as e:
         run.status = RunStatus.FAILED
-        run.completed_at = datetime.now(timezone.utc)
+        run.completed_at = datetime.now(UTC)
         await append_event(
             db,
             type="workflow_failed",

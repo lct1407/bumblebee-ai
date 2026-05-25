@@ -7,9 +7,11 @@ Stored as a small JSON Schema per row; UI renders form dynamically.
 Issue.custom_fields holds the values.
 """
 from __future__ import annotations
+
 import uuid
 
-from sqlalchemy import ForeignKey, String, Enum as SqlEnum, UniqueConstraint
+from sqlalchemy import Enum as SqlEnum
+from sqlalchemy import ForeignKey, String, UniqueConstraint
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column
 

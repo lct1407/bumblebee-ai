@@ -1,14 +1,22 @@
 """Issue relations + custom fields service layer."""
-from bumblebee.services.issue_links.relations import (
-    add_relation, list_relations_for, RelationError,
-    has_cycle_blocks, is_blocked_by_open,
-)
 from bumblebee.services.issue_links.field_validator import (
-    validate_custom_fields, FieldValidationError,
+    FieldValidationError,
+    validate_custom_fields,
+)
+from bumblebee.services.issue_links.relations import (
+    RelationError,
+    add_relation,
+    has_cycle_blocks,
+    is_blocked_by_open,
+    list_relations_for,
 )
 
 __all__ = [
-    "add_relation", "list_relations_for", "RelationError",
-    "has_cycle_blocks", "is_blocked_by_open",
-    "validate_custom_fields", "FieldValidationError",
+    "FieldValidationError",
+    "RelationError",
+    "add_relation",
+    "has_cycle_blocks",
+    "is_blocked_by_open",
+    "list_relations_for",
+    "validate_custom_fields",
 ]

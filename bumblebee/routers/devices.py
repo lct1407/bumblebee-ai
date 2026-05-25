@@ -13,11 +13,12 @@ Flow:
 Node tokens have prefix `nt_` and are SHA-256 hashed at rest.
 """
 from __future__ import annotations
+
 import hashlib
 import secrets
 import string
 import uuid
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Request
 from pydantic import BaseModel, Field
@@ -162,7 +163,7 @@ async def pair_confirm(
     if not node:
         raise HTTPException(404, "code_not_found_or_expired")
 
-    age = datetime.now(timezone.utc) - node.created_at
+    age = datetime.now(UTC) - node.created_at
     if age.total_seconds() > PAIRING_CODE_TTL_SECONDS:
         node.status = NodeStatus.REVOKED
         await db.commit()
@@ -208,7 +209,7 @@ async def heartbeat(
 ):
     """Worker daemon pings every N seconds. Refreshes last_heartbeat_at."""
     node = await _node_from_token(db, authorization)
-    node.last_heartbeat_at = datetime.now(timezone.utc)
+    node.last_heartbeat_at = datetime.now(UTC)
     if body.capabilities is not None:
         node.capabilities = body.capabilities
     client_ip = body.ip or (request.client.host if request.client else None)

@@ -1,15 +1,16 @@
 ﻿"""Event: append-only canonical record. Sole source of truth in v3."""
+import enum
 import uuid
 from datetime import datetime
-from sqlalchemy import String, ForeignKey, DateTime, Index
+
+from sqlalchemy import DateTime, ForeignKey, Index, String
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column
-import enum
 
-from bumblebee.models.base import Base, UUIDPKMixin, utcnow, WorkspaceScopedMixin
+from bumblebee.models.base import Base, UUIDPKMixin, WorkspaceScopedMixin, utcnow
 
 
-class EventType(str, enum.Enum):
+class EventType(enum.StrEnum):
     # Workflow lifecycle
     WORKFLOW_STARTED = "workflow_started"
     WORKFLOW_COMPLETED = "workflow_completed"

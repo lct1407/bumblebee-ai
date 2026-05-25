@@ -4,7 +4,9 @@ Loads event log for a session; replays via canned provider (stub).
 Full deterministic replay (claude-cli with same seed) deferred.
 """
 from __future__ import annotations
+
 import uuid
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bumblebee.services.state.event_log import get_events_for_session

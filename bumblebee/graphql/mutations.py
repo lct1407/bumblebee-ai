@@ -10,26 +10,36 @@ Notes:
   - MCP server keeps its own JSON-RPC surface per spec.
 """
 from __future__ import annotations
+
 import secrets
 import string
 import uuid
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import strawberry
 from sqlalchemy import func, select
 
 from bumblebee.graphql.auth_mutations import (
-    AuthResult, LoginInput, SignupInput, AuthMutations,
+    AuthMutations,
 )
 from bumblebee.graphql.context import GraphQLContext
-from bumblebee.graphql.types import (
-    CheckoutSessionInput, CheckoutSessionResult, CustomFieldsUpdateInput,
-    DevicePairRequestInput, Issue, IssueCreateInput, IssueRelationType,
-    IssueUpdateInput, PairConfirmResult, PairRequestResult, RelationCreateInput,
-)
 from bumblebee.graphql.queries import _require_workspace, _to_issue
+from bumblebee.graphql.types import (
+    CheckoutSessionInput,
+    CheckoutSessionResult,
+    CustomFieldsUpdateInput,
+    DevicePairRequestInput,
+    Issue,
+    IssueCreateInput,
+    IssueRelationType,
+    IssueUpdateInput,
+    PairConfirmResult,
+    PairRequestResult,
+    RelationCreateInput,
+)
 from bumblebee.models.agent_node import AgentNode, NodeStatus
-from bumblebee.models.issue import Issue as IssueModel, IssueStatus
+from bumblebee.models.issue import Issue as IssueModel
+from bumblebee.models.issue import IssueStatus
 from bumblebee.models.workspace import Workspace
 
 
@@ -98,7 +108,7 @@ class Mutation(AuthMutations):
     ) -> IssueRelationType:
         """Create a typed relation between two issues."""
         from bumblebee.models.issue import Issue as IssueModel
-        from bumblebee.services.issue_links import add_relation, RelationError
+        from bumblebee.services.issue_links import RelationError, add_relation
         ctx: GraphQLContext = info.context
         _require_workspace(info)
         src = await ctx.db.get(IssueModel, input.source_issue_id)
@@ -206,7 +216,7 @@ class Mutation(AuthMutations):
         ).scalar_one_or_none()
         if not node:
             raise ValueError("code_not_found_or_expired")
-        if (datetime.now(timezone.utc) - node.created_at).total_seconds() > 600:
+        if (datetime.now(UTC) - node.created_at).total_seconds() > 600:
             node.status = NodeStatus.REVOKED
             await ctx.db.commit()
             raise ValueError("pairing_code_expired")
@@ -224,10 +234,12 @@ class Mutation(AuthMutations):
         self, info: strawberry.Info, input: CheckoutSessionInput
     ) -> CheckoutSessionResult:
         """Bridge to existing billing logic so GraphQL surface is complete."""
-        from bumblebee.services.billing.stripe_client import get_stripe, is_configured, new_idempotency_key
-        from bumblebee.services.billing.plans import PLANS
-        from bumblebee.models.workspace import WorkspacePlan as WP
         from bumblebee.config import get_settings
+        from bumblebee.services.billing.stripe_client import (
+            get_stripe,
+            is_configured,
+            new_idempotency_key,
+        )
 
         ctx: GraphQLContext = info.context
         ws_id = _require_workspace(info)

@@ -5,12 +5,13 @@ Every protected endpoint declares the permission it needs (not the role).
 This makes it easy to add custom roles later without rewriting endpoints.
 """
 from __future__ import annotations
+
 import enum
 
 from bumblebee.models.workspace import WorkspaceRole
 
 
-class Permission(str, enum.Enum):
+class Permission(enum.StrEnum):
     # Issues
     READ_ISSUE = "read_issue"
     WRITE_ISSUE = "write_issue"

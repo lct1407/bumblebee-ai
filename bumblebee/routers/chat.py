@@ -1,16 +1,17 @@
 ﻿"""ChatSession (Tier 2: Q&A + suggest via HITL)."""
 import uuid
+
 from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from pydantic import BaseModel
 
 from bumblebee.database import get_db
+from bumblebee.models.agent_session import AgentSession
 from bumblebee.models.chat_session import ChatSession, ChatSource
 from bumblebee.models.project import Project
-from bumblebee.models.agent_session import AgentSession
-from bumblebee.services.state.event_log import append_event
 from bumblebee.services.execution.harness import run_role
+from bumblebee.services.state.event_log import append_event
 
 router = APIRouter(prefix="/api/projects/{slug}/chat", tags=["chat"])
 

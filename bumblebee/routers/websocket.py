@@ -16,7 +16,7 @@ from sqlalchemy import select
 from bumblebee.auth.security import decode_access_token, hash_api_key
 from bumblebee.database import SessionLocal
 from bumblebee.models.project import Project
-from bumblebee.models.user import ApiKey, User
+from bumblebee.models.user import ApiKey
 from bumblebee.models.workspace import WorkspaceMember
 from bumblebee.services.websocket.manager import get_manager
 
@@ -68,7 +68,7 @@ async def _resolve_caller_workspace(token: str | None, api_key: str | None) -> t
                 await db.execute(
                     select(ApiKey).where(
                         ApiKey.key_hash == hash_api_key(api_key),
-                        ApiKey.is_active == True,
+                        ApiKey.is_active,
                     )
                 )
             ).scalar_one_or_none()

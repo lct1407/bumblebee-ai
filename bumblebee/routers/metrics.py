@@ -3,18 +3,18 @@
 Plain-text exposition; no external dep. Counters captured in process memory.
 """
 from __future__ import annotations
+
 from collections import defaultdict
 from time import time
 
-from fastapi import APIRouter, Response
+from fastapi import APIRouter, Depends, Response
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi import Depends
 
 from bumblebee.database import get_db
-from bumblebee.models.issue import Issue, IssueStatus
-from bumblebee.models.workflow_run import WorkflowRun, RunStatus
-from bumblebee.models.agent_node import AgentNode, NodeStatus
+from bumblebee.models.agent_node import AgentNode
+from bumblebee.models.issue import Issue
+from bumblebee.models.workflow_run import WorkflowRun
 
 router = APIRouter(tags=["metrics"])
 

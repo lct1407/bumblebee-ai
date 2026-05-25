@@ -11,6 +11,7 @@ Roles:
 - viewer: read-only.
 """
 from __future__ import annotations
+
 import enum
 import uuid
 from datetime import datetime
@@ -18,11 +19,12 @@ from datetime import datetime
 from sqlalchemy import (
     Boolean,
     DateTime,
-    Enum as SqlEnum,
     ForeignKey,
     String,
-    Text,
     UniqueConstraint,
+)
+from sqlalchemy import (
+    Enum as SqlEnum,
 )
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -30,14 +32,14 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from bumblebee.models.base import Base, SoftDeleteMixin, TimestampMixin, UUIDPKMixin
 
 
-class WorkspaceRole(str, enum.Enum):
+class WorkspaceRole(enum.StrEnum):
     OWNER = "owner"
     ADMIN = "admin"
     MEMBER = "member"
     VIEWER = "viewer"
 
 
-class WorkspacePlan(str, enum.Enum):
+class WorkspacePlan(enum.StrEnum):
     FREE = "free"
     PRO = "pro"
     TEAM = "team"

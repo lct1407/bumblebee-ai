@@ -1,16 +1,21 @@
 ﻿"""ChatSession: Tier 2 conversational interface (forge-adopted)."""
 import uuid
-from sqlalchemy import String, ForeignKey, Enum as SqlEnum
 
-_evcall = lambda x: [e.value for e in x]
-from sqlalchemy.dialects.postgresql import JSONB, UUID
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import Enum as SqlEnum
+from sqlalchemy import ForeignKey, String
+
+
+def _evcall(x):
+    return [e.value for e in x]
 import enum
 
-from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin
+from sqlalchemy.dialects.postgresql import JSONB, UUID
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from bumblebee.models.base import Base, TimestampMixin, UUIDPKMixin, WorkspaceScopedMixin
 
 
-class ChatSource(str, enum.Enum):
+class ChatSource(enum.StrEnum):
     WEB = "web"
     CLI = "cli"
     API = "api"

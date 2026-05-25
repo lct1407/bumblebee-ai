@@ -1,5 +1,6 @@
 """Validate Issue.custom_fields against the FieldSchema for its type."""
 from __future__ import annotations
+
 import re
 import uuid
 from dataclasses import dataclass, field

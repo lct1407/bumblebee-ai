@@ -1,9 +1,15 @@
 ﻿"""Project: shared workspace with backlog, workflows, knowledge, policy."""
-from sqlalchemy import String, Text, Boolean
+from sqlalchemy import Boolean, String, Text
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin, SoftDeleteMixin, WorkspaceScopedMixin
+from bumblebee.models.base import (
+    Base,
+    SoftDeleteMixin,
+    TimestampMixin,
+    UUIDPKMixin,
+    WorkspaceScopedMixin,
+)
 
 
 class Project(Base, UUIDPKMixin, TimestampMixin, SoftDeleteMixin, WorkspaceScopedMixin):

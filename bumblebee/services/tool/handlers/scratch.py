@@ -1,5 +1,6 @@
 """Tool handlers for session scratchpad (Tier 3 memory)."""
 from __future__ import annotations
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bumblebee.models.agent_session import AgentSession

@@ -10,12 +10,12 @@ Targets:
 Each role file is plain markdown so any LLM can read it without parsing YAML.
 """
 from __future__ import annotations
+
+from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable
 
 import yaml
-
 
 PROMPTS_DIR = Path(__file__).parent.parent / "prompts"
 WORKFLOWS_DIR = Path(__file__).parent.parent / "workflows"
@@ -51,7 +51,7 @@ def _role_to_markdown(role: str, spec: dict) -> str:
         "",
         f"_Role key: `{role}`_",
         "",
-        f"## Purpose",
+        "## Purpose",
         description,
         "",
         "## System prompt",

@@ -1,9 +1,11 @@
 """LeaseManager — Phase 3 v2: file-set intersection + prefix overlap fallback + events."""
 from __future__ import annotations
+
 import fnmatch
 import uuid
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -69,7 +71,7 @@ async def acquire_lease(
             if set(resolved) & set(lease.resolved_files):
                 return None
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     lease = ScopeLease(
         session_id=session_id,
         issue_id=issue_id,
@@ -96,7 +98,7 @@ async def release_lease(db: AsyncSession, lease_id: uuid.UUID) -> None:
     lease = await db.get(ScopeLease, lease_id)
     if lease and lease.status == LeaseStatus.ACTIVE:
         lease.status = LeaseStatus.RELEASED
-        lease.released_at = datetime.now(timezone.utc)
+        lease.released_at = datetime.now(UTC)
         from bumblebee.services.state.event_log import append_event
         await append_event(
             db, type="lease_released", session_id=lease.session_id, issue_id=lease.issue_id,
@@ -109,7 +111,7 @@ async def heartbeat_lease(db: AsyncSession, lease_id: uuid.UUID) -> bool:
     lease = await db.get(ScopeLease, lease_id)
     if lease is None or lease.status != LeaseStatus.ACTIVE:
         return False
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     lease.last_heartbeat_at = now
     lease.expires_at = now + timedelta(seconds=settings.lease_ttl_seconds)
     return True
@@ -118,7 +120,7 @@ async def heartbeat_lease(db: AsyncSession, lease_id: uuid.UUID) -> bool:
 async def reap_expired(db: AsyncSession) -> int:
     stmt = select(ScopeLease).where(
         ScopeLease.status == LeaseStatus.ACTIVE,
-        ScopeLease.expires_at < datetime.now(timezone.utc),
+        ScopeLease.expires_at < datetime.now(UTC),
     )
     leases = (await db.execute(stmt)).scalars().all()
     for lease in leases:

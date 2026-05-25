@@ -11,11 +11,9 @@ Rules:
 Per-project override via projects.policy_config.workflow_overrides = {complexity: name}.
 """
 from __future__ import annotations
-from typing import Optional
 
 from bumblebee.models.issue import Issue, IssueComplexity
 from bumblebee.models.project import Project
-
 
 DEFAULT_WORKFLOW_BY_COMPLEXITY: dict[IssueComplexity | None, str] = {
     IssueComplexity.SIMPLE: "simple-fix-flow",
@@ -25,7 +23,7 @@ DEFAULT_WORKFLOW_BY_COMPLEXITY: dict[IssueComplexity | None, str] = {
 }
 
 
-def select_workflow_name(issue: Issue, project: Optional[Project] = None) -> str:
+def select_workflow_name(issue: Issue, project: Project | None = None) -> str:
     """Return the workflow YAML name to run for this issue.
 
     Per-project override (policy_config.workflow_overrides) wins over defaults.

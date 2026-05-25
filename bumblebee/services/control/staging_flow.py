@@ -14,17 +14,14 @@ This module emits task_queue jobs that the worker daemon picks up; it does NOT
 shell out to git directly (that lives on the worker).
 """
 from __future__ import annotations
-import json
-import uuid
-from typing import Optional
 
-from sqlalchemy import text
+import uuid
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bumblebee.config import get_settings
 from bumblebee.models.issue import Issue, IssueStatus
 from bumblebee.models.project import Project
-
 
 VALID_TRANSITIONS: dict[IssueStatus, set[IssueStatus]] = {
     IssueStatus.IN_REVIEW: {IssueStatus.DEVELOPED, IssueStatus.FAILED},

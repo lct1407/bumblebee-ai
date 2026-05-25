@@ -15,11 +15,13 @@ Resolution order:
   3. 403 (never 404) on missing/invalid — never leak workspace existence.
 """
 from __future__ import annotations
-import uuid
-from dataclasses import dataclass
-from typing import Annotated, Callable, Optional
 
-from fastapi import Depends, Header, HTTPException, Request, status
+import uuid
+from collections.abc import Callable
+from dataclasses import dataclass
+from typing import Annotated
+
+from fastapi import Depends, Header, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -27,7 +29,7 @@ from bumblebee.auth.dependencies import get_current_user
 from bumblebee.auth.security import decode_access_token
 from bumblebee.database import get_db
 from bumblebee.models.user import User
-from bumblebee.models.workspace import Workspace, WorkspaceMember, WorkspaceRole
+from bumblebee.models.workspace import WorkspaceMember, WorkspaceRole
 from bumblebee.services.rbac.permissions import Permission, has_permission
 
 
@@ -39,7 +41,7 @@ class CurrentWorkspace:
     role: WorkspaceRole
 
 
-def _extract_workspace_claim(authorization: Optional[str]) -> Optional[uuid.UUID]:
+def _extract_workspace_claim(authorization: str | None) -> uuid.UUID | None:
     """Pull the `ws` claim out of a Bearer JWT if present + valid. Else None."""
     if not authorization or not authorization.startswith("Bearer "):
         return None
@@ -56,7 +58,7 @@ def _extract_workspace_claim(authorization: Optional[str]) -> Optional[uuid.UUID
 
 
 async def require_workspace(
-    authorization: Annotated[Optional[str], Header()] = None,
+    authorization: Annotated[str | None, Header()] = None,
     user: Annotated[User, Depends(get_current_user)] = None,
     db: Annotated[AsyncSession, Depends(get_db)] = None,
 ) -> CurrentWorkspace:

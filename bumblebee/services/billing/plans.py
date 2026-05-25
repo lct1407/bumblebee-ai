@@ -6,6 +6,7 @@ Used by:
 - Pricing page (Phase F)
 """
 from __future__ import annotations
+
 from dataclasses import dataclass
 
 from bumblebee.models.workspace import WorkspacePlan

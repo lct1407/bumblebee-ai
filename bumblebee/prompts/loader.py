@@ -7,10 +7,10 @@ The Defense Baseline (`_defense_baseline.yaml`) is loaded separately and
 prepended by `assemble_context` to every role's `system` prompt.
 """
 from __future__ import annotations
+
 import logging
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
 
 import yaml
 

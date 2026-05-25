@@ -18,6 +18,7 @@ this router does the rest and ends with a redirect to /onboard or /dashboard
 with the JWT in the URL fragment (so it never leaks to server logs).
 """
 from __future__ import annotations
+
 import logging
 import secrets
 from urllib.parse import urlencode
@@ -206,7 +207,6 @@ async def google_callback(
     # 5) Mint JWT + redirect to web with token + workspace in URL fragment.
     # Fragment is never sent to server, so token doesn't hit access logs.
     token = create_access_token(str(user.id), extra=_build_token_payload(user, member))
-    target = "/onboard" if was_created else "/dashboard"
     ws = await db.get(Workspace, member.workspace_id)
     fragment = urlencode({
         "token": token,

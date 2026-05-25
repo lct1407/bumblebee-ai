@@ -1,5 +1,6 @@
 """Minimal GraphQL HTTP client used by `bb` CLI."""
 from __future__ import annotations
+
 import json
 import os
 from pathlib import Path
@@ -22,7 +23,7 @@ class GraphQLClient:
         cls,
         server_url: str | None = None,
         config_path: str | Path = "~/.bumblebee/cli.json",
-    ) -> "GraphQLClient":
+    ) -> GraphQLClient:
         """Resolve endpoint + token from arg / env / config file (in that order)."""
         url = server_url or os.environ.get("BUMBLEBEE_SERVER_URL")
         token = os.environ.get("BUMBLEBEE_TOKEN")

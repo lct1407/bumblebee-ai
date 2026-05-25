@@ -1,5 +1,6 @@
 """Issue relations service: add/list + cycle detection + auto-status helpers."""
 from __future__ import annotations
+
 import uuid
 from collections import defaultdict, deque
 
@@ -8,7 +9,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from bumblebee.models.issue import Issue, IssueStatus
 from bumblebee.models.issue_relation import (
-    IssueRelation, IssueRelationKind, INVERSE_OF,
+    INVERSE_OF,
+    IssueRelation,
+    IssueRelationKind,
 )
 
 

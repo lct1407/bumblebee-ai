@@ -4,12 +4,13 @@ Phase D wires the 5 handlers we need. Each is idempotent via the `processed_webh
 in-memory cache (production should persist this to DB or Redis for HA).
 """
 from __future__ import annotations
-import logging
-from datetime import datetime, timezone
 
+import logging
+from datetime import UTC, datetime
+
+import stripe
 from fastapi import APIRouter, Header, HTTPException, Request, status
 from sqlalchemy import select
-import stripe
 
 from bumblebee.config import get_settings
 from bumblebee.database import SessionLocal
@@ -99,7 +100,7 @@ async def _on_subscription_created(event: dict) -> None:
         ws.stripe_subscription_id = sub.get("id")
         ws.payment_overdue = False
         ws.payment_overdue_since = None
-        ws.period_started_at = datetime.now(timezone.utc)
+        ws.period_started_at = datetime.now(UTC)
         ws.llm_spend_cents_this_period = 0
         await db.commit()
         await append_event(
@@ -129,7 +130,7 @@ async def _on_subscription_updated(event: dict) -> None:
             ws.stripe_subscription_id = None
         elif status_str == "past_due":
             ws.payment_overdue = True
-            ws.payment_overdue_since = ws.payment_overdue_since or datetime.now(timezone.utc)
+            ws.payment_overdue_since = ws.payment_overdue_since or datetime.now(UTC)
         else:
             ws.payment_overdue = False
             ws.payment_overdue_since = None
@@ -175,7 +176,7 @@ async def _on_invoice_paid(event: dict) -> None:
         ws.payment_overdue_since = None
         # On a fresh billing period, reset the spend counter
         ws.llm_spend_cents_this_period = 0
-        ws.period_started_at = datetime.now(timezone.utc)
+        ws.period_started_at = datetime.now(UTC)
         await db.commit()
         await append_event(
             db,
@@ -201,7 +202,7 @@ async def _on_invoice_payment_failed(event: dict) -> None:
         if not ws:
             return
         ws.payment_overdue = True
-        ws.payment_overdue_since = datetime.now(timezone.utc)
+        ws.payment_overdue_since = datetime.now(UTC)
         await db.commit()
         await append_event(
             db,

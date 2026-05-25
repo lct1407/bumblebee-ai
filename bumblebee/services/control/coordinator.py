@@ -4,13 +4,12 @@ Phase 1.5+ scaffold: parses LLM JSON output; persists sub-issues; dispatches.
 Real LLM-driven decomposition requires Phase 1 real harness (provider=claude-cli).
 """
 from __future__ import annotations
-import json
-import uuid
+
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bumblebee.models.agent_session import AgentSession
-from bumblebee.models.issue import Issue, IssueComplexity, IssueStatus, IssueType
+from bumblebee.models.issue import Issue, IssueStatus, IssueType
 from bumblebee.services.dispatch.task_queue import enqueue
 from bumblebee.services.state.event_log import append_event
 
@@ -32,7 +31,7 @@ async def decompose_and_dispatch(
         return []
 
     # Validate disjoint scopes (Phase 4 baseline: warn if overlap)
-    scopes = [t.get("scope", []) for t in sub_tasks]
+    [t.get("scope", []) for t in sub_tasks]
     # (production-grade overlap check via LeaseManager._globs_overlap; skip for stub)
 
     # Get current max number for project

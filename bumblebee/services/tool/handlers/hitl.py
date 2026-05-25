@@ -1,6 +1,8 @@
 """Tool handlers for HITL (Human-In-The-Loop) — suggest + approval requests."""
 from __future__ import annotations
+
 import uuid
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bumblebee.models.agent_session import AgentSession

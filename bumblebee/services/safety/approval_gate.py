@@ -18,11 +18,11 @@ Decision matrix:
 *active = NEW / TRIAGED / PLANNED  (not CLOSED / FAILED / WONT_FIX)
 """
 from __future__ import annotations
+
 from dataclasses import dataclass
 
 from bumblebee.models.issue import Issue, IssueComplexity, IssueStatus
 from bumblebee.models.project import Project
-
 
 TERMINAL_STATUSES = {
     IssueStatus.CLOSED,

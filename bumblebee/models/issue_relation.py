@@ -13,17 +13,19 @@ Kinds (with inverse mapping):
 Convention: store the source-side kind. The inverse is derived at query time.
 """
 from __future__ import annotations
+
 import enum
 import uuid
 
-from sqlalchemy import Enum as SqlEnum, ForeignKey, String, UniqueConstraint
+from sqlalchemy import Enum as SqlEnum
+from sqlalchemy import ForeignKey, String, UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from bumblebee.models.base import Base, TimestampMixin, UUIDPKMixin, WorkspaceScopedMixin
 
 
-class IssueRelationKind(str, enum.Enum):
+class IssueRelationKind(enum.StrEnum):
     BLOCKS = "blocks"
     DEPENDS_ON = "depends_on"
     DUPLICATES = "duplicates"

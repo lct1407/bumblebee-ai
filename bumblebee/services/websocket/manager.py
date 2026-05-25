@@ -4,9 +4,9 @@ Phase 7 commercial: enables real-time event streaming to web UI (eliminating 3s 
 Subscribers can filter by project_slug or issue_id.
 """
 from __future__ import annotations
+
 import asyncio
 import json
-import uuid
 from collections import defaultdict
 from typing import Any
 

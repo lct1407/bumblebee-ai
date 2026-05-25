@@ -1,16 +1,27 @@
 ﻿"""Issue: unit of intent (replaces v2 WorkItem). Hierarchical via parent_id."""
 import uuid
-from sqlalchemy import String, Text, Integer, Float, ForeignKey, Enum as SqlEnum
 
-_evcall = lambda x: [e.value for e in x]  # serialize enum by value not name
-from sqlalchemy.dialects.postgresql import JSONB, UUID
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import Enum as SqlEnum
+from sqlalchemy import Float, ForeignKey, Integer, String, Text
+
+
+def _evcall(x):
+    return [e.value for e in x]  # serialize enum by value not name
 import enum
 
-from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin, SoftDeleteMixin, WorkspaceScopedMixin
+from sqlalchemy.dialects.postgresql import JSONB, UUID
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from bumblebee.models.base import (
+    Base,
+    SoftDeleteMixin,
+    TimestampMixin,
+    UUIDPKMixin,
+    WorkspaceScopedMixin,
+)
 
 
-class IssueType(str, enum.Enum):
+class IssueType(enum.StrEnum):
     EPIC = "epic"
     STORY = "story"
     TASK = "task"
@@ -20,7 +31,7 @@ class IssueType(str, enum.Enum):
     SPIKE = "spike"
 
 
-class IssueStatus(str, enum.Enum):
+class IssueStatus(enum.StrEnum):
     NEW = "new"
     TRIAGED = "triaged"
     PLANNED = "planned"
@@ -41,7 +52,7 @@ class IssueStatus(str, enum.Enum):
     ON_HOLD = "on_hold"
 
 
-class IssuePriority(str, enum.Enum):
+class IssuePriority(enum.StrEnum):
     CRITICAL = "critical"
     HIGH = "high"
     MEDIUM = "medium"
@@ -49,7 +60,7 @@ class IssuePriority(str, enum.Enum):
     NONE = "none"
 
 
-class IssueComplexity(str, enum.Enum):
+class IssueComplexity(enum.StrEnum):
     SIMPLE = "simple"
     MEDIUM = "medium"
     COMPLEX = "complex"

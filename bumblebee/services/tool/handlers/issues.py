@@ -1,7 +1,9 @@
 """Tool handlers for Issue domain — list/get/create/update."""
 from __future__ import annotations
+
 import uuid
-from sqlalchemy import select, func
+
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bumblebee.models.agent_session import AgentSession
@@ -94,7 +96,7 @@ async def update_issue_status(args: dict, session: AgentSession, db: AsyncSessio
     new_status = IssueStatus(args["status"])
     issue = await db.get(Issue, iid)
     if not issue:
-        return ToolResult.err(f"issue_not_found")
+        return ToolResult.err("issue_not_found")
     old = issue.status
     issue.status = new_status
     await append_event(

@@ -8,7 +8,6 @@ from bumblebee.graphql.context import get_context
 from bumblebee.graphql.mutations import Mutation
 from bumblebee.graphql.queries import Query
 
-
 schema = strawberry.Schema(query=Query, mutation=Mutation)
 
 graphql_router = GraphQLRouter(

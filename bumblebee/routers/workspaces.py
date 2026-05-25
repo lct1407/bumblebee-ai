@@ -16,9 +16,10 @@ Surface:
   GET    /api/invites/{token}                           — preview invite (any)
 """
 from __future__ import annotations
+
 import secrets
 import uuid
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
@@ -169,7 +170,7 @@ async def delete_workspace(
     ws = await db.get(Workspace, ws_id)
     if not ws or ws.deleted_at:
         raise HTTPException(403, "not_a_member")
-    ws.deleted_at = datetime.now(timezone.utc)
+    ws.deleted_at = datetime.now(UTC)
     await db.commit()
 
 
@@ -278,7 +279,7 @@ async def create_invite(
         email=body.email.lower(),
         role=body.role,
         token=token,
-        expires_at=datetime.now(timezone.utc) + timedelta(days=INVITE_TTL_DAYS),
+        expires_at=datetime.now(UTC) + timedelta(days=INVITE_TTL_DAYS),
         invited_by_user_id=user.id,
     )
     db.add(invite)
@@ -298,7 +299,7 @@ async def preview_invite(token: str, db: AsyncSession = Depends(get_db)):
     invite = (
         await db.execute(select(WorkspaceInvite).where(WorkspaceInvite.token == token))
     ).scalar_one_or_none()
-    if not invite or invite.expires_at < datetime.now(timezone.utc):
+    if not invite or invite.expires_at < datetime.now(UTC):
         raise HTTPException(404, "invite_not_found_or_expired")
     if invite.accepted_at:
         raise HTTPException(410, "invite_already_used")
@@ -326,7 +327,7 @@ async def accept_invite(
         raise HTTPException(404, "invite_not_found")
     if invite.accepted_at:
         raise HTTPException(410, "invite_already_used")
-    if invite.expires_at < datetime.now(timezone.utc):
+    if invite.expires_at < datetime.now(UTC):
         raise HTTPException(410, "invite_expired")
 
     # Already a member? Just mark accepted, no duplicate row
@@ -344,6 +345,6 @@ async def accept_invite(
             user_id=user.id,
             role=invite.role,
         ))
-    invite.accepted_at = datetime.now(timezone.utc)
+    invite.accepted_at = datetime.now(UTC)
     await db.commit()
     return {"workspace_id": str(invite.workspace_id), "role": invite.role.value}

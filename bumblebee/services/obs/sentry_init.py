@@ -3,6 +3,7 @@
 Imported lazily from main.create_app(). Empty SENTRY_DSN disables.
 """
 from __future__ import annotations
+
 import logging
 
 from bumblebee.config import get_settings

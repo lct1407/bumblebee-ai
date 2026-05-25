@@ -1,26 +1,62 @@
 ﻿"""FastAPI application entry point. Phase 1 â€” Bumblebee v3."""
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from bumblebee import __version__
 from bumblebee.config import get_settings
 from bumblebee.routers import (
-    health, projects, issues, events, workflow_runs, chat, plugins,
-    notifications, replay as replay_router, auth as auth_router,
-    websocket as ws_router, workspaces as workspaces_router,
-    stripe_webhooks as stripe_webhooks_router,
-    audit as audit_router, changelog as changelog_router,
+    audit as audit_router,
+)
+from bumblebee.routers import (
+    auth as auth_router,
+)
+from bumblebee.routers import (
     billing as billing_router,
-    oauth_google as oauth_google_router,
+)
+from bumblebee.routers import (
+    changelog as changelog_router,
+)
+from bumblebee.routers import (
+    chat,
+    events,
+    health,
+    issues,
+    notifications,
+    plugins,
+    projects,
+    workflow_runs,
+)
+from bumblebee.routers import (
     devices as devices_router,
-    tasks as tasks_router,
-    webhooks_github as webhooks_github_router,
+)
+from bumblebee.routers import (
     metrics as metrics_router,
+)
+from bumblebee.routers import (
+    oauth_google as oauth_google_router,
+)
+from bumblebee.routers import (
+    replay as replay_router,
+)
+from bumblebee.routers import (
+    stripe_webhooks as stripe_webhooks_router,
+)
+from bumblebee.routers import (
+    tasks as tasks_router,
+)
+from bumblebee.routers import (
+    webhooks_github as webhooks_github_router,
+)
+from bumblebee.routers import (
+    websocket as ws_router,
+)
+from bumblebee.routers import (
+    workspaces as workspaces_router,
 )
 from bumblebee.services.obs.trace_emitter import init_tracing
 from bumblebee.services.rbac.auto_scope import register_auto_scope_listeners
-
 
 settings = get_settings()
 # Register workspace_id auto-fill listeners at import time.

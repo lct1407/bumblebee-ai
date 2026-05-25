@@ -10,11 +10,11 @@ Workspace-scoped via require_workspace; only members with READ_AUDIT_LOG can lis
 EXPORT_AUDIT_LOG to download CSV.
 """
 from __future__ import annotations
+
 import csv
 import io
 import uuid
 from datetime import datetime
-from typing import Optional
 
 from fastapi import APIRouter, Depends, Query
 from fastapi.responses import StreamingResponse
@@ -32,7 +32,7 @@ from bumblebee.services.rbac import (
 router = APIRouter(prefix="/api/audit", tags=["audit"])
 
 
-def _coerce_dt(s: Optional[str]) -> Optional[datetime]:
+def _coerce_dt(s: str | None) -> datetime | None:
     if not s:
         return None
     try:

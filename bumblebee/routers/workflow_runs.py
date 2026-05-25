@@ -1,21 +1,22 @@
 ﻿"""Trigger workflow run for an issue + view runs."""
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
+
 from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from pydantic import BaseModel
 
 from bumblebee.database import get_db
+from bumblebee.models.agent_session import AgentSession, SessionStatus
 from bumblebee.models.issue import Issue
 from bumblebee.models.project import Project
 from bumblebee.models.workflow import Workflow
-from bumblebee.models.workflow_run import WorkflowRun, RunStatus
-from bumblebee.models.agent_session import AgentSession, SessionStatus
-from bumblebee.services.state.event_log import append_event
+from bumblebee.models.workflow_run import RunStatus, WorkflowRun
 from bumblebee.services.control.orchestrator import execute_workflow_run
 from bumblebee.services.control.workflow_selector import select_workflow_name
 from bumblebee.services.safety.approval_gate import check_dispatch_allowed
+from bumblebee.services.state.event_log import append_event
 
 router = APIRouter(prefix="/api/workflow-runs", tags=["workflows"])
 
@@ -64,7 +65,7 @@ async def trigger_workflow(req: TriggerRequest, db: AsyncSession = Depends(get_d
     # H1: Complexity → workflow auto-router. Explicit workflow_name still wins.
     name = req.workflow_name or select_workflow_name(issue, project)
     workflow = (
-        await db.execute(select(Workflow).where(Workflow.name == name, Workflow.is_active == True))
+        await db.execute(select(Workflow).where(Workflow.name == name, Workflow.is_active))
     ).scalar_one_or_none()
     if not workflow:
         raise HTTPException(404, f"workflow_not_found: {name}")
@@ -74,7 +75,7 @@ async def trigger_workflow(req: TriggerRequest, db: AsyncSession = Depends(get_d
         issue_id=issue.id,
         status=RunStatus.RUNNING,
         current_node=workflow.graph.get("nodes", [{}])[0].get("id", "start"),
-        started_at=datetime.now(timezone.utc),
+        started_at=datetime.now(UTC),
         langgraph_thread_id=str(uuid.uuid4()),
     )
     db.add(run)
@@ -130,7 +131,7 @@ async def cancel_run(run_id: uuid.UUID, db: AsyncSession = Depends(get_db)):
     if run.status in (RunStatus.COMPLETED, RunStatus.FAILED, RunStatus.CANCELED):
         return {"id": run.id, "status": run.status.value, "noop": True}
     run.status = RunStatus.CANCELED
-    run.completed_at = datetime.now(timezone.utc)
+    run.completed_at = datetime.now(UTC)
     # Cancel any in-flight sessions
     sessions = (
         await db.execute(
@@ -142,7 +143,7 @@ async def cancel_run(run_id: uuid.UUID, db: AsyncSession = Depends(get_db)):
     ).scalars().all()
     for s in sessions:
         s.status = SessionStatus.CANCELED
-        s.completed_at = datetime.now(timezone.utc)
+        s.completed_at = datetime.now(UTC)
     # Cancel any queued tasks for this run
     from sqlalchemy import text as sqltext
     await db.execute(

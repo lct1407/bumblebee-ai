@@ -1,7 +1,8 @@
 ﻿"""TaskQueue: PostgreSQL SKIP LOCKED atomic claim. Plane 2 / Dispatch."""
 import uuid
-from datetime import datetime, timedelta, timezone
-from sqlalchemy import text, select
+from datetime import UTC, datetime, timedelta
+
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bumblebee.config import get_settings
@@ -70,7 +71,7 @@ async def claim_next(
     Empty list means accept any project (generalist worker, legacy behaviour).
     """
     lease_seconds = lease_seconds or settings.lease_ttl_seconds
-    expires_at = datetime.now(timezone.utc) + timedelta(seconds=lease_seconds)
+    expires_at = datetime.now(UTC) + timedelta(seconds=lease_seconds)
 
     provider_clause = "AND (required_provider IS NULL OR required_provider = :provider)"
     if required_provider is None:

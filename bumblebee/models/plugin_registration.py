@@ -1,10 +1,11 @@
 """PluginRegistration — track installed plugins, status, errors."""
 from datetime import datetime
-from sqlalchemy import String, Text, DateTime
+
+from sqlalchemy import DateTime, String, Text
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
-from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin
+from bumblebee.models.base import Base, TimestampMixin, UUIDPKMixin
 
 
 class PluginRegistration(Base, UUIDPKMixin, TimestampMixin):

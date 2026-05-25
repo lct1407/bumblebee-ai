@@ -3,14 +3,14 @@
 Handlers registered in handlers/ submodules. Each returns ToolResult.
 """
 from __future__ import annotations
-import uuid
-from typing import Awaitable, Callable
+
+from collections.abc import Awaitable, Callable
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bumblebee.models.agent_session import AgentSession
 from bumblebee.services.state.event_log import append_event
-from bumblebee.services.tool.registry import TOOLS, validate_tool_call
+from bumblebee.services.tool.registry import validate_tool_call
 from bumblebee.services.tool.result import ToolResult
 
 Handler = Callable[[dict, AgentSession, AsyncSession], Awaitable[ToolResult]]

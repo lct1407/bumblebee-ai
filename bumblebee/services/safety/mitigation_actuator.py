@@ -1,6 +1,6 @@
 """MitigationActuator — Phase 5. Executes recovery strategy based on FailureReason."""
 from __future__ import annotations
-from typing import Any
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bumblebee.models.agent_session import AgentSession, FailureReason

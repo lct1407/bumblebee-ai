@@ -1,5 +1,4 @@
 """ToolRegistry: versioned single-verb tool defs with strict schemas. Plane 6."""
-from typing import Any, Callable
 from pydantic import BaseModel, Field
 
 

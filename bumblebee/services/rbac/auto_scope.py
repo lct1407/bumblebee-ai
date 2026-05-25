@@ -26,9 +26,10 @@ Tables that auto-resolve from parents:
   issues.workspace_id                ← projects.workspace_id (via project_id)
 """
 from __future__ import annotations
+
 import logging
 
-from sqlalchemy import event, inspect
+from sqlalchemy import event
 
 log = logging.getLogger(__name__)
 
@@ -38,7 +39,7 @@ def _resolve_from_parent(connection, fk_column: str, parent_table: str, parent_i
     if parent_id is None:
         return None
     row = connection.execute(
-        f"SELECT workspace_id FROM {parent_table} WHERE id = '{parent_id}'".replace("'None'", "NULL"),  # noqa: S608
+        f"SELECT workspace_id FROM {parent_table} WHERE id = '{parent_id}'".replace("'None'", "NULL"),
     ).first() if False else None
     # Above is intentionally unreachable — use parameterized below
     from sqlalchemy import text
@@ -106,19 +107,19 @@ def _make_listener(parent_lookups_for, *, fallback_to_default: bool = False):
 
 def register_auto_scope_listeners() -> None:
     """Wire all before_insert listeners. Idempotent — safe to call multiple times."""
+    from bumblebee.models.agent_definition import AgentDefinition
     from bumblebee.models.agent_session import AgentSession
+    from bumblebee.models.chat_session import ChatSession
     from bumblebee.models.comment import Comment
     from bumblebee.models.event import Event
     from bumblebee.models.issue import Issue
-    from bumblebee.models.notification import Notification
-    from bumblebee.models.scope_lease import ScopeLease
-    from bumblebee.models.workflow_run import WorkflowRun
-    from bumblebee.models.chat_session import ChatSession
-    from bumblebee.models.project import Project
-    from bumblebee.models.workflow import Workflow
-    from bumblebee.models.agent_definition import AgentDefinition
     from bumblebee.models.knowledge_entry import KnowledgeEntry
+    from bumblebee.models.notification import Notification
+    from bumblebee.models.project import Project
+    from bumblebee.models.scope_lease import ScopeLease
     from bumblebee.models.skill import Skill
+    from bumblebee.models.workflow import Workflow
+    from bumblebee.models.workflow_run import WorkflowRun
 
     if getattr(register_auto_scope_listeners, "_registered", False):
         return

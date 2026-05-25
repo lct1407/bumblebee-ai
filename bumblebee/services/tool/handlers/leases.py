@@ -1,10 +1,13 @@
 """Tool handlers for ScopeLease acquire/release."""
 from __future__ import annotations
+
 import uuid
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bumblebee.models.agent_session import AgentSession
-from bumblebee.services.dispatch.lease_manager import acquire_lease, release_lease as _release
+from bumblebee.services.dispatch.lease_manager import acquire_lease
+from bumblebee.services.dispatch.lease_manager import release_lease as _release
 from bumblebee.services.tool.result import ToolResult
 
 

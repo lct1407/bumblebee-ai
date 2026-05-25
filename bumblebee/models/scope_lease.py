@@ -1,17 +1,22 @@
 ﻿"""ScopeLease: atomic claim on file globs for a session. Exclusive within glob overlap."""
 import uuid
 from datetime import datetime
-from sqlalchemy import ForeignKey, DateTime, Enum as SqlEnum
 
-_evcall = lambda x: [e.value for e in x]
-from sqlalchemy.dialects.postgresql import JSONB, UUID
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import DateTime, ForeignKey
+from sqlalchemy import Enum as SqlEnum
+
+
+def _evcall(x):
+    return [e.value for e in x]
 import enum
 
-from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin
+from sqlalchemy.dialects.postgresql import JSONB, UUID
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from bumblebee.models.base import Base, TimestampMixin, UUIDPKMixin, WorkspaceScopedMixin
 
 
-class LeaseStatus(str, enum.Enum):
+class LeaseStatus(enum.StrEnum):
     ACTIVE = "active"
     EXPIRED = "expired"
     RELEASED = "released"

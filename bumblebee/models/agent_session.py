@@ -1,17 +1,22 @@
 ﻿"""AgentSession: one specialist agent doing one phase. Bounded; chained for hours-long issues."""
 import uuid
 from datetime import datetime
-from sqlalchemy import String, Text, Integer, Float, ForeignKey, DateTime, Enum as SqlEnum
 
-_evcall = lambda x: [e.value for e in x]
-from sqlalchemy.dialects.postgresql import JSONB, UUID
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import DateTime, Float, ForeignKey, Integer, String, Text
+from sqlalchemy import Enum as SqlEnum
+
+
+def _evcall(x):
+    return [e.value for e in x]
 import enum
 
-from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin
+from sqlalchemy.dialects.postgresql import JSONB, UUID
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from bumblebee.models.base import Base, TimestampMixin, UUIDPKMixin, WorkspaceScopedMixin
 
 
-class SessionStatus(str, enum.Enum):
+class SessionStatus(enum.StrEnum):
     PENDING = "pending"
     RUNNING = "running"
     PAUSED = "paused"  # checkpointed; awaiting continuation
@@ -20,7 +25,7 @@ class SessionStatus(str, enum.Enum):
     CANCELED = "canceled"
 
 
-class FailureReason(str, enum.Enum):
+class FailureReason(enum.StrEnum):
     HALLUCINATION = "hallucination"
     TOOL_ERROR = "tool_error"
     CONTEXT_EXHAUST = "context_exhaust"

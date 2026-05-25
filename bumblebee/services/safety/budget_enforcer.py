@@ -1,11 +1,12 @@
 ﻿"""BudgetEnforcer: hard ceilings per session, per issue, per project. Plane 5."""
 import uuid
-from datetime import datetime, timedelta, timezone
-from sqlalchemy import select, func
+from datetime import UTC, datetime, timedelta
+
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from bumblebee.models.agent_session import AgentSession, SessionStatus
 from bumblebee.config import get_settings
+from bumblebee.models.agent_session import AgentSession
 
 settings = get_settings()
 
@@ -30,7 +31,7 @@ async def check_session_budget(db: AsyncSession, session: AgentSession) -> None:
         raise BudgetExceeded("session", "tokens", tokens_total, session.budget_tokens_max)
 
     if session.started_at and session.budget_wall_min:
-        elapsed_min = (datetime.now(timezone.utc) - session.started_at).total_seconds() / 60
+        elapsed_min = (datetime.now(UTC) - session.started_at).total_seconds() / 60
         if elapsed_min >= session.budget_wall_min:
             raise BudgetExceeded("session", "wall_time", elapsed_min, session.budget_wall_min)
 
@@ -53,7 +54,7 @@ async def check_project_budget(
 ) -> None:
     """Check sum of all sessions for a project in last 24h."""
     max_daily_dollars = max_daily_dollars or settings.project_daily_dollars_max
-    cutoff = datetime.now(timezone.utc) - timedelta(hours=24)
+    cutoff = datetime.now(UTC) - timedelta(hours=24)
 
     stmt = (
         select(func.coalesce(func.sum(AgentSession.dollars_used), 0))

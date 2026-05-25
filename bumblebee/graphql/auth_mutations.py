@@ -3,19 +3,24 @@
 Mirrors bumblebee/routers/auth.py logic so the REST endpoints can be retired.
 """
 from __future__ import annotations
-from typing import Optional
 
 import strawberry
 from sqlalchemy import select
 
 from bumblebee.auth.security import (
-    create_access_token, generate_api_key, hash_password, verify_password,
+    create_access_token,
+    generate_api_key,
+    hash_password,
+    verify_password,
 )
 from bumblebee.graphql.context import GraphQLContext
 from bumblebee.models.user import ApiKey, User
 from bumblebee.models.workspace import Workspace, WorkspaceMember, WorkspaceRole
 from bumblebee.routers.auth import (
-    _build_token_payload, _resolve_primary_membership, _slugify, _unique_slug,
+    _build_token_payload,
+    _resolve_primary_membership,
+    _slugify,
+    _unique_slug,
 )
 
 
@@ -24,7 +29,7 @@ class UserType:
     id: str
     username: str
     email: str
-    full_name: Optional[str]
+    full_name: str | None
 
 
 @strawberry.type
@@ -40,7 +45,7 @@ class WorkspaceMembershipType:
 class AuthResult:
     access_token: str
     user: UserType
-    workspace: Optional[WorkspaceMembershipType]
+    workspace: WorkspaceMembershipType | None
 
 
 @strawberry.input
@@ -48,8 +53,8 @@ class SignupInput:
     email: str
     username: str
     password: str
-    full_name: Optional[str] = None
-    workspace_name: Optional[str] = None
+    full_name: str | None = None
+    workspace_name: str | None = None
 
 
 @strawberry.input
@@ -102,7 +107,7 @@ class AuthMutations:
         ctx: GraphQLContext = info.context
         user = (
             await ctx.db.execute(
-                select(User).where(User.username == input.username, User.is_active == True)
+                select(User).where(User.username == input.username, User.is_active)
             )
         ).scalar_one_or_none()
         if not user or not verify_password(input.password, user.password_hash or ""):

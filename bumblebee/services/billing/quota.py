@@ -8,9 +8,10 @@ AND (for Team plan) reports a metered usage record to Stripe so the customer is
 charged the raw cost on their next invoice.
 """
 from __future__ import annotations
+
 import logging
 import uuid
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -43,14 +44,14 @@ def _period_expired(ws: Workspace) -> bool:
     """True if 30+ days have passed since the current period started."""
     if not ws.period_started_at:
         return True
-    return datetime.now(timezone.utc) - ws.period_started_at >= timedelta(days=30)
+    return datetime.now(UTC) - ws.period_started_at >= timedelta(days=30)
 
 
 async def _maybe_reset_period(db: AsyncSession, ws: Workspace) -> None:
     """Roll the workspace's billing period if expired. Idempotent."""
     if _period_expired(ws):
         ws.llm_spend_cents_this_period = 0
-        ws.period_started_at = datetime.now(timezone.utc)
+        ws.period_started_at = datetime.now(UTC)
         await db.flush()
 
 
@@ -121,7 +122,7 @@ async def record_usage(
                 stripe.SubscriptionItem.create_usage_record(
                     usage_item.id,
                     quantity=cents,
-                    timestamp=int(datetime.now(timezone.utc).timestamp()),
+                    timestamp=int(datetime.now(UTC).timestamp()),
                     action="increment",
                     idempotency_key=event_idempotency_key or new_idempotency_key(f"usage-{workspace_id}"),
                 )

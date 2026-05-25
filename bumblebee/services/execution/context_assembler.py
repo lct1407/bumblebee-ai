@@ -1,7 +1,8 @@
 """ContextAssembler — build LLM prompt with Defense Baseline + system + Knowledge + IssueMemory."""
 from __future__ import annotations
+
 from dataclasses import dataclass, field
-from typing import Any
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -10,10 +11,10 @@ from bumblebee.models.agent_session import AgentSession
 from bumblebee.models.issue import Issue
 from bumblebee.models.knowledge_entry import KnowledgeEntry
 from bumblebee.models.skill import Skill
-from bumblebee.services.knowledge.defense_baseline import DEFENSE_BASELINE
 from bumblebee.prompts.loader import get_prompt as get_yaml_prompt
+from bumblebee.services.knowledge.defense_baseline import DEFENSE_BASELINE
 from bumblebee.services.state.issue_memory import project_issue_memory
-from bumblebee.services.tool.registry import TOOLS, tools_for_role
+from bumblebee.services.tool.registry import tools_for_role
 
 
 @dataclass
@@ -56,7 +57,7 @@ async def assemble_context(
             role_for_prompt = agent_def.role
     elif session.role:
         stmt = select(AgentDefinition).where(
-            AgentDefinition.role == session.role, AgentDefinition.is_global == True
+            AgentDefinition.role == session.role, AgentDefinition.is_global
         )
         agent_def = (await db.execute(stmt)).scalar_one_or_none()
 
@@ -187,8 +188,8 @@ def _collect_source_snippets(issue) -> str:
     Skipped silently if project.repo_path is None or not on local fs (server
     runs context assembly — files only present when on the worker device).
     """
-    from pathlib import Path
     import fnmatch
+    from pathlib import Path
     project = getattr(issue, "project", None)
     if not project:
         return ""

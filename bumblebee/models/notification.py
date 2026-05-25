@@ -1,17 +1,22 @@
 ﻿"""Notification: first-class entity (forge-adopted)."""
 import uuid
 from datetime import datetime
-from sqlalchemy import String, Text, ForeignKey, DateTime, Boolean, Enum as SqlEnum
 
-_evcall = lambda x: [e.value for e in x]
-from sqlalchemy.dialects.postgresql import JSONB, UUID
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import Boolean, DateTime, ForeignKey, String, Text
+from sqlalchemy import Enum as SqlEnum
+
+
+def _evcall(x):
+    return [e.value for e in x]
 import enum
 
-from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin
+from sqlalchemy.dialects.postgresql import JSONB, UUID
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from bumblebee.models.base import Base, TimestampMixin, UUIDPKMixin, WorkspaceScopedMixin
 
 
-class NotificationType(str, enum.Enum):
+class NotificationType(enum.StrEnum):
     SESSION_COMPLETED = "session_completed"
     SESSION_FAILED = "session_failed"
     BUDGET_WARNING = "budget_warning"

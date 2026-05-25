@@ -1,11 +1,10 @@
 ﻿"""LoopDetector: structural detection of same-tool-same-args repeats."""
 import uuid
-from collections import deque
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bumblebee.models.event import Event
-
 
 WINDOW_SIZE = 5  # check last N calls
 REPEAT_THRESHOLD = 3  # same tool+args N times â†’ loop

@@ -7,10 +7,11 @@ Plugin convention:
 Plugin manifest = dict with: name, version, workflows (paths), agent_defs, skills, tools.
 """
 from __future__ import annotations
+
 import hashlib
 import json
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from importlib.metadata import entry_points
 from pathlib import Path
 from typing import Any
@@ -23,7 +24,6 @@ from bumblebee.models.agent_definition import AgentDefinition
 from bumblebee.models.plugin_registration import PluginRegistration
 from bumblebee.models.skill import Skill
 from bumblebee.models.workflow import Workflow
-
 
 ENTRY_POINT_GROUP = "bumblebee.plugins"
 
@@ -104,7 +104,7 @@ class PluginLoader:
                 module=ep.value,
                 status="loaded",
                 manifest={"raw": str(manifest)[:1000]},
-                loaded_at=datetime.now(timezone.utc),
+                loaded_at=datetime.now(UTC),
             )
             db.add(reg)
         else:
@@ -112,7 +112,7 @@ class PluginLoader:
             reg.module = ep.value
             reg.status = "loaded"
             reg.error_message = None
-            reg.loaded_at = datetime.now(timezone.utc)
+            reg.loaded_at = datetime.now(UTC)
         await db.flush()
 
         wf_count = await self._register_workflows(db, name, manifest.get("workflows", []))

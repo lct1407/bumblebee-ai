@@ -6,14 +6,16 @@ WebSocket so the web UI can render live output. Only the final aggregate is
 persisted as an `llm_call` event (chunks are ephemeral to avoid DB bloat).
 """
 from __future__ import annotations
+
 import asyncio
 import json
 import os
 import shutil
 import subprocess
 from abc import ABC, abstractmethod
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass, field
-from typing import Any, Awaitable, Callable
+from typing import Any
 
 from bumblebee.services.execution.context_assembler import Prompt
 

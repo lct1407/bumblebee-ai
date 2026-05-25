@@ -5,6 +5,7 @@ Phase A: no live Stripe calls yet — `is_configured()` returns False until
 Phase D: replace get_stripe() callers with real Checkout/Subscription flows.
 """
 from __future__ import annotations
+
 import logging
 import uuid
 

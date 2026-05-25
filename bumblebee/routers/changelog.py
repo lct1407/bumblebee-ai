@@ -4,6 +4,7 @@ Parses the standard Keep-a-Changelog format. Cached because CHANGELOG.md
 changes only on release.
 """
 from __future__ import annotations
+
 import re
 from functools import lru_cache
 from pathlib import Path

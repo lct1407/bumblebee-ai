@@ -1,7 +1,6 @@
 ﻿"""FailureClassifier: rule-based taxonomy of failures (Plane 5). LLM judge later."""
 from bumblebee.models.agent_session import FailureReason
 
-
 _RULES: list[tuple[FailureReason, list[str]]] = [
     (FailureReason.TIMEOUT, ["timeout", "deadline exceeded", "wall time"]),
     (FailureReason.CONTEXT_EXHAUST, ["context length", "max tokens", "context limit", "too many tokens"]),

@@ -1,6 +1,8 @@
 """Notification dispatcher — emits notifications on session events."""
 from __future__ import annotations
+
 import uuid
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bumblebee.models.notification import Notification, NotificationType
@@ -16,7 +18,7 @@ async def notify_session_completed(
     n = Notification(
         recipient=recipient,
         type=NotificationType.SESSION_COMPLETED,
-        title=f"Session completed",
+        title="Session completed",
         body=summary[:500] if summary else None,
         payload={"session_id": str(session_id)},
         project_id=project_id,

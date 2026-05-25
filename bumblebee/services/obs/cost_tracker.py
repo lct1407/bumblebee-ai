@@ -1,7 +1,8 @@
 ﻿"""CostTracker: real-time aggregation. Plane 7."""
 import uuid
-from datetime import datetime, timedelta, timezone
-from sqlalchemy import select, func
+from datetime import UTC, datetime, timedelta
+
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bumblebee.models.agent_session import AgentSession
@@ -31,7 +32,7 @@ async def issue_total(db: AsyncSession, issue_id: uuid.UUID) -> dict:
 
 async def project_daily(db: AsyncSession, project_id: uuid.UUID) -> dict:
     """Sum sessions linked to issues of project in last 24h."""
-    cutoff = datetime.now(timezone.utc) - timedelta(hours=24)
+    cutoff = datetime.now(UTC) - timedelta(hours=24)
     stmt = (
         select(
             func.coalesce(func.sum(AgentSession.tokens_in), 0),

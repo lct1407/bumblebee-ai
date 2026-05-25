@@ -1,9 +1,9 @@
 """GraphQL request context: db session + current user + current workspace."""
 from __future__ import annotations
-from dataclasses import dataclass
-from typing import Optional
 
-from fastapi import Depends, Request
+from dataclasses import dataclass
+
+from fastapi import Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from strawberry.fastapi import BaseContext
 
@@ -15,9 +15,9 @@ from bumblebee.models.workspace import Workspace
 @dataclass
 class GraphQLContext(BaseContext):
     db: AsyncSession
-    user: Optional[User] = None
-    workspace: Optional[Workspace] = None
-    role: Optional[str] = None  # workspace role string
+    user: User | None = None
+    workspace: Workspace | None = None
+    role: str | None = None  # workspace role string
 
 
 async def get_context(request: Request) -> GraphQLContext:

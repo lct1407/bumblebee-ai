@@ -1,6 +1,7 @@
 """Notification CRUD endpoints — Phase 7."""
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
+
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -20,7 +21,7 @@ async def list_notifications(
 ):
     stmt = select(Notification).order_by(Notification.created_at.desc()).limit(limit)
     if unread_only:
-        stmt = stmt.where(Notification.is_read == False)
+        stmt = stmt.where(not Notification.is_read)
     if recipient:
         stmt = stmt.where(Notification.recipient == recipient)
     items = (await db.execute(stmt)).scalars().all()
@@ -45,7 +46,7 @@ async def mark_read(notification_id: uuid.UUID, db: AsyncSession = Depends(get_d
     if not n:
         raise HTTPException(404, "not_found")
     n.is_read = True
-    n.read_at = datetime.now(timezone.utc)
+    n.read_at = datetime.now(UTC)
     await db.commit()
     return {"id": str(n.id), "is_read": True}
 
@@ -56,10 +57,10 @@ async def mark_all_read(
     db: AsyncSession = Depends(get_db),
 ):
     stmt = select(Notification).where(
-        Notification.recipient == recipient, Notification.is_read == False
+        Notification.recipient == recipient, not Notification.is_read
     )
     items = (await db.execute(stmt)).scalars().all()
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     for n in items:
         n.is_read = True
         n.read_at = now

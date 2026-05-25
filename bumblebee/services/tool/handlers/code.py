@@ -1,6 +1,6 @@
 """Tool handlers for code operations — read/write files, search, git."""
 from __future__ import annotations
-import os
+
 import re
 import subprocess
 from pathlib import Path
@@ -89,7 +89,7 @@ async def git_commit(args: dict, session: AgentSession, db: AsyncSession) -> Too
     cwd = session.workspace_path
     try:
         subprocess.check_call(["git", "add", "-A"], cwd=cwd)
-        out = subprocess.check_output(
+        subprocess.check_output(
             ["git", "-c", "user.email=bot@bumblebee", "-c", "user.name=bumblebee",
              "commit", "-m", message],
             cwd=cwd,

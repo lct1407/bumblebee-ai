@@ -1,22 +1,22 @@
 """RBAC service — permission enum, role mapping, FastAPI dependencies."""
-from bumblebee.services.rbac.permissions import (
-    Permission,
-    ROLE_PERMISSIONS,
-    has_permission,
-)
 from bumblebee.services.rbac.dependencies import (
-    require_workspace,
+    CurrentWorkspace,
     require_permission,
     require_role,
-    CurrentWorkspace,
+    require_workspace,
+)
+from bumblebee.services.rbac.permissions import (
+    ROLE_PERMISSIONS,
+    Permission,
+    has_permission,
 )
 
 __all__ = [
-    "Permission",
     "ROLE_PERMISSIONS",
+    "CurrentWorkspace",
+    "Permission",
     "has_permission",
-    "require_workspace",
     "require_permission",
     "require_role",
-    "CurrentWorkspace",
+    "require_workspace",
 ]

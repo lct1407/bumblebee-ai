@@ -2,9 +2,7 @@
 from __future__ import annotations
 
 import asyncio
-import os
 import subprocess
-import sys
 from pathlib import Path
 
 import typer
@@ -50,7 +48,7 @@ def eval_prompts() -> None:
 @eval_app.command("list-roles")
 def eval_list_roles() -> None:
     """Print available agent roles + their key metrics."""
-    from bumblebee.prompts import list_roles, get_prompt
+    from bumblebee.prompts import get_prompt, list_roles
     table = Table(title="Bumblebee agent roles")
     table.add_column("role", style="cyan")
     table.add_column("display name")
@@ -165,7 +163,7 @@ def skills_install(
       bb skills install -t cursor -r ../some-other-repo
       bb skills install -t codex
     """
-    from bumblebee.installer import install_bundle, TARGETS
+    from bumblebee.installer import TARGETS, install_bundle
     if target not in TARGETS:
         console.print(f"[red]unknown target: {target}[/red]. choices: {list(TARGETS)}")
         raise typer.Exit(2)
@@ -199,7 +197,11 @@ def device_pair(
     config: str = typer.Option("~/.bumblebee/node.json", "--config"),
 ) -> None:
     """Request pairing; print code; wait for user to confirm in web UI."""
-    import platform, socket, httpx, json
+    import json
+    import platform
+    import socket
+
+    import httpx
     cfg = Path(config).expanduser()
     cfg.parent.mkdir(parents=True, exist_ok=True)
 
@@ -375,6 +377,7 @@ def login(
 ) -> None:
     """Login (via GraphQL) and store token in ~/.bumblebee/cli.json."""
     import json
+
     from bumblebee.cli_client import GraphQLClient
     client = GraphQLClient(endpoint=server.rstrip("/") + "/graphql")
     data = client.query(

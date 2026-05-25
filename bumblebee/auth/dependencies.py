@@ -1,5 +1,6 @@
 """FastAPI auth dependencies — accept JWT Bearer OR X-BB-API-Key."""
 from __future__ import annotations
+
 import os
 
 from fastapi import Depends, Header, HTTPException, status
@@ -9,7 +10,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from bumblebee.auth.security import decode_access_token, hash_api_key
 from bumblebee.database import get_db
 from bumblebee.models.user import ApiKey, User
-
 
 # Allow disabling auth entirely for dev (BUMBLEBEE_AUTH=off).
 AUTH_ENABLED = os.environ.get("BUMBLEBEE_AUTH", "on").lower() != "off"
@@ -30,7 +30,7 @@ async def get_current_user(
         payload = decode_access_token(token)
         if payload and (sub := payload.get("sub")):
             user = (
-                await db.execute(select(User).where(User.id == sub, User.is_active == True))
+                await db.execute(select(User).where(User.id == sub, User.is_active))
             ).scalar_one_or_none()
             if user:
                 return user
@@ -40,7 +40,7 @@ async def get_current_user(
         h = hash_api_key(x_bb_api_key)
         key = (
             await db.execute(
-                select(ApiKey).where(ApiKey.key_hash == h, ApiKey.is_active == True)
+                select(ApiKey).where(ApiKey.key_hash == h, ApiKey.is_active)
             )
         ).scalar_one_or_none()
         if key:

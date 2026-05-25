@@ -1,16 +1,21 @@
 ﻿"""Comment on an issue."""
 import uuid
-from sqlalchemy import String, Text, ForeignKey, Enum as SqlEnum
 
-_evcall = lambda x: [e.value for e in x]
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import Enum as SqlEnum
+from sqlalchemy import ForeignKey, String, Text
+
+
+def _evcall(x):
+    return [e.value for e in x]
 import enum
 
-from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from bumblebee.models.base import Base, TimestampMixin, UUIDPKMixin, WorkspaceScopedMixin
 
 
-class CommentType(str, enum.Enum):
+class CommentType(enum.StrEnum):
     DISCUSSION = "discussion"
     PROPOSAL = "proposal"
     PLAN = "plan"

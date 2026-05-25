@@ -1,5 +1,6 @@
 ﻿"""Event log read API."""
 import uuid
+
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession

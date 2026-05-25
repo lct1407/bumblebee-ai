@@ -9,18 +9,20 @@ Roles a node can advertise via `capabilities`: ["claude-cli", "codex-cli", "git"
 Server uses these to filter tasks (required_provider on task_queue).
 """
 from __future__ import annotations
+
 import enum
 import uuid
 from datetime import datetime
 
-from sqlalchemy import Boolean, DateTime, Enum as SqlEnum, ForeignKey, String, Text
+from sqlalchemy import DateTime, ForeignKey, String
+from sqlalchemy import Enum as SqlEnum
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from bumblebee.models.base import Base, TimestampMixin, UUIDPKMixin, WorkspaceScopedMixin
 
 
-class NodeStatus(str, enum.Enum):
+class NodeStatus(enum.StrEnum):
     PENDING = "pending"      # pairing requested, not yet confirmed
     ACTIVE = "active"        # confirmed + can claim tasks
     REVOKED = "revoked"      # token invalidated

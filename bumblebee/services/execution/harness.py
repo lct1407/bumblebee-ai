@@ -3,10 +3,12 @@
 Stub mode default (BUMBLEBEE_PROVIDER=stub); claude-cli when set to claude-cli.
 """
 from __future__ import annotations
-from datetime import datetime, timezone
+
+from datetime import UTC, datetime
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from bumblebee.models.agent_session import AgentSession, SessionStatus, FailureReason
+from bumblebee.models.agent_session import AgentSession, FailureReason, SessionStatus
 from bumblebee.services.execution.context_assembler import assemble_context
 from bumblebee.services.execution.llm_provider import get_provider
 from bumblebee.services.safety.budget_enforcer import (
@@ -35,7 +37,7 @@ async def run_role(
 ) -> HarnessResult:
     """Execute one agent role. Real LLM via Provider (stub default for tests)."""
     session.status = SessionStatus.RUNNING
-    session.started_at = datetime.now(timezone.utc)
+    session.started_at = datetime.now(UTC)
     session.role = role
     await db.flush()
 
@@ -59,7 +61,7 @@ async def run_role(
     # Free/Pro plans have a monthly LLM spend cap; Team is unlimited (passthrough).
     if session.workspace_id:
         try:
-            from bumblebee.services.billing.quota import check_workspace_quota, QuotaExceeded
+            from bumblebee.services.billing.quota import QuotaExceeded, check_workspace_quota
             await check_workspace_quota(db, session.workspace_id)
         except QuotaExceeded as e:
             await _finalize_failed(db, session, role, FailureReason.BUDGET_EXCEEDED, str(e))
@@ -136,7 +138,7 @@ async def run_role(
                 issue.ai_summary = output["summary"]
 
     session.status = SessionStatus.COMPLETED
-    session.completed_at = datetime.now(timezone.utc)
+    session.completed_at = datetime.now(UTC)
     await append_event(
         db, type="session_completed", session_id=session.id, issue_id=session.issue_id,
         payload={"output": output},
@@ -174,11 +176,12 @@ async def _invoke_with_streaming(db, session, role, provider, prompt):
     Chunks are ephemeral (not persisted). Only the final llm_call event hits the DB.
     The web UI consumes chunks via /ws and assembles them client-side.
     """
-    from bumblebee.services.websocket.manager import get_manager
+
     from sqlalchemy import select
-    from bumblebee.models.project import Project
+
     from bumblebee.models.issue import Issue
-    import uuid
+    from bumblebee.models.project import Project
+    from bumblebee.services.websocket.manager import get_manager
 
     # Resolve project slug once
     slug = None
@@ -204,7 +207,7 @@ async def _invoke_with_streaming(db, session, role, provider, prompt):
             "issue_id": str(session.issue_id) if session.issue_id else None,
             "actor": role,
             "payload": {**chunk, "seq": chunk_seq},
-            "occurred_at": datetime.now(timezone.utc).isoformat(),
+            "occurred_at": datetime.now(UTC).isoformat(),
         })
 
     # Announce stream start so UI can clear/prepare its buffer
@@ -226,7 +229,7 @@ async def _finalize_failed(
     detail: str,
 ) -> None:
     session.status = SessionStatus.FAILED
-    session.completed_at = datetime.now(timezone.utc)
+    session.completed_at = datetime.now(UTC)
     session.failure_reason = reason
     session.failure_detail = detail[:2000]
     await append_event(

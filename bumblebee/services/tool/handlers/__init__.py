@@ -4,7 +4,7 @@ from __future__ import annotations
 
 def register_all(executor) -> None:
     """Register all built-in tool handlers."""
-    from bumblebee.services.tool.handlers import issues, leases, scratch, knowledge, hitl, code
+    from bumblebee.services.tool.handlers import code, hitl, issues, knowledge, leases, scratch
 
     issues.register(executor)
     leases.register(executor)

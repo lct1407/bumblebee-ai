@@ -1,18 +1,20 @@
 """Tool handlers for KnowledgeEntry — query + add with usage tracking."""
 from __future__ import annotations
-from datetime import datetime, timezone
-from sqlalchemy import select, or_
+
+from datetime import UTC, datetime
+
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bumblebee.models.agent_session import AgentSession
 from bumblebee.models.issue import Issue
-from bumblebee.models.knowledge_entry import KnowledgeEntry, KnowledgeCategory
+from bumblebee.models.knowledge_entry import KnowledgeCategory, KnowledgeEntry
 from bumblebee.services.tool.result import ToolResult
 
 
 async def query_knowledge(args: dict, session: AgentSession, db: AsyncSession) -> ToolResult:
     category = args.get("category")
-    scope_glob = args.get("scope_glob")
+    args.get("scope_glob")
     limit = int(args.get("limit", 5))
 
     # Get project_id via session.issue
@@ -31,7 +33,7 @@ async def query_knowledge(args: dict, session: AgentSession, db: AsyncSession) -
     entries = (await db.execute(stmt)).scalars().all()
 
     # Increment use_count + lastUsedAt
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     for e in entries:
         e.use_count += 1
         e.last_used_at = now

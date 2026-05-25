@@ -4,19 +4,21 @@ Naming: `<ModelName>Type` for outputs, `<ModelName>Input` for mutations.
 Enums re-exported as strawberry.enum.
 """
 from __future__ import annotations
+
 import uuid
 from datetime import datetime
-from typing import Optional
 
 import strawberry
 
-from bumblebee.models.issue import (
-    IssueStatus, IssueType, IssuePriority, IssueComplexity,
-)
-from bumblebee.models.workspace import WorkspacePlan, WorkspaceRole
 from bumblebee.models.agent_node import NodeStatus
+from bumblebee.models.issue import (
+    IssueComplexity,
+    IssuePriority,
+    IssueStatus,
+    IssueType,
+)
 from bumblebee.models.issue_relation import IssueRelationKind
-
+from bumblebee.models.workspace import WorkspacePlan, WorkspaceRole
 
 # ---- Enums --------------------------------------------------------------
 
@@ -36,7 +38,7 @@ class IssueRelationType:
     source_issue_id: uuid.UUID
     target_issue_id: uuid.UUID
     kind: IssueRelationKindGQL  # type: ignore[valid-type]
-    note: Optional[str]
+    note: str | None
     created_at: datetime
 
 
@@ -45,7 +47,7 @@ class RelationCreateInput:
     source_issue_id: uuid.UUID
     target_issue_id: uuid.UUID
     kind: IssueRelationKindGQL  # type: ignore[valid-type]
-    note: Optional[str] = None
+    note: str | None = None
 
 
 @strawberry.input
@@ -74,8 +76,8 @@ class ProjectType:
     name: str
     slug: str
     key: str
-    description: Optional[str]
-    repo_path: Optional[str]
+    description: str | None
+    repo_path: str | None
     base_branch: str
     staging_branch: str
     enabled: bool
@@ -88,17 +90,17 @@ class IssueType_:
     project_id: uuid.UUID
     number: int
     title: str
-    description: Optional[str]
+    description: str | None
     type: IssueTypeGQL  # type: ignore[valid-type]
     status: IssueStatusGQL  # type: ignore[valid-type]
     priority: IssuePriorityGQL  # type: ignore[valid-type]
-    complexity: Optional[IssueComplexityGQL]  # type: ignore[valid-type]
-    ai_summary: Optional[str]
-    ai_suggested_solution: Optional[str]
-    ai_confidence: Optional[float]
-    acceptance_criteria: Optional[str]
+    complexity: IssueComplexityGQL | None  # type: ignore[valid-type]
+    ai_summary: str | None
+    ai_suggested_solution: str | None
+    ai_confidence: float | None
+    acceptance_criteria: str | None
     scope_hints: list[str]
-    parent_id: Optional[uuid.UUID]
+    parent_id: uuid.UUID | None
     created_at: datetime
     updated_at: datetime
 
@@ -111,13 +113,13 @@ Issue = IssueType_
 class EventType:
     id: uuid.UUID
     workspace_id: uuid.UUID
-    issue_id: Optional[uuid.UUID]
-    project_id: Optional[uuid.UUID]
-    session_id: Optional[uuid.UUID]
+    issue_id: uuid.UUID | None
+    project_id: uuid.UUID | None
+    session_id: uuid.UUID | None
     type: str
     payload: strawberry.scalars.JSON
-    source: Optional[str]
-    actor: Optional[str]
+    source: str | None
+    actor: str | None
     occurred_at: datetime
 
 
@@ -128,9 +130,9 @@ class AgentNodeType:
     name: str
     status: NodeStatusGQL  # type: ignore[valid-type]
     capabilities: list[str]
-    platform: Optional[str]
-    hostname: Optional[str]
-    last_heartbeat_at: Optional[datetime]
+    platform: str | None
+    hostname: str | None
+    last_heartbeat_at: datetime | None
     created_at: datetime
 
 
@@ -161,30 +163,30 @@ class CheckoutSessionResult:
 class IssueCreateInput:
     project_id: uuid.UUID
     title: str
-    description: Optional[str] = None
-    type: Optional[IssueTypeGQL] = None  # type: ignore[valid-type]
-    priority: Optional[IssuePriorityGQL] = None  # type: ignore[valid-type]
-    parent_id: Optional[uuid.UUID] = None
+    description: str | None = None
+    type: IssueTypeGQL | None = None  # type: ignore[valid-type]
+    priority: IssuePriorityGQL | None = None  # type: ignore[valid-type]
+    parent_id: uuid.UUID | None = None
 
 
 @strawberry.input
 class IssueUpdateInput:
-    title: Optional[str] = None
-    description: Optional[str] = None
-    status: Optional[IssueStatusGQL] = None  # type: ignore[valid-type]
-    priority: Optional[IssuePriorityGQL] = None  # type: ignore[valid-type]
-    complexity: Optional[IssueComplexityGQL] = None  # type: ignore[valid-type]
-    acceptance_criteria: Optional[str] = None
-    scope_hints: Optional[list[str]] = None
+    title: str | None = None
+    description: str | None = None
+    status: IssueStatusGQL | None = None  # type: ignore[valid-type]
+    priority: IssuePriorityGQL | None = None  # type: ignore[valid-type]
+    complexity: IssueComplexityGQL | None = None  # type: ignore[valid-type]
+    acceptance_criteria: str | None = None
+    scope_hints: list[str] | None = None
 
 
 @strawberry.input
 class DevicePairRequestInput:
     name: str
     capabilities: list[str]
-    hostname: Optional[str] = None
-    platform: Optional[str] = None
-    workspace_slug: Optional[str] = None
+    hostname: str | None = None
+    platform: str | None = None
+    workspace_slug: str | None = None
 
 
 @strawberry.input

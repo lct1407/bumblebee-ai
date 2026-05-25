@@ -1,10 +1,11 @@
 ﻿"""Skill: capability bundle (forge-adopted). Referenced by AgentDefinitions."""
 import uuid
-from sqlalchemy import String, Text, ForeignKey, Boolean
+
+from sqlalchemy import Boolean, ForeignKey, String, Text
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from bumblebee.models.base import Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin
+from bumblebee.models.base import Base, TimestampMixin, UUIDPKMixin, WorkspaceScopedMixin
 
 
 class Skill(Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin):

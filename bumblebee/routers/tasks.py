@@ -7,16 +7,16 @@ The daemon authenticates with `Authorization: Bearer <node_token>` and:
   - POST /api/tasks/{id}/fail  -> mark task failed (with reason)
 """
 from __future__ import annotations
-import uuid
-from datetime import datetime, timezone
 
-from fastapi import APIRouter, Depends, Header, HTTPException
+import uuid
+from datetime import UTC, datetime
+
+from fastapi import APIRouter, Depends, Header
 from pydantic import BaseModel
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bumblebee.database import get_db
-from bumblebee.models.agent_node import AgentNode
 from bumblebee.routers.devices import _node_from_token
 from bumblebee.services.dispatch.task_queue import claim_next
 from bumblebee.services.state.event_log import append_event
@@ -54,7 +54,7 @@ async def claim_task(
     Returns 204 No Content if no task available so the daemon can long-poll.
     """
     node = await _node_from_token(db, authorization)
-    node.last_heartbeat_at = datetime.now(timezone.utc)
+    node.last_heartbeat_at = datetime.now(UTC)
     await db.commit()
 
     # BB-18: pass node's project bindings so claim filters by required_project_id
@@ -72,8 +72,8 @@ async def claim_task(
         if task:
             await db.commit()
             # lease_expires_at not always returned by claim_next; pull from DB
-            from datetime import datetime, timezone, timedelta
-            lease_exp = datetime.now(timezone.utc) + timedelta(seconds=body.lease_seconds)
+            from datetime import timedelta
+            lease_exp = datetime.now(UTC) + timedelta(seconds=body.lease_seconds)
             return ClaimedTask(
                 task_id=task["id"],
                 issue_id=task.get("issue_id"),
@@ -112,7 +112,7 @@ async def ack_task(
     authorization: str | None = Header(None),
     db: AsyncSession = Depends(get_db),
 ):
-    node = await _node_from_token(db, authorization)
+    await _node_from_token(db, authorization)
     await db.execute(
         text("UPDATE task_queue SET status='succeeded', updated_at=NOW() WHERE id=:id"),
         {"id": task_id},
@@ -128,7 +128,7 @@ async def fail_task(
     authorization: str | None = Header(None),
     db: AsyncSession = Depends(get_db),
 ):
-    node = await _node_from_token(db, authorization)
+    await _node_from_token(db, authorization)
     await db.execute(
         text(
             "UPDATE task_queue SET status='failed', updated_at=NOW(), "

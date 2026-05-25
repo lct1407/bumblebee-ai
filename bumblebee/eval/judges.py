@@ -1,5 +1,6 @@
 """Eval judges — pytest / grep / regex_negative / exit_code."""
 from __future__ import annotations
+
 import re
 import shlex
 import subprocess
@@ -84,5 +85,5 @@ JUDGE_MAP = {
 def run_judge(spec: JudgeSpec, cwd: str) -> JudgeResult:
     fn = JUDGE_MAP.get(spec.type)
     if not fn:
-        return JudgeResult(type=spec.type, passed=False, detail=f"unknown judge type")
+        return JudgeResult(type=spec.type, passed=False, detail="unknown judge type")
     return fn(spec, cwd)

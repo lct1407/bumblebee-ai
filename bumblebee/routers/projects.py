@@ -1,12 +1,11 @@
 ﻿"""Project CRUD."""
-import uuid
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bumblebee.database import get_db
 from bumblebee.models.project import Project
-from bumblebee.schemas.project import ProjectCreate, ProjectUpdate, ProjectOut
+from bumblebee.schemas.project import ProjectCreate, ProjectOut, ProjectUpdate
 
 router = APIRouter(prefix="/api/projects", tags=["projects"])
 

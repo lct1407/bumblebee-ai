@@ -1,8 +1,9 @@
 ﻿"""Issue schemas."""
 import uuid
+
 from pydantic import BaseModel, Field
 
-from bumblebee.models.issue import IssueType, IssueStatus, IssuePriority, IssueComplexity
+from bumblebee.models.issue import IssueComplexity, IssuePriority, IssueStatus, IssueType
 from bumblebee.schemas.common import TimestampedModel
 
 
