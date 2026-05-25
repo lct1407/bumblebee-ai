@@ -11,10 +11,13 @@ on:
     paths:
       - "bumblebee/prompts/**"
       - "bumblebee/prompts/validator.py"
+      - ".github/workflows/prompt-validator.yml"
   pull_request:
     paths:
       - "bumblebee/prompts/**"
       - "bumblebee/prompts/validator.py"
+      - ".github/workflows/prompt-validator.yml"
+  workflow_dispatch: {}
 
 jobs:
   validate:
