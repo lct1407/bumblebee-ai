@@ -38,6 +38,11 @@ describe('extractFromToolInput', () => {
     assert.deepStrictEqual(paths, ['src/index.ts']);
   });
 
+  it('normalizes Windows absolute file_path params', () => {
+    const paths = extractFromToolInput({ file_path: 'C:\\Users\\kai\\project\\node_modules\\pkg\\index.js' });
+    assert.deepStrictEqual(paths, ['C:/Users/kai/project/node_modules/pkg/index.js']);
+  });
+
   it('extracts path param', () => {
     const paths = extractFromToolInput({ path: 'node_modules' });
     assert.deepStrictEqual(paths, ['node_modules']);
@@ -265,6 +270,11 @@ describe('extractFromCommand', () => {
     it('handles cd to absolute path', () => {
       const paths = extractFromCommand('cd /Users/kai/project');
       assert.ok(paths.some(p => p.includes('/Users/kai/project')));
+    });
+
+    it('handles Windows absolute paths', () => {
+      const paths = extractFromCommand('cat C:\\Users\\kai\\project\\node_modules\\pkg\\index.js');
+      assert.ok(paths.some(p => p === 'C:/Users/kai/project/node_modules/pkg/index.js'));
     });
 
     it('handles env var prefix before command', () => {
@@ -510,6 +520,13 @@ describe('normalizeExtractedPath', () => {
 
   it('normalizes backslashes to forward slashes', () => {
     assert.strictEqual(normalizeExtractedPath('src\\file.ts'), 'src/file.ts');
+  });
+
+  it('preserves Windows drive letters while normalizing separators', () => {
+    assert.strictEqual(
+      normalizeExtractedPath('C:\\Users\\kai\\project\\node_modules\\pkg\\index.js'),
+      'C:/Users/kai/project/node_modules/pkg/index.js'
+    );
   });
 
   it('removes trailing slash', () => {

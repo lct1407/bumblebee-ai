@@ -67,6 +67,23 @@ describe('loadPatterns', () => {
     assert.ok(patterns.includes('!src/vendor'));
     assert.ok(patterns.includes('!dist/public'));
   });
+
+  it('merges project override patterns after shipped patterns', () => {
+    const patterns = loadPatterns(
+      path.join(FIXTURES_DIR, 'ckignore-default.txt'),
+      path.join(FIXTURES_DIR, 'ckignore-project-override.txt')
+    );
+    assert.ok(patterns.indexOf('!build') > patterns.indexOf('build'));
+  });
+
+  it('ignores missing project override files', () => {
+    const patterns = loadPatterns(
+      path.join(FIXTURES_DIR, 'ckignore-default.txt'),
+      '/non/existent/project/.ckignore'
+    );
+    const shipped = loadPatterns(path.join(FIXTURES_DIR, 'ckignore-default.txt'));
+    assert.deepStrictEqual(patterns, shipped);
+  });
 });
 
 
@@ -217,6 +234,23 @@ describe('matchPath - negation patterns', () => {
   });
 });
 
+describe('matchPath - project override patterns', () => {
+  const patterns = loadPatterns(
+    path.join(FIXTURES_DIR, 'ckignore-default.txt'),
+    path.join(FIXTURES_DIR, 'ckignore-project-override.txt')
+  );
+  const matcher = createMatcher(patterns);
+
+  it('allows build paths when project override negates build', () => {
+    assert.ok(!matchPath(matcher, 'src/commands/build').blocked);
+    assert.ok(!matchPath(matcher, 'src/commands/build/run.rb').blocked);
+  });
+
+  it('still blocks other shipped heavy directories', () => {
+    assert.ok(matchPath(matcher, 'node_modules/pkg/index.js').blocked);
+  });
+});
+
 
 // ═══════════════════════════════════════════════════════════════════════════
 // matchPath — path normalization
@@ -227,6 +261,16 @@ describe('matchPath - normalization', () => {
 
   it('normalizes Windows backslashes', () => {
     assert.ok(matchPath(matcher, 'node_modules\\pkg\\index.js').blocked);
+  });
+
+  it('blocks Windows absolute paths with drive letters', () => {
+    assert.ok(matchPath(matcher, 'C:/Users/kai/project/node_modules/pkg/index.js').blocked);
+    assert.ok(matchPath(matcher, 'D:/work/repo/dist/bundle.js').blocked);
+  });
+
+  it('allows Windows absolute paths outside blocked directories', () => {
+    assert.ok(!matchPath(matcher, 'C:/Users/kai/project/src/index.ts').blocked);
+    assert.ok(!matchPath(matcher, 'D:/work/repo/tests/unit/example.test.ts').blocked);
   });
 
   it('strips leading ./', () => {

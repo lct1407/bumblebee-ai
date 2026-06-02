@@ -11,6 +11,9 @@ const { describe, it } = require('node:test');
 const assert = require('node:assert');
 const { spawn } = require('child_process');
 const path = require('path');
+const fs = require('fs');
+const os = require('os');
+const { getStateDir } = require('../lib/session-state-manager.cjs');
 
 const HOOK_PATH = path.join(__dirname, '..', 'session-init.cjs');
 
@@ -205,6 +208,186 @@ describe('session-init.cjs', () => {
       );
     });
 
+    it('loads previous session state during startup without session-state SessionStart hook', async () => {
+      const tempDir = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'session-init-state-')));
+      const stateDir = getStateDir(tempDir);
+      fs.writeFileSync(
+        path.join(stateDir, 'latest.md'),
+        `# Session State\n<!-- Generated: ${new Date().toISOString()} -->\n\n## What Worked (Verified)\n- Cached work\n`
+      );
+
+      const result = await new Promise((resolve, reject) => {
+        const proc = spawn('node', [HOOK_PATH], {
+          cwd: tempDir,
+          env: { ...process.env, CLAUDE_ENV_FILE: '' }
+        });
+        let stdout = '';
+        let stderr = '';
+        proc.stdout.on('data', (data) => { stdout += data.toString(); });
+        proc.stderr.on('data', (data) => { stderr += data.toString(); });
+        proc.stdin.write(JSON.stringify({ source: 'startup' }));
+        proc.stdin.end();
+        proc.on('close', (code) => { resolve({ stdout, stderr, exitCode: code }); });
+        proc.on('error', reject);
+        setTimeout(() => { proc.kill('SIGTERM'); reject(new Error('timeout')); }, 5000);
+      });
+
+      assert.strictEqual(result.exitCode, 0, 'Hook should exit with code 0');
+      assert.ok(
+        result.stdout.includes('--- Previous Session State ---'),
+        'Startup should include previous session state block'
+      );
+      fs.rmSync(tempDir, { recursive: true, force: true });
+    });
+
+    it('respects hooks.session-state=false during startup recovery', async () => {
+      const tempDir = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'session-init-disabled-')));
+      const stateDir = getStateDir(tempDir);
+      fs.mkdirSync(path.join(tempDir, '.claude'), { recursive: true });
+      fs.writeFileSync(
+        path.join(tempDir, '.claude', '.ck.json'),
+        JSON.stringify({ hooks: { 'session-state': false } }, null, 2)
+      );
+      fs.writeFileSync(
+        path.join(stateDir, 'latest.md'),
+        `# Session State\n<!-- Generated: ${new Date().toISOString()} -->\n\n## What Worked (Verified)\n- Cached work\n`
+      );
+
+      const result = await new Promise((resolve, reject) => {
+        const proc = spawn('node', [HOOK_PATH], {
+          cwd: tempDir,
+          env: { ...process.env, CLAUDE_ENV_FILE: '' }
+        });
+        let stdout = '';
+        let stderr = '';
+        proc.stdout.on('data', (data) => { stdout += data.toString(); });
+        proc.stderr.on('data', (data) => { stderr += data.toString(); });
+        proc.stdin.write(JSON.stringify({ source: 'startup' }));
+        proc.stdin.end();
+        proc.on('close', (code) => { resolve({ stdout, stderr, exitCode: code }); });
+        proc.on('error', reject);
+        setTimeout(() => { proc.kill('SIGTERM'); reject(new Error('timeout')); }, 5000);
+      });
+
+      assert.strictEqual(result.exitCode, 0, 'Hook should exit with code 0');
+      assert.ok(
+        !result.stdout.includes('--- Previous Session State ---'),
+        'Startup should not print previous session state when hooks.session-state is disabled'
+      );
+      fs.rmSync(tempDir, { recursive: true, force: true });
+    });
+
+    it('warms the statusline cache from transcript on resume when the temp session cache is missing', async () => {
+      const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'session-init-resume-'));
+      const sessionId = `session-init-${Date.now()}`;
+      const transcriptPath = path.join(tempDir, 'resume.jsonl');
+      const sessionPath = path.join(os.tmpdir(), `ck-session-${sessionId}.json`);
+
+      fs.writeFileSync(transcriptPath, [
+        JSON.stringify({
+          timestamp: new Date(Date.now() - 90000).toISOString(),
+          message: {
+            content: [{
+              type: 'tool_use',
+              id: 'task-create-1',
+              name: 'TaskCreate',
+              input: { subject: 'Recover cached task state' }
+            }]
+          }
+        }),
+        JSON.stringify({
+          timestamp: new Date(Date.now() - 80000).toISOString(),
+          message: {
+            content: [{
+              type: 'tool_result',
+              tool_use_id: 'task-create-1',
+              is_error: false,
+              content: '{"taskId":"task-resume-1"}'
+            }]
+          }
+        }),
+        JSON.stringify({
+          timestamp: new Date(Date.now() - 70000).toISOString(),
+          message: {
+            content: [{
+              type: 'tool_use',
+              id: 'task-update-1',
+              name: 'TaskUpdate',
+              input: {
+                taskId: 'task-resume-1',
+                status: 'in_progress',
+                activeForm: 'Recovering cached task state'
+              }
+            }]
+          }
+        })
+      ].join('\n'));
+
+      try {
+        const result = await new Promise((resolve, reject) => {
+          const proc = spawn('node', [HOOK_PATH], {
+            cwd: tempDir,
+            env: { ...process.env, CLAUDE_ENV_FILE: '' }
+          });
+          let stdout = '';
+          let stderr = '';
+          proc.stdout.on('data', (data) => { stdout += data.toString(); });
+          proc.stderr.on('data', (data) => { stderr += data.toString(); });
+          proc.stdin.write(JSON.stringify({
+            source: 'resume',
+            session_id: sessionId,
+            transcript_path: transcriptPath
+          }));
+          proc.stdin.end();
+          proc.on('close', (code) => { resolve({ stdout, stderr, exitCode: code }); });
+          proc.on('error', reject);
+          setTimeout(() => { proc.kill('SIGTERM'); reject(new Error('timeout')); }, 5000);
+        });
+
+        assert.strictEqual(result.exitCode, 0, 'Hook should exit with code 0');
+        const sessionState = JSON.parse(fs.readFileSync(sessionPath, 'utf8'));
+        assert.strictEqual(sessionState.statusline.warmed, true, 'Resume should repopulate the cached statusline snapshot');
+        assert.strictEqual(sessionState.statusline.todos[0].activeForm, 'Recovering cached task state', 'Resume should restore the active native task from transcript');
+      } finally {
+        fs.rmSync(tempDir, { recursive: true, force: true });
+        fs.rmSync(sessionPath, { force: true });
+      }
+    });
+
+    it('restores orphaned shadowed skills on startup', async () => {
+      const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'session-init-shadowed-'));
+      const shadowedSkillDir = path.join(tempDir, '.claude', 'skills', '.shadowed', 'cook');
+      const restoredSkillDir = path.join(tempDir, '.claude', 'skills', 'cook');
+
+      fs.mkdirSync(shadowedSkillDir, { recursive: true });
+      fs.writeFileSync(path.join(shadowedSkillDir, 'SKILL.md'), '# Cook shadowed copy\n');
+
+      try {
+        const result = await new Promise((resolve, reject) => {
+          const proc = spawn('node', [HOOK_PATH], {
+            cwd: tempDir,
+            env: { ...process.env, CLAUDE_ENV_FILE: '' }
+          });
+          let stdout = '';
+          let stderr = '';
+          proc.stdout.on('data', (data) => { stdout += data.toString(); });
+          proc.stderr.on('data', (data) => { stderr += data.toString(); });
+          proc.stdin.write(JSON.stringify({ source: 'startup' }));
+          proc.stdin.end();
+          proc.on('close', (code) => { resolve({ stdout, stderr, exitCode: code }); });
+          proc.on('error', reject);
+          setTimeout(() => { proc.kill('SIGTERM'); reject(new Error('timeout')); }, 5000);
+        });
+
+        assert.strictEqual(result.exitCode, 0, 'Hook should exit with code 0');
+        assert.ok(fs.existsSync(restoredSkillDir), 'Startup should restore the orphaned skill from .shadowed');
+        assert.ok(!fs.existsSync(path.join(tempDir, '.claude', 'skills', '.shadowed')), 'Startup should clean up the empty .shadowed directory');
+        assert.ok(result.stdout.includes('SKILL-DEDUP CLEANUP'), 'Startup should report the recovery to the user');
+      } finally {
+        fs.rmSync(tempDir, { recursive: true, force: true });
+      }
+    });
+
   });
 
   describe('Exit Code Behavior', () => {
@@ -258,8 +441,15 @@ describe('session-init.cjs', () => {
       const gitRoot = require('child_process')
         .execSync('git rev-parse --show-toplevel', { encoding: 'utf8' }).trim();
 
-      // Use .claude/hooks as subdirectory (guaranteed to exist)
-      const subdirPath = require('path').join(gitRoot, '.claude', 'hooks');
+      // Prefer the runtime hook dir if present; fall back to the tracked source dir in worktrees.
+      const subdirCandidates = [
+        require('path').join(gitRoot, '.claude', 'hooks'),
+        require('path').join(gitRoot, 'claude', 'hooks')
+      ];
+      const subdirPath = subdirCandidates.find((candidate) => fs.existsSync(candidate));
+      if (!subdirPath) {
+        throw new Error('No hook subdirectory found for session-init subdirectory test');
+      }
 
       const result = await new Promise((resolve, reject) => {
         const proc = spawn('node', [HOOK_PATH], {
