@@ -52,7 +52,7 @@ Guide user to get started with the project:
 2. Guide user to get started + suggest next steps
 3. Ask user if they want to commit/push:
    - If yes: `git-manager` subagent to commit (and push if requested)
-   - `--fast` mode: auto-commit (no push) without asking
+   - `--fast` mode: keep the same commit approval gate; speed mode does not imply git automation
 
 **Report rules:**
 - Sacrifice grammar for concision

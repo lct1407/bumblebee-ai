@@ -80,7 +80,6 @@ This repository includes a diverse collection of example skills demonstrating di
 
 ## Meta Skills
 - **skill-creator** - Guide for creating effective skills that extend Claude's capabilities
-- **template-skill** - A basic template to use as a starting point for new skills
 
 # Document Skills
 
@@ -115,7 +114,7 @@ You can use Anthropic's pre-built skills, and upload custom skills, via the Clau
 
 # Creating a Basic Skill
 
-Skills are simple to create - just a folder with a `SKILL.md` file containing YAML frontmatter and instructions. You can use the **template-skill** in this repository as a starting point:
+Skills are simple to create - just a folder with a `SKILL.md` file containing YAML frontmatter and instructions. Use the `/ck:skill-creator` skill to scaffold a new one, or copy any existing skill (e.g., `show-off/`) as a starting point:
 
 ```markdown
 ---

@@ -16,8 +16,8 @@ effort: 4h       # Estimated total effort
 issue: 74        # GitHub issue number (if applicable)
 branch: kai/feat/feature-name
 tags: [frontend, api]  # Category tags
-blockedBy: []    # Plan dirs this plan waits on (e.g., [260301-1200-auth-system])
-blocks: []       # Plan dirs this plan blocks (e.g., [260228-0900-user-dashboard])
+blockedBy: []    # Same-scope refs by default; use global:/project: for cross-scope
+blocks: []       # Example: [project:260228-0900-user-dashboard]
 created: 2025-12-16
 ---
 ```
@@ -36,6 +36,17 @@ When creating plans, auto-populate these fields:
 - **blockedBy**: Detected during pre-creation scan (empty `[]` if none)
 - **blocks**: Detected during pre-creation scan (empty `[]` if none)
 - **created**: Today's date in YYYY-MM-DD format
+
+### Cross-Scope Reference Syntax
+
+- Bare reference: `260301-1200-auth-system`
+  - Meaning: same scope as the current plan.
+- Global reference: `global:260301-1200-auth-system`
+  - Meaning: resolve against the configured global plans root.
+- Project reference: `project:260301-1200-auth-system`
+  - Meaning: resolve against the current project plans root.
+
+Missing references should warn and render as `not found`. They should not block plan creation.
 
 ### Tag Vocabulary (Recommended)
 

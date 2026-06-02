@@ -1,6 +1,10 @@
 ---
 name: ck:scout
 description: "Fast codebase scouting using parallel agents. Use for file discovery, task context gathering, quick searches across directories. Supports internal (Explore) and external (Gemini/OpenCode) agents."
+user-invocable: true
+when_to_use: "Invoke for fast file discovery and codebase orientation."
+category: dev-tools
+keywords: [codebase, scouting, file-discovery, search]
 argument-hint: "[search-target] [ext]"
 metadata:
   author: claudekit
@@ -92,3 +96,8 @@ Load appropriate reference based on decision tree:
 - `references/internal-scouting.md` - Using Explore subagents
 - `references/external-scouting.md` - Using Gemini/OpenCode CLI
 - `references/task-management-scouting.md` - Claude Task patterns for scout coordination
+
+## Workflow Position
+
+**Typically precedes:** `/ck:debug` (debug after scouting), `/ck:fix` (fix after locating code), `/ck:code-review` (scout edge cases before review)
+**Related:** `/ck:debug` (investigate after scouting), `/ck:brainstorm` (explore after scouting)

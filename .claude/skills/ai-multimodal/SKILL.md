@@ -1,6 +1,10 @@
 ---
 name: ck:ai-multimodal
 description: Analyze images/audio/video with Gemini API (better vision than Claude). Generate images (Imagen 4, Nano Banana 2, MiniMax), videos (Veo 3, Hailuo), speech (MiniMax TTS), music (MiniMax). Use for vision analysis, transcription, OCR, design extraction, multimodal AI.
+user-invocable: true
+when_to_use: "Invoke for Gemini vision, OCR, media generation, or transcription."
+category: ai-ml
+keywords: [vision, image, video, audio, Gemini]
 license: MIT
 allowed-tools:
   - Bash
@@ -12,13 +16,15 @@ argument-hint: "[file-path] [prompt]"
 
 # AI Multimodal
 
-Process audio, images, videos, documents using Gemini. Generate images, videos, speech, music via Gemini + MiniMax.
+Process audio, images, videos, documents using Gemini. Generate images via Google, OpenRouter, or MiniMax. Generate videos, speech, music via Gemini + MiniMax.
 
 ## Setup
 
 ```bash
 # Google Gemini (analysis + image/video gen)
 export GEMINI_API_KEY="your-key"  # https://aistudio.google.com/apikey
+# OpenRouter (optional image-generation router / non-Google models)
+export OPENROUTER_API_KEY="your-key"  # https://openrouter.ai/settings/keys
 # MiniMax (image/video/speech/music gen)
 export MINIMAX_API_KEY="your-key"  # https://platform.minimax.io/user-center/basic-information/interface-key
 pip install google-genai python-dotenv pillow requests
@@ -37,9 +43,15 @@ export GEMINI_API_KEY_2="key2"  # auto-rotates on rate limit
 
 **Verify setup**: `python scripts/check_setup.py`
 **Analyze media**: `python scripts/gemini_batch_process.py --files <file> --task <analyze|transcribe|extract>`
-  - TIP: When you're asked to analyze an image, check if `gemini` command is available, then use `echo "<prompt to analyze image>" | gemini -y -m <gemini.model>` command (read model from `$HOME/.claude/.ck.json`: `gemini.model`). If `gemini` command is not available, use `python scripts/gemini_batch_process.py --files <file> --task analyze` command.
-**Generate (Gemini)**: `python scripts/gemini_batch_process.py --task <generate|generate-video> --prompt "desc"`
-**Generate (MiniMax)**: `python scripts/minimax_cli.py --task <generate|generate-video|generate-speech|generate-music> --prompt "desc"`
+  - TIP: When you're asked to analyze an image, check if `gemini` command is available, then use `echo "<prompt to analyze image>" | gemini -y -m <gemini.model>` command (read model from `$HOME/.claude/.ck.json`: `gemini.model`). If gemini fails (exit code != 0, or output contains `GaxiosError`/`RESOURCE_EXHAUSTED`/`MODEL_CAPACITY_EXHAUSTED`/`PERMISSION_DENIED`/`UNAUTHENTICATED`) OR is not available, fall back to `python scripts/gemini_batch_process.py --files <file> --task analyze`.
+**Generate (Google)**: `python scripts/gemini_batch_process.py --task <generate|generate-video> --prompt "desc"`
+**Generate (OpenRouter)**: `python scripts/gemini_batch_process.py --task generate --provider openrouter --model google/gemini-3.1-flash-image-preview --prompt "desc"`
+**Generate (MiniMax via provider routing)**: `python scripts/gemini_batch_process.py --task generate --provider minimax --model image-01 --prompt "desc"`
+**Generate (MiniMax CLI)**: `python scripts/minimax_cli.py --task <generate|generate-video|generate-speech|generate-music> --prompt "desc"`
+
+`--provider auto` keeps Google as the primary route, but will fall back to the OpenRouter equivalent for Gemini image models when Google image generation fails because billing/free-tier access is unavailable and `OPENROUTER_API_KEY` is configured.
+
+> Google AI Studio still works for general API usage, but current Gemini/Imagen image models do not have a free tier. If users say "Gemini free", they usually mean AI Studio keys; those keys no longer give free image generation on current models.
 
 > **Stdin support**: Pipe files via stdin for Gemini analysis (auto-detects PNG/JPG/PDF/WAV/MP3).
 
@@ -50,6 +62,11 @@ export GEMINI_API_KEY_2="key2"  # auto-rotates on rate limit
 - **Video gen**: `veo-3.1-generate-preview` (8s clips with audio)
 - **Analysis**: `gemini-2.5-flash` (recommended), `gemini-2.5-pro` (advanced)
 
+### OpenRouter
+- **Image gen routing**: use provider-qualified model ids such as `google/gemini-3.1-flash-image-preview`
+- **Non-Google alternatives**: e.g. `black-forest-labs/flux.2-flex`
+- **Fallbacks**: configure `OPENROUTER_FALLBACK_MODELS=model-a,model-b` to let OpenRouter retry alternative image models
+
 ### MiniMax (NEW)
 - **Image gen**: `image-01` (standard), `image-01-live` (enhanced) - $0.03/image, 1-9 batch
 - **Video gen (Hailuo)**: `MiniMax-Hailuo-2.3` (1080p), `MiniMax-Hailuo-2.3-Fast` (50% cheaper), `MiniMax-Hailuo-02` (first+last frame), `S2V-01` (subject ref)
@@ -58,7 +75,8 @@ export GEMINI_API_KEY_2="key2"  # auto-rotates on rate limit
 
 ## Scripts
 
-- **`gemini_batch_process.py`**: Gemini CLI for `transcribe|analyze|extract|generate|generate-video`. Auto-resolves API keys, Imagen 4 + Veo + Nano Banana workflows.
+- **`gemini_batch_process.py`**: Multimodal CLI for `transcribe|analyze|extract|generate|generate-video`. Analysis stays on Gemini; image generation can route to Google, OpenRouter, or MiniMax.
+- **`openrouter_generate.py`**: OpenRouter image generation helper with optional fallback model chains.
 - **`minimax_cli.py`**: MiniMax CLI for `generate|generate-video|generate-speech|generate-music`. Supports all MiniMax models.
 - **`minimax_generate.py`**: MiniMax generation functions (image, video, speech, music). Library for programmatic use.
 - **`minimax_api_client.py`**: MiniMax HTTP client, auth, async polling, file download utilities.
@@ -108,5 +126,7 @@ Load for detailed guidance:
 
 - [Gemini API Docs](https://ai.google.dev/gemini-api/docs/)
 - [Gemini Pricing](https://ai.google.dev/pricing)
+- [OpenRouter Image Generation Docs](https://openrouter.ai/docs/guides/overview/multimodal/image-generation)
+- [OpenRouter Provider Routing](https://openrouter.ai/docs/features/provider-routing)
 - [MiniMax API Docs](https://platform.minimax.io/docs/api-reference/api-overview)
 - [MiniMax Pricing](https://platform.minimax.io/pricing)

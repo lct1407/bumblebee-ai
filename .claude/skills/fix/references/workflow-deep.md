@@ -104,9 +104,12 @@ Implement per plan. Use `ck:context-engineering`, `ck:sequential-thinking`, `ck:
 **Mandatory skill chain:**
 1. **Iron-law verify:** Re-run EXACT commands from pre-fix state. Compare before/after.
 2. **Regression test:** Add comprehensive tests. Tests MUST fail without fix, pass with fix.
-3. **Defense-in-depth:** Apply all relevant prevention layers (see `references/prevention-gate.md`).
-4. **Parallel verification:** Launch `Bash` agents: typecheck + lint + build + test.
-5. **Edge cases:** Test boundary conditions, security implications, performance impact.
+3. **Side-effect sweep (HARD-GATE-NO-SIDE-EFFECTS):** Walk each dependent caller of changed functions from Step 1 blast-radius. Run tests in modules that share files/contracts. Confirm public contracts (signatures, schemas, APIs, env vars) unchanged. See SKILL.md HARD-GATE-NO-SIDE-EFFECTS.
+4. **Defense-in-depth:** Apply all relevant prevention layers (see `references/prevention-gate.md`).
+5. **Parallel verification:** Launch `Bash` agents: typecheck + lint + build + test.
+6. **Edge cases:** Test boundary conditions, security implications, performance impact.
+
+**On regression / side effect:** `AskUserQuestion` with 2-4 concrete options (revert / narrow scope / update dependents / accept). Never silently patch.
 
 **If verification fails:** Loop back to Step 2 (re-diagnose). Max 3 attempts → question architecture.
 
@@ -150,5 +153,5 @@ See `references/review-cycle.md` for mode-specific handling.
 | 9 | `ck:project-management`, `docs-manager`, `git-manager` |
 
 **Rules:** Don't skip steps. Validate before proceeding. One phase at a time.
-**Frontend:** Use `chrome`, `ck:chrome-devtools` or any relevant skills/tools to verify.
+**Frontend:** Use `ck:agent-browser`, Chrome MCP / `chrome-devtools-mcp`, or any relevant project-native browser tests to verify.
 **Visual Assets:** Use `ck:ai-multimodal` for visual assets generation, analysis and verification.

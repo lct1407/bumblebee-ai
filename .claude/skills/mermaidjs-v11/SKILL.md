@@ -1,10 +1,14 @@
 ---
 name: ck:mermaidjs-v11
 description: Create diagrams with Mermaid.js v11 syntax. Use for flowcharts, sequence diagrams, class diagrams, ER diagrams, Gantt charts, state diagrams, architecture diagrams, timelines, user journeys.
+user-invocable: true
+when_to_use: "Invoke when inline Mermaid v11 diagrams are needed."
+category: utilities
+keywords: [mermaid, diagrams, flowcharts, charts]
 argument-hint: "[diagram-type or description]"
 metadata:
   author: claudekit
-  version: "1.0.0"
+  version: "1.2.0"
 ---
 
 # Mermaid.js v11
@@ -117,3 +121,5 @@ Load `references/examples.md` for:
 - `references/cli-usage.md` - CLI commands and workflows
 - `references/integration.md` - JavaScript API and embedding
 - `references/examples.md` - Practical patterns and use cases
+
+For universal SVG layout rules (component spacing, arrow routing, label placement, z-index ordering, anti-pattern catalog) when reviewing rendered output for collisions or unreadable labels, see `/ck:tech-graph`'s `references/svg-layout-best-practices.md`.

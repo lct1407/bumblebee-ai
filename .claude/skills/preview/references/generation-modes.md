@@ -78,6 +78,24 @@ Key takeaways...
 [ASCII-only box diagram with legend]
 ```
 
+### Visual Self-Review (--diagram, --html --diagram)
+
+After rendering a diagram, do not trust syntactic validity alone — load the rendered output back as an image (PNG / `mmdc` export / browser screenshot) and inspect it. Common rendering failures that pass validation:
+
+- Arrows routed through component interiors instead of around them
+- Arrow labels colliding with other labels or component edges
+- Boxes overlapping (especially in dense flowcharts)
+- Legend covering content
+- Sequence-diagram alt-frame text sitting on top of a message line
+
+**Fixes when issues found:**
+- Route arrows through gaps between boxes, not through box interiors
+- Add background rects behind arrow labels (opacity 0.95, matching canvas color)
+- Widen inter-row / inter-column gutters so same-layer arrows have clear corridors
+- Re-render and re-inspect — repeat until visually clean
+
+For full SVG layout rules (spacing minimums, arrow connection points, z-index ordering, anti-pattern catalog), read `/ck:tech-graph`'s `references/svg-layout-best-practices.md`. For full publish-grade SVG+PNG diagram generation (7 visual styles, agent/memory primitives), use `/ck:tech-graph` directly.
+
 ## Step 3: Save and Preview
 
 1. Write generated content to determined path

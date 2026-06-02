@@ -250,6 +250,7 @@ init_state() {
     "system_deps": "pending",
     "node_deps": "pending",
     "python_env": "pending",
+    "env_migration": "pending",
     "verify": "pending"
   },
   "packages": {
@@ -506,6 +507,16 @@ install_system_deps() {
     # ImageMagick (required for media-processing skill)
     install_system_package "imagemagick" "ImageMagick" "magick,convert"
 
+    # librsvg (provides rsvg-convert — required for tech-graph skill).
+    # Package name differs per distro: brew/Alpine/Arch use "librsvg",
+    # Debian uses "librsvg2-bin", RedHat uses "librsvg2-tools".
+    local rsvg_pkg="librsvg"
+    case "$DISTRO" in
+        debian) rsvg_pkg="librsvg2-bin" ;;
+        redhat) rsvg_pkg="librsvg2-tools" ;;
+    esac
+    install_system_package "$rsvg_pkg" "librsvg (rsvg-convert)" "rsvg-convert"
+
     # PostgreSQL client (optional - just check)
     if command_exists psql; then
         print_success "PostgreSQL client already installed"
@@ -620,25 +631,11 @@ install_node_deps() {
     # Install local npm packages for skills
     print_info "Installing local npm packages for skills..."
 
-    # chrome-devtools
-    if [ -d "$SCRIPT_DIR/chrome-devtools/scripts" ] && [ -f "$SCRIPT_DIR/chrome-devtools/scripts/package.json" ]; then
-        print_info "Installing chrome-devtools dependencies..."
-        (cd "$SCRIPT_DIR/chrome-devtools/scripts" && npm install --quiet)
-        print_success "chrome-devtools dependencies installed"
-    fi
-
     # sequential-thinking
     if [ -d "$SCRIPT_DIR/sequential-thinking" ] && [ -f "$SCRIPT_DIR/sequential-thinking/package.json" ]; then
         print_info "Installing sequential-thinking dependencies..."
         (cd "$SCRIPT_DIR/sequential-thinking" && npm install --quiet)
         print_success "sequential-thinking dependencies installed"
-    fi
-
-    # mcp-management
-    if [ -d "$SCRIPT_DIR/mcp-management/scripts" ] && [ -f "$SCRIPT_DIR/mcp-management/scripts/package.json" ]; then
-        print_info "Installing mcp-management dependencies..."
-        (cd "$SCRIPT_DIR/mcp-management/scripts" && npm install --quiet)
-        print_success "mcp-management dependencies installed"
     fi
 
     # markdown-novel-viewer (marked, highlight.js, gray-matter)
@@ -648,7 +645,14 @@ install_node_deps() {
         print_success "markdown-novel-viewer dependencies installed"
     fi
 
-    # plans-kanban (gray-matter)
+    # show-off capture script (puppeteer, sharp)
+    if [ -d "$SCRIPT_DIR/show-off/scripts" ] && [ -f "$SCRIPT_DIR/show-off/scripts/package.json" ]; then
+        print_info "Installing show-off capture dependencies..."
+        (cd "$SCRIPT_DIR/show-off/scripts" && npm install --quiet)
+        print_success "show-off capture dependencies installed"
+    fi
+
+    # plans-kanban launcher package
     if [ -d "$SCRIPT_DIR/plans-kanban" ] && [ -f "$SCRIPT_DIR/plans-kanban/package.json" ]; then
         print_info "Installing plans-kanban dependencies..."
         (cd "$SCRIPT_DIR/plans-kanban" && npm install --quiet)
@@ -911,6 +915,93 @@ setup_python_env() {
     fi
 
     deactivate
+}
+
+# Migrate env vars — idempotently append new vars to existing .env files
+# Reads from .env.example, adds missing vars to .env without clobbering existing values
+migrate_env_vars() {
+    print_header "Environment Variable Migration"
+
+    local claude_dir="$SCRIPT_DIR/.."
+    local env_files=(
+        "$claude_dir/.env:$claude_dir/.env.example"
+        "$SCRIPT_DIR/.env:$SCRIPT_DIR/.env.example"
+    )
+
+    for pair in "${env_files[@]}"; do
+        local env_file="${pair%%:*}"
+        local example_file="${pair##*:}"
+
+        if [[ ! -f "$example_file" ]]; then
+            continue
+        fi
+
+        if [[ ! -f "$env_file" ]]; then
+            print_info "No $(basename "$(dirname "$env_file")")/$(basename "$env_file") found — skipping (user can copy from .env.example)"
+            continue
+        fi
+
+        local added=0
+        local skipped=0
+
+        # Parse .env.example for var names (skip comments, blank lines)
+        while IFS= read -r line || [[ -n "$line" ]]; do
+            # Skip comments and blank lines
+            [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
+
+            # Extract var name (handle KEY=value and KEY= formats)
+            local var_name="${line%%=*}"
+            # Skip if var name is empty or contains spaces (malformed)
+            [[ -z "$var_name" || "$var_name" =~ [[:space:]] ]] && continue
+
+            # Check if var already exists in user's .env (as KEY= or KEY=value or # KEY=)
+            if grep -q "^[[:space:]]*#\{0,1\}[[:space:]]*${var_name}=" "$env_file" 2>/dev/null; then
+                skipped=$((skipped + 1))
+                continue
+            fi
+
+            # Find the comment block above this var in .env.example for context
+            local comment_block=""
+            local line_num
+            line_num=$(grep -n "^${var_name}=" "$example_file" 2>/dev/null | head -1 | cut -d: -f1)
+            if [[ -n "$line_num" && "$line_num" -gt 1 ]]; then
+                # Collect preceding comment lines (walk backwards)
+                local start=$((line_num - 1))
+                local comments=()
+                while [[ $start -ge 1 ]]; do
+                    local prev_line
+                    prev_line=$(sed -n "${start}p" "$example_file")
+                    if [[ "$prev_line" =~ ^[[:space:]]*# ]]; then
+                        comments=("$prev_line" "${comments[@]}")
+                        start=$((start - 1))
+                    else
+                        break
+                    fi
+                done
+                if [[ ${#comments[@]} -gt 0 ]]; then
+                    comment_block=$(printf '%s\n' "${comments[@]}")
+                fi
+            fi
+
+            # Append to .env with context comment
+            {
+                echo ""
+                if [[ -n "$comment_block" ]]; then
+                    echo "$comment_block"
+                fi
+                echo "$var_name="
+            } >> "$env_file"
+
+            added=$((added + 1))
+            print_info "Added $var_name to $(basename "$(dirname "$env_file")")/$(basename "$env_file")"
+        done < "$example_file"
+
+        if [[ $added -gt 0 ]]; then
+            print_success "$(basename "$(dirname "$env_file")")/$(basename "$env_file"): $added new var(s) added, $skipped already present"
+        else
+            print_success "$(basename "$(dirname "$env_file")")/$(basename "$env_file"): all vars present ($skipped checked)"
+        fi
+    done
 }
 
 # Verify installations
@@ -1338,7 +1429,16 @@ main() {
         update_phase "python_env" "done"
     fi
 
-    # Phase 4: Verify
+    # Phase 4: Env migration (idempotent — safe to re-run)
+    if phase_done "env_migration"; then
+        print_success "Env migration: already processed (resume)"
+    else
+        update_phase "env_migration" "running"
+        migrate_env_vars
+        update_phase "env_migration" "done"
+    fi
+
+    # Phase 5: Verify
     update_phase "verify" "running"
     verify_installations
     update_phase "verify" "done"

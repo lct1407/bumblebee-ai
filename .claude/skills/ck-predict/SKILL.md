@@ -1,7 +1,11 @@
 ---
 name: ck:predict
 description: "5 expert personas debate proposed changes before implementation. Catches architectural, security, performance, and UX issues early. Use before major features or risky changes."
-argument-hint: "<feature description or change proposal> [--files <glob>]"
+user-invocable: true
+when_to_use: "Invoke before high-risk changes that need persona debate."
+category: utilities
+keywords: [prediction, debate, review, risk]
+argument-hint: "<feature description or change proposal> [--files <glob>] [--chain reason|probe]"
 metadata:
   author: claudekit
   attribution: "Multi-persona prediction pattern adapted from autoresearch by Udit Goenka (MIT)"
@@ -99,6 +103,21 @@ Five expert personas independently analyze a proposed change, then debate confli
 
 ---
 
+## Chain Modes
+
+After producing the verdict, predict can chain into a follow-on workflow that always runs as part of a predict session (not as a standalone skill).
+
+| Flag | Purpose | When to use |
+|------|---------|-------------|
+| `--chain reason` | Subjective refinement loop — generate → critique → synthesize → blind judge → repeat until convergence | Verdict is CAUTION with subjective tradeoffs (architecture polish, design coherence) |
+| `--chain probe` | Requirement interrogation — saturation-driven harvest of missing constraints + assumptions | Verdict is CAUTION or STOP because of "missing constraint" or "unstated assumption" findings |
+
+Full protocols, output formats, safety guards, and combining rules: see [`references/chain-modes.md`](references/chain-modes.md).
+
+These chain modes absorb upstream `/autoresearch:reason` and `/autoresearch:probe` ([uditgoenka/autoresearch](https://github.com/uditgoenka/autoresearch), MIT). They're folded into ck:predict — not shipped as standalone skills — because they always chain off a predict invocation. See `/ck:autoresearch` for the family map.
+
+---
+
 ## Integration with Other Skills
 
 | Workflow Step | Skill | How |
@@ -116,4 +135,16 @@ Five expert personas independently analyze a proposed change, then debate confli
 /ck:predict "Migrate authentication from JWT to session cookies"
 /ck:predict "Add multi-tenancy to the database layer"
 /ck:predict "Replace REST API with GraphQL" --files src/api/**/*.ts
+
+# Chain modes
+/ck:predict "Pick auth library: Passport vs Better Auth" --chain reason
+/ck:predict "Move from REST to GraphQL" --chain probe
 ```
+
+---
+
+## Lineage
+
+Faithful absorption (in scope) of upstream `/autoresearch:predict` ([uditgoenka/autoresearch](https://github.com/uditgoenka/autoresearch), MIT). The local version supports the 5-persona debate plus `--chain reason` (subjective refinement) and `--chain probe` (requirement interrogation), folding upstream's `/autoresearch:reason` and `/autoresearch:probe` sub-commands into chain modes rather than separate skills (closed in #728).
+
+See `/ck:autoresearch` for the full family map.

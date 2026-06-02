@@ -6,11 +6,16 @@
 
 Use `Plan dir:` from `## Naming` section injected by hooks. This is the full computed path.
 
-**Example:** `plans/251101-1505-authentication/` or `ai_docs/feature/MRR-1453/`
+Default scope:
+- project scope → `plans/251101-1505-authentication/`
+- global scope → `{configured-global-plans-root}/251101-1505-authentication/`
+  - Default when unset: `~/.claude/plans/251101-1505-authentication/`
+
+Use global scope only when `--global` is explicit or there is no project context.
 
 ### File Organization
 
-IN CURRENT WORKING PROJECT DIRECTORY:
+In the active scope root:
 ```
 {plan-dir}/                                    # From `Plan dir:` in ## Naming
 ├── research/
@@ -55,6 +60,17 @@ After determining phases from research/design:
      --phases "{Phase1},{Phase2},{Phase3}" \
      --dir {plan-dir} \
      --priority {P1|P2|P3} \
+     --source skill \
+     [--issue {N}]
+
+   # Global scope when explicitly requested
+   ck plan create \
+     --global \
+     --title "{plan title}" \
+     --phases "{Phase1},{Phase2},{Phase3}" \
+     --dir {plan-dir} \
+     --priority {P1|P2|P3} \
+     --source skill \
      [--issue {N}]
    ```
 
@@ -69,8 +85,9 @@ After determining phases from research/design:
 4. **NEVER edit the Phases table directly** — it's CLI-owned.
    Use `ck plan check/uncheck/add-phase` for structural changes.
 
-**Fallback:** If `ck` CLI is not available (e.g., user hasn't installed),
-write plan.md directly using the canonical 3-column format.
+**MANDATORY:** All plan creation goes through CLI. The `ck` CLI is required
+for ClaudeKit users. If `ck plan create` fails, report the error — do not
+fall back to direct file writes.
 
 ## File Structure
 
@@ -90,7 +107,7 @@ issue: 123
 branch: kai/feat/oauth-auth
 tags: [auth, backend, security]
 blockedBy: []
-blocks: [260115-0900-user-dashboard]
+blocks: [global:260115-0900-user-dashboard]
 created: 2025-12-16
 ---
 
@@ -104,7 +121,7 @@ Brief description of what this plan accomplishes.
 
 | Relationship | Plan | Status |
 |-------------|------|--------|
-| Blocks | [260115-0900-user-dashboard](../260115-0900-user-dashboard/plan.md) | pending |
+| Blocks | `global:260115-0900-user-dashboard` | pending |
 
 ## Phases
 
@@ -122,6 +139,11 @@ Brief description of what this plan accomplishes.
 
 - List key dependencies here
 ```
+
+Reference rules:
+- Bare refs stay in the current scope.
+- Use `global:` or `project:` when the dependency crosses scopes.
+- `ck plan status` is the authoritative place to inspect resolved dependency state.
 
 **Guidelines:**
 - Keep generic and under 80 lines
@@ -181,3 +203,16 @@ Each phase file should contain:
 **Next Steps**
 - Dependencies
 - Follow-up tasks
+
+### Deep / TDD Extensions
+
+When `--deep` is used, add:
+- a file inventory table with action, rough size, and test impact
+- a test scenario matrix for critical, high, and medium paths
+- a dependency map that calls out links to other phases
+
+When `--tdd` is used, add:
+- a **Tests Before** section for regression coverage written first
+- a **Refactor** section describing the protected code changes
+- a **Tests After** section for new behavior introduced in that phase
+- a regression gate listing the compile/test command that must pass

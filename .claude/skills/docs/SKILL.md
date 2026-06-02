@@ -1,10 +1,14 @@
 ---
 name: ck:docs
-description: "Analyze codebase and manage project documentation — init, update, summarize."
+description: "Analyze codebase and manage project documentation. Use for doc initialization, updates, summaries, codebase analysis."
+user-invocable: true
+when_to_use: "Invoke to create, refresh, or audit project documentation."
+category: utilities
+keywords: [documentation, init, update, summarize]
 argument-hint: "init|update|summarize"
 metadata:
   author: claudekit
-  version: "1.0.0"
+  version: "1.2.0"
 ---
 
 # Documentation Management
@@ -56,5 +60,7 @@ Documentation lives in `./docs` directory:
 ```
 
 Use `docs/` directory as the source of truth for documentation.
+
+When authoring or refreshing diagrams in `system-architecture.md`, apply the universal SVG layout rules from `/ck:tech-graph`'s `references/svg-layout-best-practices.md` (component spacing, arrow routing, label placement, z-index ordering). Pair with `/ck:preview --diagram` for visual self-review, or use `/ck:tech-graph` directly for publish-grade output.
 
 **IMPORTANT**: **Do not** start implementing code.

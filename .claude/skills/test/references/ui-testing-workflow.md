@@ -1,6 +1,6 @@
 # UI Testing Workflow
 
-Activate the ck:chrome-devtools skill.
+Use `ck:agent-browser` for live browser interaction and `ck:web-testing` or project-native Playwright/Vitest/k6 commands for repeatable test runs.
 
 ## Purpose
 Run comprehensive UI tests on a website and generate a detailed report.
@@ -17,33 +17,14 @@ Instruct the user to:
 2. Log in manually with their credentials
 3. Open browser DevTools (F12) → Application tab → Cookies/Storage
 
-### Step 2: Extract Auth Credentials
-Ask the user to provide one of:
-- **Cookies**: Copy cookie values (name, value, domain)
-- **Access Token**: Copy JWT/Bearer token from localStorage or cookies
-- **Session Storage**: Copy relevant session keys
+### Step 2: Persist Auth State
+Prefer project-native auth helpers. For ad-hoc browser driving, use `agent-browser` state commands after manual login when available.
 
-### Step 3: Inject Authentication
-Use the `inject-auth.js` script:
-
+### Step 3: Run Tests
+After auth is available, run tests normally:
 ```bash
-cd $SKILL_DIR  # .claude/skills/chrome-devtools/scripts
-
-# Option A: Inject cookies
-node inject-auth.js --url https://example.com --cookies '[{"name":"session","value":"abc123","domain":".example.com"}]'
-
-# Option B: Inject Bearer token
-node inject-auth.js --url https://example.com --token "Bearer eyJhbGciOi..." --header Authorization --token-key access_token
-
-# Option C: Inject localStorage
-node inject-auth.js --url https://example.com --local-storage '{"auth_token":"xyz","user_id":"123"}'
-```
-
-### Step 4: Run Tests
-After auth injection, run tests normally:
-```bash
-node navigate.js --url https://example.com/dashboard
-node screenshot.js --url https://example.com/profile --output profile.png
+agent-browser open https://example.com/dashboard
+agent-browser screenshot -o profile.png
 ```
 
 ## Workflow
