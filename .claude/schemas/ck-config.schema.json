@@ -266,7 +266,7 @@
           "enum": [
             "gemini-2.5-flash",
             "gemini-2.5-pro",
-            "gemini-3-pro-preview",
+            "gemini-3.1-pro-preview",
             "gemini-3-flash-preview"
           ],
           "default": "gemini-3-flash-preview",
@@ -284,8 +284,8 @@
           "properties": {
             "useGemini": {
               "type": "boolean",
-              "default": true,
-              "description": "Use Gemini CLI for research (false=use WebSearch)"
+              "default": false,
+              "description": "Use Gemini CLI for research (default: false, opt-in). Set to true only if you have a working Gemini CLI."
             }
           },
           "additionalProperties": true
@@ -323,6 +323,11 @@
       "enum": ["full", "compact", "minimal", "none"],
       "default": "full",
       "description": "Statusline display mode: full=all features, compact=2-3 lines, minimal=single text line, none=disabled"
+    },
+    "statuslineQuota": {
+      "type": "boolean",
+      "default": true,
+      "description": "Show the cosmetic 5h / wk quota chips in the statusline for native Claude subscription sessions. Disable to keep the layout without usage-window percentages."
     },
     "watch": {
       "type": "object",
@@ -501,10 +506,63 @@
           "default": true,
           "description": "PreToolUse hook - blocks sensitive files"
         },
-        "post-edit-simplify-reminder": {
+        "simplify-gate": {
           "type": "boolean",
           "default": true,
-          "description": "PostToolUse hook - simplify reminder after edits"
+          "description": "UserPromptSubmit hook - blocks ship/merge/pr (and warns on commit/finalize/release) when working tree carries a large unsimplified diff"
+        }
+      },
+      "additionalProperties": false
+    },
+    "simplify": {
+      "type": "object",
+      "description": "Code-simplifier gate settings (UserPromptSubmit hook). Stateless — signals are recomputed live from `git diff HEAD`.",
+      "properties": {
+        "threshold": {
+          "type": "object",
+          "description": "Diff-size limits that trigger the gate (live-computed per prompt).",
+          "properties": {
+            "locDelta": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 400,
+              "description": "Total LOC added+removed across all files"
+            },
+            "fileCount": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 8,
+              "description": "Number of files modified"
+            },
+            "singleFileLoc": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 200,
+              "description": "Lines added in a single file"
+            }
+          }
+        },
+        "gate": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false,
+              "description": "Master toggle. Off by default (opt-in). Set true to activate the gate; env CK_SIMPLIFY_DISABLED=1 always bypasses."
+            },
+            "hardVerbs": {
+              "type": "array",
+              "items": { "type": "string" },
+              "default": ["ship", "merge", "pr", "deploy", "publish"],
+              "description": "Verbs that hard-block (continue:false, exit 2)"
+            },
+            "softVerbs": {
+              "type": "array",
+              "items": { "type": "string" },
+              "default": ["commit", "finalize", "release"],
+              "description": "Verbs that soft-warn via additionalContext"
+            }
+          }
         }
       },
       "additionalProperties": false
