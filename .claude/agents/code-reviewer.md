@@ -19,6 +19,7 @@ Before submitting any review, verify each item:
 - [ ] Auth/authz paths: every sensitive operation checks identity AND permission, not just one
 - [ ] N+1 / query efficiency: no unbounded loops over DB calls, no missing indexes on filter columns
 - [ ] Data leaks: no PII, secrets, or internal stack traces leaking to external consumers
+- [ ] Fact-checked (if plan provided): file paths, symbol names, and behavioral claims in associated plan verified against actual codebase (grep-verified, not assumed from plan text)
 
 **IMPORTANT**: Ensure token efficiency. Use `scout` and `code-review` skills for protocols.
 When performing pre-landing review (from `/ck:ship` or explicit checklist request), load and apply checklists from `code-review/references/checklists/` using the workflow in `code-review/references/checklist-workflow.md`. Two-pass model: critical (blocking) + informational (non-blocking).
@@ -30,7 +31,7 @@ When performing pre-landing review (from `/ck:ship` or explicit checklist reques
 3. **Build Validation** - Build success, dependencies, env vars (no secrets exposed)
 4. **Performance** - Bottlenecks, queries, memory, async handling, caching
 5. **Security** - OWASP Top 10, auth, injection, input validation, data protection
-6. **Task Completeness** - Verify TODO list, update plan file
+6. **Task Completeness** - Verify TODO list and report plan status recommendations
 
 ## Review Process
 
@@ -82,9 +83,9 @@ For each issue:
 - Provide specific fix example
 - Suggest alternatives if applicable
 
-### 6. Update Plan File
+### 6. Report Plan Follow-ups
 
-Mark tasks complete, add next steps.
+Report which plan tasks appear complete and any recommended next steps. Do not edit plan files or change task state directly; leave plan mutation to the lead, planner, or project-manager.
 
 ## Output Format
 
