@@ -1,168 +1,193 @@
 /**
- * Bumblebee Design Tokens
+ * Bumblebee Design Tokens — Editorial
  *
  * Single source of truth for surfaces, borders, text, accent, status, chart series.
  * Toggle via [data-theme="light"|"dark"] on <html>.
  *
+ * Direction (locked in): Editorial — warm paper, single amber accent, mono labels,
+ * squared corners, oversized confident type. Light is the default; dark is warm-dark.
+ *
  * Principles:
- * - Restrained accent (one amber, used sparingly)
- * - Muted neutrals, no gradients on data surfaces
+ * - One restrained amber accent, used sparingly (buttons, one rail, one highlight)
+ * - Warm muted neutrals, no gradients on data surfaces
  * - High contrast on text-primary, soft contrast on text-tertiary
- * - Status colors are theme-stable (work in both modes without remap)
+ * - Status colors stay legible in both modes
  */
 
 :root,
 [data-theme="light"] {
-  /* Surfaces */
-  --bg-canvas: #fafafa;
-  --bg-surface: #ffffff;
-  --bg-elevated: #ffffff;
-  --bg-subtle: #f4f4f5;
-  --bg-muted: #e4e4e7;
+  /* Surfaces — warm paper */
+  --bg-canvas: #f7f5f0;
+  --bg-surface: #fffefb;
+  --bg-elevated: #fffefb;
+  --bg-subtle: #efece4;
+  --bg-inset: #f3f0e9;
+  --bg-muted: #e6e1d5;
 
   /* Borders */
-  --border: #e4e4e7;
-  --border-strong: #d4d4d8;
-  --border-accent: rgba(217, 119, 6, 0.35);
+  --border: #e4dfd3;
+  --border-strong: #d2cbbb;
+  --hairline: #ebe7dd;
+  --border-accent: rgba(180, 83, 9, 0.30);
 
   /* Text */
-  --text-primary: #18181b;
-  --text-secondary: #52525b;
-  --text-tertiary: #71717a;
-  --text-quaternary: #a1a1aa;
-  --text-on-accent: #ffffff;
+  --text-primary: #1c1a15;
+  --text-secondary: #565045;
+  --text-tertiary: #7d776a;
+  --text-quaternary: #a9a392;
+  --text-on-accent: #fffefb;
 
-  /* Accent (amber, used sparingly) */
-  --accent: #d97706;
-  --accent-hover: #b45309;
-  --accent-subtle: rgba(217, 119, 6, 0.10);
-  --accent-subtle-hover: rgba(217, 119, 6, 0.16);
-  --accent-fg: #ffffff;
+  /* Accent — single editorial amber */
+  --accent: #b45309;
+  --accent-hover: #92400e;
+  --accent-press: #78350f;
+  --accent-subtle: rgba(180, 83, 9, 0.10);
+  --accent-subtle-hover: rgba(180, 83, 9, 0.16);
+  --accent-border: rgba(180, 83, 9, 0.26);
+  --accent-fg: #fffefb;
 
-  /* Status (theme-stable hues, slightly desaturated for light) */
-  --status-info: #2563eb;
-  --status-info-bg: #dbeafe;
-  --status-info-border: #bfdbfe;
+  /* Status (warm-tuned, legible on paper) */
+  --status-info: #1d4ed8;
+  --status-info-bg: #eaf0fd;
+  --status-info-border: #d3e0fb;
 
-  --status-success: #059669;
-  --status-success-bg: #d1fae5;
-  --status-success-border: #a7f3d0;
+  --status-success: #15803d;
+  --status-success-bg: #eef8ef;
+  --status-success-border: #c8e8cf;
 
-  --status-warning: #d97706;
-  --status-warning-bg: #fef3c7;
-  --status-warning-border: #fde68a;
+  --status-warning: #b45309;
+  --status-warning-bg: #fbf2e3;
+  --status-warning-border: #f3e0bd;
 
-  --status-danger: #dc2626;
-  --status-danger-bg: #fee2e2;
-  --status-danger-border: #fecaca;
+  --status-danger: #b91c1c;
+  --status-danger-bg: #fbeeec;
+  --status-danger-border: #f3d4ce;
 
-  --status-neutral: #71717a;
-  --status-neutral-bg: #f4f4f5;
-  --status-neutral-border: #e4e4e7;
+  --status-neutral: #7d776a;
+  --status-neutral-bg: #efece4;
+  --status-neutral-border: #e0dacc;
 
-  --status-purple: #7c3aed;
-  --status-purple-bg: #ede9fe;
-  --status-purple-border: #ddd6fe;
+  --status-purple: #6d28d9;
+  --status-purple-bg: #f1edfa;
+  --status-purple-border: #ddd2f4;
 
-  /* Chart series (matched contrast) */
-  --chart-1: #d97706;
-  --chart-2: #2563eb;
-  --chart-3: #059669;
-  --chart-4: #7c3aed;
-  --chart-5: #dc2626;
-  --chart-6: #0891b2;
-  --chart-grid: #e4e4e7;
-  --chart-axis: #71717a;
-  --chart-tooltip-bg: #ffffff;
-  --chart-tooltip-border: #d4d4d8;
+  /* Chart series (single-accent-leaning, warm contrast) */
+  --chart-1: #b45309;
+  --chart-2: #1d4ed8;
+  --chart-3: #15803d;
+  --chart-4: #6d28d9;
+  --chart-5: #b91c1c;
+  --chart-6: #0e7490;
+  --chart-grid: #e4dfd3;
+  --chart-axis: #7d776a;
+  --chart-tooltip-bg: #fffefb;
+  --chart-tooltip-border: #d2cbbb;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.08);
+  /* Shadows — soft, low, warm */
+  --shadow-xs: 0 1px 2px rgba(60, 50, 30, 0.05);
+  --shadow-sm: 0 1px 3px rgba(60, 50, 30, 0.07), 0 1px 2px rgba(60, 50, 30, 0.04);
+  --shadow-md: 0 6px 20px rgba(60, 50, 30, 0.08), 0 2px 5px rgba(60, 50, 30, 0.04);
+  --shadow-lg: 0 24px 60px rgba(60, 50, 30, 0.16), 0 6px 16px rgba(60, 50, 30, 0.07);
 
   /* Code surface */
-  --code-bg: #f4f4f5;
-  --code-fg: #18181b;
+  --code-bg: #efece4;
+  --code-fg: #1c1a15;
+
+  /* Squared, print-feel radii */
+  --radius-xs: 4px;
+  --radius-sm: 5px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
 
   color-scheme: light;
 }
 
 [data-theme="dark"] {
-  /* Surfaces */
-  --bg-canvas: #09090b;
-  --bg-surface: #18181b;
-  --bg-elevated: #1f1f23;
-  --bg-subtle: #27272a;
-  --bg-muted: #3f3f46;
+  /* Surfaces — warm dark */
+  --bg-canvas: #15140f;
+  --bg-surface: #1e1c16;
+  --bg-elevated: #24221a;
+  --bg-subtle: #262319;
+  --bg-inset: #1a1813;
+  --bg-muted: #34301f;
 
   /* Borders */
-  --border: #27272a;
-  --border-strong: #3f3f46;
+  --border: #322e22;
+  --border-strong: #48422f;
+  --hairline: #26231a;
   --border-accent: rgba(245, 158, 11, 0.30);
 
   /* Text */
-  --text-primary: #fafafa;
-  --text-secondary: #d4d4d8;
-  --text-tertiary: #a1a1aa;
-  --text-quaternary: #71717a;
-  --text-on-accent: #09090b;
+  --text-primary: #f6f3e9;
+  --text-secondary: #c4bda8;
+  --text-tertiary: #938c78;
+  --text-quaternary: #645e4d;
+  --text-on-accent: #1c1408;
 
   /* Accent */
   --accent: #f59e0b;
   --accent-hover: #fbbf24;
-  --accent-subtle: rgba(245, 158, 11, 0.12);
-  --accent-subtle-hover: rgba(245, 158, 11, 0.20);
-  --accent-fg: #09090b;
+  --accent-press: #fcd34d;
+  --accent-subtle: rgba(245, 158, 11, 0.15);
+  --accent-subtle-hover: rgba(245, 158, 11, 0.22);
+  --accent-border: rgba(245, 158, 11, 0.40);
+  --accent-fg: #1c1408;
 
   /* Status (brighter hues for dark) */
   --status-info: #60a5fa;
-  --status-info-bg: rgba(37, 99, 235, 0.15);
-  --status-info-border: rgba(37, 99, 235, 0.35);
+  --status-info-bg: rgba(37, 99, 235, 0.16);
+  --status-info-border: rgba(37, 99, 235, 0.36);
 
-  --status-success: #34d399;
-  --status-success-bg: rgba(16, 185, 129, 0.15);
-  --status-success-border: rgba(16, 185, 129, 0.35);
+  --status-success: #4ade80;
+  --status-success-bg: rgba(34, 197, 94, 0.15);
+  --status-success-border: rgba(34, 197, 94, 0.36);
 
   --status-warning: #fbbf24;
   --status-warning-bg: rgba(245, 158, 11, 0.15);
-  --status-warning-border: rgba(245, 158, 11, 0.35);
+  --status-warning-border: rgba(245, 158, 11, 0.36);
 
   --status-danger: #f87171;
-  --status-danger-bg: rgba(220, 38, 38, 0.15);
-  --status-danger-border: rgba(220, 38, 38, 0.35);
+  --status-danger-bg: rgba(220, 38, 38, 0.16);
+  --status-danger-border: rgba(220, 38, 38, 0.36);
 
-  --status-neutral: #a1a1aa;
-  --status-neutral-bg: #27272a;
-  --status-neutral-border: #3f3f46;
+  --status-neutral: #a8a08c;
+  --status-neutral-bg: #262319;
+  --status-neutral-border: #48422f;
 
-  --status-purple: #a78bfa;
-  --status-purple-bg: rgba(124, 58, 237, 0.15);
-  --status-purple-border: rgba(124, 58, 237, 0.35);
+  --status-purple: #c4b5fd;
+  --status-purple-bg: rgba(124, 58, 237, 0.20);
+  --status-purple-border: rgba(124, 58, 237, 0.42);
 
   /* Chart series */
   --chart-1: #fbbf24;
   --chart-2: #60a5fa;
-  --chart-3: #34d399;
-  --chart-4: #a78bfa;
+  --chart-3: #4ade80;
+  --chart-4: #c4b5fd;
   --chart-5: #f87171;
   --chart-6: #22d3ee;
-  --chart-grid: #27272a;
-  --chart-axis: #71717a;
-  --chart-tooltip-bg: #18181b;
-  --chart-tooltip-border: #3f3f46;
+  --chart-grid: #322e22;
+  --chart-axis: #938c78;
+  --chart-tooltip-bg: #1e1c16;
+  --chart-tooltip-border: #48422f;
 
   /* Shadows (more opaque on dark) */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.50);
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.40);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.50);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.50);
+  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.65);
 
   /* Code surface */
-  --code-bg: #1f1f23;
-  --code-fg: #fafafa;
+  --code-bg: #1a1813;
+  --code-fg: #f6f3e9;
 
   color-scheme: dark;
 }
+
+/* Suppress transitions for one frame during a theme flip (avoids a value-freeze quirk) */
+.theme-switching,
+.theme-switching *,
+.theme-switching *::before,
+.theme-switching *::after { transition: none !important; }
 
 /* Semantic utility classes (preferred over Tailwind ad-hoc) */
 .surface { background-color: var(--bg-surface); }
@@ -180,21 +205,28 @@
 .bg-accent-subtle { background-color: var(--accent-subtle); color: var(--accent); }
 .code-surface { background-color: var(--code-bg); color: var(--code-fg); }
 
-/* Type scale (matches Linear/Vercel spacing) */
-.t-display { font-size: 30px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02em; }
-.t-h1 { font-size: 22px; line-height: 1.2; font-weight: 600; letter-spacing: -0.015em; }
+/* Type scale — editorial: confident display, tight tracking */
+.t-display { font-size: 30px; line-height: 1.08; font-weight: 600; letter-spacing: -0.03em; }
+.t-h1 { font-size: 23px; line-height: 1.18; font-weight: 600; letter-spacing: -0.02em; }
 .t-h2 { font-size: 17px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; }
 .t-h3 { font-size: 14px; line-height: 1.4; font-weight: 600; }
 .t-body { font-size: 14px; line-height: 1.5; font-weight: 400; }
 .t-small { font-size: 12px; line-height: 1.5; font-weight: 400; }
 .t-tiny { font-size: 11px; line-height: 1.4; font-weight: 500; }
-.t-overline { font-size: 10px; line-height: 1.4; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.t-overline {
+  font-family: var(--font-geist-mono, ui-monospace, monospace);
+  font-size: 10px; line-height: 1.4; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
 .t-mono { font-family: var(--font-geist-mono, ui-monospace, monospace); }
 .t-tabular { font-variant-numeric: tabular-nums; }
+
+/* Editorial masthead — a heavy rule above a page title (print feel) */
+.masthead { border-top: 2px solid var(--text-primary); padding-top: 16px; }
 
 /* Focus ring */
 .focus-ring:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
-  border-radius: 6px;
+  border-radius: var(--radius-xs);
 }

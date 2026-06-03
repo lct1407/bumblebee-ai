@@ -4,7 +4,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { IssuesApi, type Issue } from "@/lib/api-client";
 import { PriorityBadge } from "@/components/ui/badge";
-import { TYPE_ICONS, cn } from "@/lib/utils";
+import { TypeIcon } from "@/components/ui/type-icon";
+import { cn } from "@/lib/utils";
 
 const COLUMNS: { id: string; label: string; accent: string }[] = [
   { id: "new", label: "New", accent: "var(--status-info)" },
@@ -113,7 +114,7 @@ export function BoardView({
                       <span className="text-[10px] font-mono" style={{ color: "var(--text-tertiary)" }}>
                         {project.toUpperCase()}-{issue.number}
                       </span>
-                      <span className="text-sm">{TYPE_ICONS[issue.type] || "·"}</span>
+                      <span style={{ color: "var(--text-tertiary)" }}><TypeIcon type={issue.type} size={14} className="flex-shrink-0" /></span>
                     </div>
                     <h4
                       className="text-sm font-medium leading-snug mb-2 line-clamp-3"

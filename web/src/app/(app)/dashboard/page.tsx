@@ -12,7 +12,7 @@ import {
   ActivityFeed,
 } from "@/components/app/dashboard-widgets";
 import { CardSkeleton } from "@/components/ui/skeleton";
-import { TYPE_ICONS } from "@/lib/utils";
+import { TypeIcon } from "@/components/ui/type-icon";
 
 export default function Dashboard() {
   const [project, setProject] = useState("bb");
@@ -51,7 +51,7 @@ export default function Dashboard() {
       <motion.div
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex items-center justify-between flex-wrap gap-3"
+        className="masthead flex items-start justify-between flex-wrap gap-3"
       >
         <div>
           <h1 className="t-display" style={{ color: "var(--text-primary)" }}>Dashboard</h1>
@@ -136,7 +136,7 @@ export default function Dashboard() {
               href={`/issues/${issue.number}`}
               className="flex items-center gap-3 py-2 px-2 rounded-md transition hover:bg-[var(--bg-subtle)]"
             >
-              <span className="text-sm flex-shrink-0" style={{ opacity: 0.7 }}>{TYPE_ICONS[issue.type] || "·"}</span>
+              <span className="flex-shrink-0" style={{ color: "var(--text-tertiary)" }}><TypeIcon type={issue.type} size={14} /></span>
               <span className="font-mono text-[11px] flex-shrink-0 font-semibold" style={{ color: "var(--accent)" }}>
                 {project.toUpperCase()}-{issue.number}
               </span>

@@ -30,13 +30,3 @@ export const PRIORITY_COLORS: Record<string, string> = {
   low: "text-zinc-500 dark:text-zinc-400",
   none: "text-zinc-400 dark:text-zinc-600",
 };
-
-export const TYPE_ICONS: Record<string, string> = {
-  bug: "🐛",
-  feature: "✨",
-  task: "📋",
-  story: "📖",
-  epic: "🏆",
-  chore: "🧹",
-  spike: "🔬",
-};

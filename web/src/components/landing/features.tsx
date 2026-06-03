@@ -1,91 +1,72 @@
-"use client";
-import { useEffect, useRef } from "react";
-
 const FEATURES = [
   {
-    title: "Scope Lease",
-    badge: "Concurrency",
-    body: "Atomic file-glob claims. Two agents can't touch overlapping scopes — guaranteed by the dispatch plane.",
-    icon: "🔐",
+    tag: "Concurrency",
+    title: "Scope lease",
+    body: "Atomic file-glob claims. Two agents can never touch overlapping scopes — guaranteed by the dispatch plane.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="11" width="16" height="10" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
+    ),
   },
   {
-    title: "Coordinator Pattern",
-    badge: "Multi-agent",
-    body: "Supervisor decomposes Complex issues into N specialist sub-tasks; integrates results on separate branches.",
-    icon: "🐝",
+    tag: "Multi-agent",
+    title: "Coordinator pattern",
+    body: "A supervisor decomposes complex issues into N specialist sub-tasks, then integrates results on separate branches.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="6" cy="6" r="2.5" /><circle cx="6" cy="18" r="2.5" /><circle cx="18" cy="12" r="2.5" /><path d="M8.5 6.5 15.5 11M8.5 17.5 15.5 13" /></svg>
+    ),
   },
   {
-    title: "Event-Sourced State",
-    badge: "Replay-able",
-    body: "Append-only event log is the canonical truth. Every LLM call, tool call, decision — deterministically replay-able.",
-    icon: "📜",
+    tag: "Replayable",
+    title: "Event-sourced state",
+    body: "An append-only log is the canonical truth. Every LLM call, tool call and decision deterministically replays.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12a9 9 0 1 0 3-6.7L3 8" /><path d="M3 3v5h5" /><path d="M12 8v4l3 2" /></svg>
+    ),
   },
   {
-    title: "Plugin Ecosystem",
-    badge: "Extensible",
-    body: "Ship pypi packages via Python entry_points. Auto-register workflows, agent prompts, skills, tools.",
-    icon: "🧩",
+    tag: "Extensible",
+    title: "Plugin ecosystem",
+    body: "Ship PyPI packages via entry points. Auto-register workflows, agent prompts, skills and tools.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 8h6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-4v6a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-6H3z" /></svg>
+    ),
   },
   {
-    title: "Hard Budget Ceilings",
-    badge: "Safety",
-    body: "Per-session, per-issue, per-project caps. Loop detector + failure taxonomy + mitigation actuator.",
-    icon: "⚡",
+    tag: "Safety",
+    title: "Hard budget ceilings",
+    body: "Per-session, per-issue and per-project caps. Loop detector, failure taxonomy and mitigation actuator built in.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3v9" /><circle cx="12" cy="12" r="9" /><path d="m16.5 8-3 3" /></svg>
+    ),
   },
   {
-    title: "Real-time Streaming",
-    badge: "WebSocket",
-    body: "Live event push to your dashboard. Watch agents work in parallel, see decisions as they happen.",
-    icon: "📡",
+    tag: "WebSocket",
+    title: "Real-time streaming",
+    body: "Live event push to your dashboard. Watch agents work in parallel and see decisions land as they happen.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4.93 19.07a10 10 0 0 1 0-14.14M19.07 4.93a10 10 0 0 1 0 14.14M7.76 16.24a6 6 0 0 1 0-8.49M16.24 7.76a6 6 0 0 1 0 8.49" /><circle cx="12" cy="12" r="1.5" /></svg>
+    ),
   },
 ];
 
 export function Features() {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.15 },
-    );
-    containerRef.current?.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section className="relative bg-zinc-950 text-white py-24 overflow-hidden" id="features">
-      <div className="bg-honeycomb absolute inset-0 opacity-50" />
-      <div ref={containerRef} className="relative max-w-6xl mx-auto px-6">
-        <div className="text-center mb-16 reveal">
-          <h2 className="text-4xl sm:text-5xl font-bold">
-            Built for <span className="text-gradient">concurrent autonomy</span>
-          </h2>
-          <p className="mt-4 text-zinc-400 max-w-2xl mx-auto">
-            7 architectural planes. Every decision recorded. Every agent bounded. Every workflow replayable.
+    <section className="section-pad" id="features">
+      <div className="container">
+        <div className="head reveal">
+          <span className="eyebrow">Capabilities</span>
+          <h2 className="h2">Built for concurrent autonomy</h2>
+          <p className="lead">
+            Seven architectural planes. Every decision recorded, every agent bounded, every workflow replayable.
           </p>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {FEATURES.map((f, i) => (
-            <div
-              key={f.title}
-              className="reveal group relative rounded-xl border border-zinc-800 bg-gradient-to-br from-zinc-900/80 to-zinc-950/80 backdrop-blur p-6 hover:border-amber-500/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-amber-500/10"
-              style={{ animationDelay: `${i * 0.1}s` }}
-            >
-              <div className="text-4xl mb-4">{f.icon}</div>
-              <div className="text-xs uppercase tracking-wider text-amber-400 font-semibold mb-2">
-                {f.badge}
-              </div>
-              <h3 className="text-xl font-bold mb-2">{f.title}</h3>
-              <p className="text-sm text-zinc-400 leading-relaxed">{f.body}</p>
-              <div className="absolute inset-x-0 -bottom-px h-px bg-gradient-to-r from-transparent via-amber-500/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div className="fgrid">
+          {FEATURES.map((f) => (
+            <div className="fcell reveal" key={f.title}>
+              <div className="ficon">{f.icon}</div>
+              <div className="tag">{f.tag}</div>
+              <h3>{f.title}</h3>
+              <p>{f.body}</p>
             </div>
           ))}
         </div>

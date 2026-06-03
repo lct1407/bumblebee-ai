@@ -1,48 +1,44 @@
+import Link from "next/link";
+import { HexMark } from "./flow-diagram";
+
 export function Footer() {
   return (
-    <footer className="bg-zinc-950 text-zinc-400 py-12 border-t border-zinc-900">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="footer">
+      <div className="container">
+        <div className="footer-grid">
           <div>
-            <div className="flex items-center gap-2 text-white font-bold text-xl">
-              🐝 bumblebee-ai
-            </div>
-            <p className="mt-2 text-sm">Multi-agent concurrent task management.</p>
-            <p className="mt-1 text-xs text-zinc-600">MIT • v0.4.0</p>
+            <Link className="brand" href="/">
+              <span className="mark" style={{ color: "var(--accent)" }}><HexMark /></span>
+              bumblebee
+            </Link>
+            <p className="text-tertiary" style={{ fontSize: 13.5, maxWidth: "34ch", marginTop: 14 }}>
+              The open-source platform for multiple AI agents working concurrently on one project.
+            </p>
           </div>
-
           <div>
-            <h4 className="font-semibold text-white mb-3 text-sm">Product</h4>
-            <ul className="space-y-2 text-sm">
-              <li><a href="#features" className="hover:text-amber-400">Features</a></li>
-              <li><a href="#architecture" className="hover:text-amber-400">Architecture</a></li>
-              <li><a href="#use-cases" className="hover:text-amber-400">Use Cases</a></li>
-              <li><a href="#quickstart" className="hover:text-amber-400">Quick Start</a></li>
-            </ul>
+            <h4>Product</h4>
+            <a href="#features">Features</a>
+            <a href="#how">How it works</a>
+            <a href="#pricing">Pricing</a>
+            <a href="https://github.com/lct1407/bumblebee/blob/master/CHANGELOG.md" target="_blank" rel="noreferrer">Changelog</a>
           </div>
-
           <div>
-            <h4 className="font-semibold text-white mb-3 text-sm">Developers</h4>
-            <ul className="space-y-2 text-sm">
-              <li><a href="https://pypi.org/project/bumblebee-ai/" target="_blank" rel="noreferrer" className="hover:text-amber-400">PyPI Package</a></li>
-              <li><a href="https://github.com/lct1407/bumblebee" target="_blank" rel="noreferrer" className="hover:text-amber-400">GitHub</a></li>
-              <li><a href="/dashboard" className="hover:text-amber-400">Dashboard</a></li>
-            </ul>
+            <h4>Developers</h4>
+            <a href="https://github.com/lct1407/bumblebee-ai" target="_blank" rel="noreferrer">Documentation</a>
+            <a href="https://pypi.org/project/bumblebee-ai/" target="_blank" rel="noreferrer">PyPI package</a>
+            <Link href="/dashboard">Dashboard</Link>
+            <a href="https://github.com/lct1407/bumblebee" target="_blank" rel="noreferrer">GitHub</a>
           </div>
-
           <div>
-            <h4 className="font-semibold text-white mb-3 text-sm">Resources</h4>
-            <ul className="space-y-2 text-sm">
-              <li><a href="https://github.com/lct1407/bumblebee/blob/master/docs/plan.md" target="_blank" rel="noreferrer" className="hover:text-amber-400">Plan v1.1.1</a></li>
-              <li><a href="https://github.com/lct1407/bumblebee/blob/master/CHANGELOG.md" target="_blank" rel="noreferrer" className="hover:text-amber-400">Changelog</a></li>
-              <li><a href="https://github.com/lct1407/bumblebee/blob/master/LICENSE" target="_blank" rel="noreferrer" className="hover:text-amber-400">License (MIT)</a></li>
-            </ul>
+            <h4>Company</h4>
+            <Link href="/legal/privacy">Privacy</Link>
+            <Link href="/legal/terms">Terms</Link>
+            <a href="mailto:hello@bumblebee.ai">Contact</a>
           </div>
         </div>
-
-        <div className="mt-12 pt-6 border-t border-zinc-900 flex flex-col sm:flex-row justify-between gap-4 text-xs text-zinc-600">
-          <div>© 2026 Thanh Le Cong. Released under the MIT License.</div>
-          <div>Built with Next.js, Tailwind, FastAPI, LangGraph, PostgreSQL.</div>
+        <div className="footer-bot">
+          <span>© 2026 Bumblebee. MIT licensed.</span>
+          <span className="mono" style={{ fontSize: 12 }}>v0.4.0</span>
         </div>
       </div>
     </footer>

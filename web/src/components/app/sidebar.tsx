@@ -8,6 +8,7 @@ import { ProjectsApi, IssuesApi, getActiveProject, setActiveProject } from "@/li
 import { Combobox } from "@/components/ui/combobox";
 import { WorkspaceSwitcher } from "@/components/app/workspace-switcher";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
+import { HexMark } from "@/components/ui/hex-mark";
 import { cn } from "@/lib/utils";
 
 interface NavSection {
@@ -59,6 +60,7 @@ export function Sidebar({ onCmdK }: { onCmdK: () => void }) {
         { href: "/issues?status=in_progress", label: "Active", icon: <Icon d="M12 8v4l3 3M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />, badge: issueStats.open },
         { href: "/issues?status=closed", label: "Closed", icon: <Icon d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />, badge: issueStats.closed },
         { href: "/issues?status=failed", label: "Failed", icon: <Icon d="M15 9l-6 6M9 9l6 6M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />, badge: issueStats.failed },
+        { href: "/milestones", label: "Milestones", icon: <Icon d="M4 4v16M4 5h11l-2 3 2 3H4" /> },
       ],
     },
     {
@@ -88,10 +90,10 @@ export function Sidebar({ onCmdK }: { onCmdK: () => void }) {
       <div className="h-14 flex items-center px-3 border-b" style={{ borderColor: "var(--border)" }}>
         <Link href="/" className="flex items-center gap-2 flex-1 min-w-0">
           <span
-            className="w-7 h-7 rounded-md flex items-center justify-center text-base font-bold flex-shrink-0"
-            style={{ background: "var(--accent)", color: "var(--accent-fg)" }}
+            className="w-7 h-7 flex items-center justify-center flex-shrink-0"
+            style={{ color: "var(--accent)" }}
           >
-            B
+            <HexMark size={26} />
           </span>
           {!collapsed && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2 min-w-0">
