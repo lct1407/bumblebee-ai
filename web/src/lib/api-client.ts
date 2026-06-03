@@ -240,6 +240,44 @@ export const PluginsApi = {
   reload: () => api.post("/api/plugins/reload").then((r) => r.data),
 };
 
+export type Role = "owner" | "admin" | "member" | "viewer";
+
+export interface MeWorkspace {
+  id: string;
+  name: string;
+  slug: string;
+  plan: string;
+  role: Role;
+}
+
+export interface Me {
+  authenticated: boolean;
+  auth_enabled?: boolean;
+  id?: string | null;
+  username?: string;
+  email?: string;
+  is_admin?: boolean;
+  workspaces?: MeWorkspace[];
+}
+
+export const AuthApi = {
+  me: () => api.get<Me>("/api/auth/me").then((r) => r.data),
+};
+
+export interface ApiKey {
+  id: string;
+  name: string;
+  is_active: boolean;
+  created_at: string;
+  key?: string; // only returned on creation
+}
+
+export const ApiKeysApi = {
+  list: () => api.get<ApiKey[]>("/api/auth/api-keys").then((r) => r.data),
+  create: (name: string) =>
+    api.post<ApiKey>("/api/auth/api-keys", { name }).then((r) => r.data),
+};
+
 export const NotificationsApi = {
   list: (params: { unread_only?: boolean; recipient?: string } = {}) => {
     const qs = new URLSearchParams();
