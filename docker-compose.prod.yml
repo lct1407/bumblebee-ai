@@ -47,7 +47,7 @@ services:
       NODE_ENV: production
     volumes:
       - ./web:/app
-    command: sh -c "npm ci && npm run build && npm run start -- -p 3000"
+    command: sh -c "npm ci --include=dev && npm run build && npm run start -- -p 3000"
     ports:
       - "${WEB_PORT:-3000}:3000"
 
