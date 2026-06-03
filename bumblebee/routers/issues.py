@@ -1,11 +1,15 @@
 ﻿"""Issue CRUD + workflow trigger."""
+import uuid
+
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bumblebee.database import get_db
 from bumblebee.models.issue import Issue, IssueStatus
+from bumblebee.models.notification import Notification, NotificationType
 from bumblebee.models.project import Project
+from bumblebee.models.user import User
 from bumblebee.schemas.issue import IssueCreate, IssueOut, IssueUpdate
 from bumblebee.services.state.event_log import append_event
 
@@ -107,17 +111,23 @@ async def update_issue(
     if not issue:
         raise HTTPException(404, "issue_not_found")
 
-    # Phase E: emit one field_changed event per mutated field for audit trail.
+    # Emit one field_changed event per mutated field for audit trail.
     # Status change keeps its dedicated event type for backward compat.
     patch = body.model_dump(exclude_unset=True)
+    old_assignee = issue.assignee_id
     AUDITED_FIELDS = {
         "status", "priority", "type", "title", "description", "complexity",
         "scope_hints", "acceptance_criteria", "ai_summary",
+        "assignee_id", "milestone_id", "estimate",
     }
 
     def _normalize(v):
-        # Enum → its value; preserves JSON-shape in event payload
-        return v.value if hasattr(v, "value") else v
+        # Enum → its value; UUID → str; preserves JSON-shape in event payload
+        if hasattr(v, "value"):
+            return v.value
+        if isinstance(v, uuid.UUID):
+            return str(v)
+        return v
 
     for k, v in patch.items():
         if k not in AUDITED_FIELDS:
@@ -152,6 +162,19 @@ async def update_issue(
                 source="user",
             )
         setattr(issue, k, v)
+
+    # Notify the new assignee when assignment changes to a real user.
+    if "assignee_id" in patch and issue.assignee_id and issue.assignee_id != old_assignee:
+        assignee = await db.get(User, issue.assignee_id)
+        if assignee:
+            db.add(Notification(
+                recipient=assignee.username or assignee.email or str(assignee.id),
+                type=NotificationType.ASSIGNED,
+                title=f"Assigned to {project.key}-{issue.number}",
+                body=issue.title,
+                project_id=project.id,
+                payload={"issue_number": issue.number, "issue_id": str(issue.id)},
+            ))
 
     await db.commit()
     await db.refresh(issue)

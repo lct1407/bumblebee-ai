@@ -114,6 +114,7 @@ def register_auto_scope_listeners() -> None:
     from bumblebee.models.event import Event
     from bumblebee.models.issue import Issue
     from bumblebee.models.knowledge_entry import KnowledgeEntry
+    from bumblebee.models.milestone import Milestone
     from bumblebee.models.notification import Notification
     from bumblebee.models.project import Project
     from bumblebee.models.scope_lease import ScopeLease
@@ -168,6 +169,10 @@ def register_auto_scope_listeners() -> None:
     )
     event.listen(
         Issue, "before_insert",
+        _make_listener(lambda t: [("project_id", "projects", t.project_id)]),
+    )
+    event.listen(
+        Milestone, "before_insert",
         _make_listener(lambda t: [("project_id", "projects", t.project_id)]),
     )
 

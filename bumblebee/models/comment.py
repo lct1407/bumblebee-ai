@@ -33,6 +33,9 @@ class Comment(Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin):
         default=CommentType.DISCUSSION,
     )
     author: Mapped[str | None] = mapped_column(String(200))
+    author_user_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL")
+    )
 
     issue_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("issues.id", ondelete="CASCADE"), nullable=False, index=True

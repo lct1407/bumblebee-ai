@@ -10,6 +10,7 @@ from bumblebee.models.field_schema import FieldSchema
 from bumblebee.models.issue import Issue
 from bumblebee.models.issue_relation import INVERSE_OF, IssueRelation, IssueRelationKind
 from bumblebee.models.knowledge_entry import KnowledgeEntry
+from bumblebee.models.milestone import Milestone, MilestoneStatus
 from bumblebee.models.notification import Notification
 from bumblebee.models.plugin_registration import PluginRegistration
 from bumblebee.models.project import Project
@@ -41,6 +42,8 @@ __all__ = [
     "IssueRelation",
     "IssueRelationKind",
     "KnowledgeEntry",
+    "Milestone",
+    "MilestoneStatus",
     "NodeStatus",
     "Notification",
     "PluginRegistration",

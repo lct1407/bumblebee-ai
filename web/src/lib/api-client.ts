@@ -111,8 +111,49 @@ export interface Issue {
   scope_hints: string[];
   project_id: string;
   parent_id?: string | null;
+  // Collaboration + progress
+  assignee_id?: string | null;
+  reporter_id?: string | null;
+  milestone_id?: string | null;
+  start_date?: string | null;
+  due_date?: string | null;
+  estimate?: number | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface ProjectMember {
+  user_id: string;
+  username: string | null;
+  email: string | null;
+  full_name?: string | null;
+  avatar_url?: string | null;
+  role: "owner" | "admin" | "member" | "viewer";
+}
+
+export interface Milestone {
+  id: string;
+  name: string;
+  description?: string | null;
+  status: "planned" | "active" | "completed" | "cancelled";
+  start_date?: string | null;
+  due_date?: string | null;
+  project_id: string;
+  total_issues: number;
+  done_issues: number;
+  progress_pct: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Comment {
+  id: string;
+  body: string;
+  type: string;
+  author: string | null;
+  author_user_id: string | null;
+  issue_id: string;
+  created_at: string;
 }
 
 export interface AgentEvent {
@@ -142,6 +183,26 @@ export interface WorkflowRun {
 
 export const ProjectsApi = {
   list: () => api.get<Project[]>("/api/projects").then((r) => r.data),
+  members: (slug: string) =>
+    api.get<ProjectMember[]>(`/api/projects/${slug}/members`).then((r) => r.data),
+};
+
+export const MilestonesApi = {
+  list: (slug: string) =>
+    api.get<Milestone[]>(`/api/projects/${slug}/milestones`).then((r) => r.data),
+  create: (slug: string, body: Partial<Milestone>) =>
+    api.post<Milestone>(`/api/projects/${slug}/milestones`, body).then((r) => r.data),
+  update: (slug: string, id: string, body: Partial<Milestone>) =>
+    api.patch<Milestone>(`/api/projects/${slug}/milestones/${id}`, body).then((r) => r.data),
+  remove: (slug: string, id: string) =>
+    api.delete(`/api/projects/${slug}/milestones/${id}`).then((r) => r.data),
+};
+
+export const CommentsApi = {
+  list: (slug: string, number: number) =>
+    api.get<Comment[]>(`/api/projects/${slug}/issues/${number}/comments`).then((r) => r.data),
+  create: (slug: string, number: number, body: { body: string; author?: string; author_user_id?: string }) =>
+    api.post<Comment>(`/api/projects/${slug}/issues/${number}/comments`, body).then((r) => r.data),
 };
 
 export const IssuesApi = {
