@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ProjectsApi, IssuesApi, getActiveProject, setActiveProject } from "@/lib/api-client";
+import { ProjectsApi, IssuesApi, getActiveProject, setActiveProject, setAuthToken } from "@/lib/api-client";
 import { Combobox } from "@/components/ui/combobox";
 import { WorkspaceSwitcher } from "@/components/app/workspace-switcher";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
@@ -27,6 +27,14 @@ export function Sidebar({ onCmdK }: { onCmdK: () => void }) {
   const pathname = usePathname();
   const { isAdmin, role, user } = useAuth();
   const username = user?.username || "Account";
+
+  const signOut = () => {
+    setAuthToken(null);
+    try {
+      window.localStorage.removeItem("bumblebee.activeWorkspace");
+    } catch {}
+    window.location.href = "/login";
+  };
   const [collapsed, setCollapsed] = useState(false);
   const [project, setProject] = useState("bb");
   useEffect(() => setProject(getActiveProject()), []);
@@ -255,7 +263,31 @@ export function Sidebar({ onCmdK }: { onCmdK: () => void }) {
               )}
             </div>
             <ThemeToggle compact />
+            <button
+              onClick={signOut}
+              title="Sign out"
+              aria-label="Sign out"
+              className="w-7 h-7 rounded-md flex items-center justify-center transition hover:bg-[var(--bg-subtle)]"
+              style={{ color: "var(--text-tertiary)" }}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
+              </svg>
+            </button>
           </>
+        )}
+        {collapsed && (
+          <button
+            onClick={signOut}
+            title="Sign out"
+            aria-label="Sign out"
+            className="w-7 h-7 rounded-md flex items-center justify-center transition hover:bg-[var(--bg-subtle)]"
+            style={{ color: "var(--text-tertiary)" }}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
+            </svg>
+          </button>
         )}
       </div>
     </motion.aside>
