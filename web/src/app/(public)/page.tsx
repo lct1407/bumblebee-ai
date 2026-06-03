@@ -1,15 +1,13 @@
+import { SiteNav } from "@/components/landing/site-nav";
+import { RevealObserver } from "@/components/landing/reveal-observer";
 import { Hero } from "@/components/landing/hero";
 import { StatsCounter } from "@/components/landing/stats-counter";
 import { Features } from "@/components/landing/features";
+import { HowItWorks } from "@/components/landing/how-it-works";
 import { Showcase } from "@/components/landing/showcase";
-import { Architecture } from "@/components/landing/architecture";
 import { CodeDemo } from "@/components/landing/code-demo";
 import { Comparison } from "@/components/landing/comparison";
-import { UseCases } from "@/components/landing/use-cases";
-import { Integrations } from "@/components/landing/integrations";
-import { Testimonials } from "@/components/landing/testimonials";
 import { Pricing } from "@/components/landing/pricing";
-import { FAQ } from "@/components/landing/faq";
 import { CTA } from "@/components/landing/cta";
 import { Footer } from "@/components/landing/footer";
 
@@ -33,21 +31,27 @@ export const metadata = {
 
 export default function Landing() {
   return (
-    <>
-      <Hero />
-      <StatsCounter />
-      <Features />
-      <Showcase />
-      <Architecture />
-      <CodeDemo />
-      <Comparison />
-      <UseCases />
-      <Integrations />
-      <Testimonials />
-      <Pricing />
-      <FAQ />
-      <CTA />
+    <div className="lp">
+      <SiteNav />
+      <main id="top">
+        <Hero />
+        <StatsCounter />
+        <hr className="divider" />
+        <Features />
+        <hr className="divider" />
+        <HowItWorks />
+        <hr className="divider" />
+        <Showcase />
+        <hr className="divider" />
+        <CodeDemo />
+        <hr className="divider" />
+        <Comparison />
+        <hr className="divider" />
+        <Pricing />
+        <CTA />
+      </main>
       <Footer />
-    </>
+      <RevealObserver />
+    </div>
   );
 }

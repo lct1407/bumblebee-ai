@@ -25,6 +25,7 @@ class NotificationType(enum.StrEnum):
     MENTION = "mention"
     PLAN_READY = "plan_ready"
     ISSUE_BLOCKED = "issue_blocked"
+    ASSIGNED = "assigned"
 
 
 class Notification(Base, UUIDPKMixin, TimestampMixin, WorkspaceScopedMixin):

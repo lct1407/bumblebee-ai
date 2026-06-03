@@ -49,13 +49,25 @@ Task(subagent_type="debugger", prompt="Analyze failures: [details]", description
 
 ## Code Review
 ```
-Task(subagent_type="code-reviewer", prompt="Review changes for [phase]. Check security, performance, YAGNI/KISS/DRY. Return score (X/10), critical, warnings, suggestions.", description="Review [phase]")
+Task(subagent_type="code-reviewer",
+     prompt="Review changes for [phase] against these MANDATORY checks: (a) every acceptance criterion met; (b) no regression to business logic in touchpoints/blast-radius from scout; (c) no breaking changes to public contracts (signatures, schemas, APIs, env vars) unless explicitly called out; (d) follows existing patterns from scout; (e) no new lint/type/build errors anywhere. CONTEXT — scout summary: <scout-summary>; acceptance criteria: <acceptance-criteria>. Return score (X/10), critical, warnings, suggestions, and explicitly flag any side effects to trigger HARD-GATE-NO-SIDE-EFFECTS.",
+     description="Review [phase]")
 ```
 
+## Conditional Simplify
+```
+Task(subagent_type="code-simplifier", prompt="Simplify these files while preserving behavior exactly: [file-list]", description="Simplify recent edits")
+```
+- Trigger when live `git diff --numstat HEAD --ignore-all-space` breaches any
+  `simplify.threshold` from `.ck.json` (defaults: 400 LOC / 8 files / 200 single-file LOC)
+- Scope the prompt to `git diff --name-only HEAD`
+- Verify with `git diff --shortstat HEAD -- [file-list]` before/after the subagent;
+  do not rely on the agent's prose summary
+- Skip when `CK_SIMPLIFY_DISABLED=1` or `.ck.json` `simplify.gate.enabled=false`
+
 ## Project Management
-```
-Task(subagent_type="project-manager", prompt="Run full sync-back in [plan-path]: reconcile completed tasks with all phase files, backfill stale completed checkboxes across all phases, update plan.md status/progress, and report unresolved mappings.", description="Update plan")
-```
+Activate the `/ck:project-management` skill (MANDATORY at Finalize — not a subagent):
+> Run full sync-back in [plan-path]: reconcile completed tasks with all phase files, backfill stale completed checkboxes across all phases, update plan.md status/progress, and report unresolved mappings.
 
 ## Documentation
 ```

@@ -1,6 +1,6 @@
 # Social Photos Design Guide
 
-Design social media images via HTML/CSS rendering + screenshot export. Orchestrates `ui-ux-pro-max`, `brand`, `design-system`, and `chrome-devtools` skills.
+Design social media images via HTML/CSS rendering + screenshot export. Orchestrates `ui-ux-pro-max`, `brand`, `design-system`, and browser capture tools.
 
 ## Platform Sizes
 
@@ -119,7 +119,7 @@ output/social-photos/
 
 ### Step 5: Screenshot Export
 
-Use Chrome headless, `chrome-devtools` skill, or Playwright/Puppeteer to capture exact-size screenshots.
+Use Chrome headless, `ck:agent-browser`, or Playwright/Puppeteer to capture exact-size screenshots.
 
 **IMPORTANT:** Always add a delay (3-5s) after page load for fonts/images to fully render before capture.
 
@@ -145,9 +145,9 @@ Key flags:
 - `--hide-scrollbars` — prevents scrollbar artifacts in screenshots
 - `--window-size=WxH` — sets exact pixel dimensions
 
-#### Option B: chrome-devtools skill
+#### Option B: agent-browser
 
-Invoke `/chrome-devtools` with instructions to:
+Invoke `/ck:agent-browser` with instructions to:
 1. Open each HTML file in browser
 2. Set viewport to exact target dimensions
 3. Wait 3-5s for fonts/images to fully load
@@ -210,7 +210,7 @@ async function captureScreenshots(htmlFiles) {
 
 ### Step 6: Verify & Fix Designs
 
-Use Chrome MCP or `chrome-devtools` skill to visually inspect each exported PNG:
+Use Chrome MCP / `chrome-devtools-mcp`, `ck:agent-browser`, or Playwright to visually inspect each exported PNG:
 
 1. Open exported screenshots and check for layout/styling issues
 2. Verify: fonts rendered correctly, colors match brand, text readable at thumbnail size

@@ -21,6 +21,18 @@ Before finalizing any plan, verify each item:
 - [ ] File ownership assigned: no two parallel phases touch the same file
 - [ ] Success criteria measurable: "done" means observable, not subjective
 
+## Verification Discipline
+
+Before finalizing any phase, self-verify claims against the codebase:
+
+1. **Re-grep, don't copy** — Every file path and symbol from scout reports must be re-verified with grep/glob. Scout summaries go stale.
+2. **Cite file:line** — Every symbol reference in the plan must include `file:line` citation. If you can't find it, tag `[UNVERIFIED]`.
+3. **Trace, don't assume** — For behavioral claims ("X calls Y", "middleware runs before handler"), trace the actual code path. Line citation without control-flow trace = how plans silently invert behavior.
+4. **Enumerate, don't hand-wave** — Never write "update all callers". List every caller with file:line. If count > 10, list first 10 and state total.
+5. **Check lifetime before adding state** — Before adding fields to existing structures, grep for instantiation sites and verify lifetime (per-request/session/process). Shared-instance state leaks across isolation boundaries.
+
+Full role definitions are in `skills/ck-plan/references/verification-roles.md` — loaded automatically during validate and red-team workflows.
+
 ## Your Skills
 
 **IMPORTANT**: Use `plan` skills to plan technical solutions and create comprehensive plans in Markdown format.
@@ -37,7 +49,7 @@ Before finalizing any plan, verify each item:
 ## Handling Large Files (>25K tokens)
 
 When Read fails with "exceeds maximum allowed tokens":
-1. **Gemini CLI** (2M context): `echo "[question] in [path]" | gemini -y -m <gemini.model>`
+1. **Gemini CLI** (1M context, model-dependent): `echo "[question] in [path]" | gemini -y -m <gemini.model>` — if fails (exit != 0 or output contains `GaxiosError`/`RESOURCE_EXHAUSTED`/`MODEL_CAPACITY_EXHAUSTED`/`PERMISSION_DENIED`/`UNAUTHENTICATED`), skip to option 2
 2. **Chunked Read**: Use `offset` and `limit` params to read in portions
 3. **Grep**: Search specific content with `Grep pattern="[term]" path="[path]"`
 4. **Targeted Search**: Use Glob and Grep for specific patterns

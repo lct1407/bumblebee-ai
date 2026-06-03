@@ -27,12 +27,12 @@ Default model: `gemini-3-flash-preview`
 
 ### Command
 ```bash
-gemini -y -m <model> "[prompt]"
+timeout 120 gemini -y -m <model> --prompt "[prompt]" 2>&1
 ```
 
 ### Example
 ```bash
-gemini -y -m gemini-3-flash-preview "Search src/ for authentication files. List paths with brief descriptions."
+timeout 120 gemini -y -m gemini-3-flash-preview --prompt "Search src/ for authentication files. List paths with brief descriptions." 2>&1
 ```
 
 ## OpenCode CLI (SCALE 4-5)
@@ -64,9 +64,9 @@ If not installed, ask user:
 Use `Task` tool with `subagent_type: "Bash"` to spawn parallel agents:
 
 ```
-Task 1: subagent_type="Bash", prompt="Run: gemini -y -m gemini-3-flash-preview '[prompt1]'"
-Task 2: subagent_type="Bash", prompt="Run: gemini -y -m gemini-3-flash-preview '[prompt2]'"
-Task 3: subagent_type="Bash", prompt="Run: gemini -y -m gemini-3-flash-preview '[prompt3]'"
+Task 1: subagent_type="Bash", prompt="Run: timeout 120 gemini -y -m gemini-3-flash-preview --prompt '[prompt1]' 2>&1"
+Task 2: subagent_type="Bash", prompt="Run: timeout 120 gemini -y -m gemini-3-flash-preview --prompt '[prompt2]' 2>&1"
+Task 3: subagent_type="Bash", prompt="Run: timeout 120 gemini -y -m gemini-3-flash-preview --prompt '[prompt3]' 2>&1"
 ```
 
 Spawn all in single message for parallel execution.
@@ -84,9 +84,9 @@ User: "Find database migration files"
 
 Spawn 3 parallel Bash agents via Task tool:
 ```
-Task 1 (Bash): "Run: gemini -y -m gemini-3-flash-preview 'Search db/, migrations/ for migration files'"
-Task 2 (Bash): "Run: gemini -y -m gemini-3-flash-preview 'Search lib/, src/ for database schema files'"
-Task 3 (Bash): "Run: gemini -y -m gemini-3-flash-preview 'Search config/ for database configuration'"
+Task 1 (Bash): "Run: timeout 120 gemini -y -m gemini-3-flash-preview --prompt 'Search db/, migrations/ for migration files' 2>&1"
+Task 2 (Bash): "Run: timeout 120 gemini -y -m gemini-3-flash-preview --prompt 'Search lib/, src/ for database schema files' 2>&1"
+Task 3 (Bash): "Run: timeout 120 gemini -y -m gemini-3-flash-preview --prompt 'Search config/ for database configuration' 2>&1"
 ```
 
 ## Reading File Content
@@ -134,7 +134,9 @@ Spawn all in single message for parallel execution.
 
 ## Timeout and Error Handling
 
-- Set 3-minute timeout per bash call
-- Skip timed-out agents
-- Don't restart failed agents
-- On persistent failures, fall back to internal scouting
+- Wrap all gemini calls: `timeout 120 gemini -y -m <model> --prompt "[prompt]" 2>&1`
+- Check exit code: non-zero means failure
+- Check output for error markers: `GaxiosError`, `RESOURCE_EXHAUSTED`, `MODEL_CAPACITY_EXHAUSTED`, `PERMISSION_DENIED`, `UNAUTHENTICATED`
+- On failure: skip that agent's result, do NOT retry
+- On persistent failures (2+ agents fail): fall back to internal scouting
+- **Model fallback**: If `gemini-3-flash-preview` fails with 429, try `gemini-2.5-flash` before giving up

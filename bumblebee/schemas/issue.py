@@ -1,5 +1,6 @@
-﻿"""Issue schemas."""
+"""Issue schemas."""
 import uuid
+from datetime import datetime
 
 from pydantic import BaseModel, Field
 
@@ -15,6 +16,13 @@ class IssueCreate(BaseModel):
     parent_id: uuid.UUID | None = None
     acceptance_criteria: str | None = None
     scope_hints: list[str] = Field(default_factory=list)
+    # Collaboration + progress
+    assignee_id: uuid.UUID | None = None
+    reporter_id: uuid.UUID | None = None
+    milestone_id: uuid.UUID | None = None
+    start_date: datetime | None = None
+    due_date: datetime | None = None
+    estimate: int | None = None
 
 
 class IssueUpdate(BaseModel):
@@ -26,6 +34,12 @@ class IssueUpdate(BaseModel):
     acceptance_criteria: str | None = None
     scope_hints: list[str] | None = None
     ai_confidence: float | None = None
+    # Collaboration + progress
+    assignee_id: uuid.UUID | None = None
+    milestone_id: uuid.UUID | None = None
+    start_date: datetime | None = None
+    due_date: datetime | None = None
+    estimate: int | None = None
 
 
 class IssueOut(TimestampedModel):
@@ -43,3 +57,10 @@ class IssueOut(TimestampedModel):
     scope_hints: list
     project_id: uuid.UUID
     parent_id: uuid.UUID | None
+    # Collaboration + progress
+    assignee_id: uuid.UUID | None
+    reporter_id: uuid.UUID | None
+    milestone_id: uuid.UUID | None
+    start_date: datetime | None
+    due_date: datetime | None
+    estimate: int | None

@@ -3,36 +3,16 @@
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
   "hooks": {
-    "SessionStart": [
-      {
-        "matcher": "startup|resume|clear|compact",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-init.cjs\""
-          },
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-state.cjs\"",
-            "_origin": "engineer"
-          }
-        ]
-      }
-    ],
     "UserPromptSubmit": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/skill-suggest.cjs\""
+            "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/skill-suggest.cjs"
           },
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/dev-rules-reminder.cjs\""
-          },
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/lessons-learned.cjs\""
+            "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/lessons-learned.cjs"
           }
         ]
       },
@@ -40,13 +20,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/dev-rules-reminder.cjs\"",
-            "_origin": "engineer"
-          },
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/usage-context-awareness.cjs\"",
-            "timeout": 30,
+            "command": "bash .claude/hooks/node-hook-runner.sh .claude/hooks/simplify-gate.cjs",
             "_origin": "engineer"
           }
         ]
@@ -58,71 +32,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/structure-tracker.cjs\""
-          }
-        ]
-      },
-      {
-        "matcher": "Edit|Write|MultiEdit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/post-edit-simplify-reminder.cjs\"",
-            "_origin": "engineer"
-          },
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/plan-format-kanban.cjs\"",
-            "_origin": "engineer"
-          }
-        ]
-      },
-      {
-        "matcher": "Bash|Edit|Write|MultiEdit|NotebookEdit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/usage-context-awareness.cjs\"",
-            "timeout": 10,
-            "_origin": "engineer"
-          }
-        ]
-      }
-    ],
-    "SubagentStart": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/subagent-init.cjs\"",
-            "_origin": "engineer"
-          },
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/team-context-inject.cjs\"",
-            "_origin": "engineer"
-          }
-        ]
-      }
-    ],
-    "SubagentStop": [
-      {
-        "matcher": "Plan",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/cook-after-plan-reminder.cjs\"",
-            "_origin": "engineer"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-state.cjs\"",
-            "_origin": "engineer"
+            "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/structure-tracker.cjs"
           }
         ]
       }
@@ -133,7 +43,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/descriptive-name.cjs\"",
+            "command": "bash .claude/hooks/node-hook-runner.sh .claude/hooks/descriptive-name.cjs",
             "_origin": "engineer"
           }
         ]
@@ -143,24 +53,33 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/scout-block.cjs\"",
+            "command": "bash .claude/hooks/node-hook-runner.sh .claude/hooks/scout-block.cjs",
             "_origin": "engineer"
           },
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/privacy-block.cjs\"",
+            "command": "bash .claude/hooks/node-hook-runner.sh .claude/hooks/privacy-block.cjs",
             "_origin": "engineer"
           }
         ]
       }
     ],
-    "Stop": [
+    "TaskCompleted": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-state.cjs\"",
-            "_origin": "engineer"
+            "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/task-completed-handler.cjs"
+          }
+        ]
+      }
+    ],
+    "TeammateIdle": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/teammate-idle-handler.cjs"
           }
         ]
       }
@@ -173,7 +92,9 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "node \"$CLAUDE_PROJECT_DIR/.claude/statusline.cjs\"",
+    "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/statusline.cjs",
     "padding": 0
-  }
+  },
+  "skillListingBudgetFraction": 0.03,
+  "skillListingMaxDescChars": 512
 }

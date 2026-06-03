@@ -1,6 +1,10 @@
 ---
 name: ck:better-auth
 description: Add authentication with Better Auth (TypeScript). Use for email/password, OAuth providers (Google, GitHub), 2FA/MFA, passkeys/WebAuthn, sessions, RBAC, rate limiting.
+user-invocable: true
+when_to_use: "Invoke for Better Auth setup, sessions, OAuth, MFA, or RBAC."
+category: backend
+keywords: [auth, oauth, 2fa, passkeys, sessions]
 license: MIT
 argument-hint: "[auth-method or feature]"
 metadata:

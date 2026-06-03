@@ -1,7 +1,7 @@
 # Fast Workflow (`--fast`)
 
 **Thinking level:** Think hard
-**User gates:** None. Fully autonomous from start to finish.
+**User gates:** Fast pre-planning path, then normal cook review gates.
 
 ## Step 1: Combined Research & Planning
 
@@ -22,11 +22,11 @@ Keep all reports ≤150 lines.
    - Design guidelines at `./docs/design-guidelines.md`
    - Wireframes in HTML at `./docs/wireframe/`
 2. If no logo provided: generate with `ck:ai-multimodal` skill
-3. Screenshot wireframes with `ck:chrome-devtools` → save to `./docs/wireframes/`
+3. Screenshot wireframes with `ck:agent-browser` → save to `./docs/wireframes/`
 
 **Image tools:** `ck:ai-multimodal` for generation/analysis, `imagemagick` for crop/resize, background removal tool as needed.
 
-No user gate — proceed directly.
+No design gate in fast mode — proceed directly to planning.
 
 ## Step 3: Planning
 
@@ -36,15 +36,15 @@ Activate **ck:plan** skill: `/ck:plan --fast <requirements>`
 - Plan directory using `## Naming` pattern
 - Overview at `plan.md` (<80 lines) + `phase-XX-*.md` files
 
-No user gate — proceed to implementation.
+No pre-implementation gate here — hand off to cook, which keeps review gates unless the user separately asked for `--auto`.
 
 ## Step 4: Implementation → Final Report
 
 Load `references/shared-phases.md` for remaining phases.
 
-Activate **ck:cook** skill: `/ck:cook --auto <plan-path>`
-- Skips all review gates (fast planning pairs with fast execution)
-- Auto-approves if score≥9.5 and 0 critical issues
-- Continues through all phases without stopping
+Activate **ck:cook** skill: `/ck:cook <plan-path>`
+- Skips redundant research because planning already happened
+- Keeps cook review gates; add `--auto` only when the user explicitly asked for autonomous bootstrap
+- Continues according to normal cook mode
 
-**Note:** Fast mode uses `git-manager` to auto-commit (no push) at the end.
+**Note:** Fast mode optimizes setup speed, not approval bypass. Use `git-manager` only after normal cook completion.

@@ -1,6 +1,10 @@
 ---
 name: ck:sequential-thinking
 description: Apply step-by-step analysis for complex problems with revision capability. Use for multi-step reasoning, hypothesis verification, adaptive planning, problem decomposition, course correction.
+user-invocable: true
+when_to_use: "Invoke for multi-step reasoning with revisions."
+category: utilities
+keywords: [reasoning, step-by-step, analysis]
 license: MIT
 argument-hint: "[problem to analyze step-by-step]"
 metadata:

@@ -1,6 +1,10 @@
 ---
 name: ck:stitch
 description: "AI design generation with Google Stitch. Generate UI designs from text prompts, export Tailwind/HTML/DESIGN.md, orchestrate design-to-code pipeline. Use for rapid prototyping, UI generation, design exploration."
+user-invocable: true
+when_to_use: "Invoke for AI-generated UI designs and design-to-code handoff."
+category: frontend
+keywords: [Stitch, UI-generation, prototyping, Tailwind]
 license: MIT
 allowed-tools:
   - Bash
@@ -17,29 +21,37 @@ metadata:
 
 Generate high-fidelity UI designs from text prompts via Google Stitch. Export Tailwind/HTML, orchestrate design-to-code pipelines with existing UI skills.
 
-**Free tier:** 200 credits/day (standard), 50/day (experimental). Resets at midnight UTC.
+**Free tier:** 400 credits/day + 15 redesign credits/day. Resets at midnight UTC.
 
 ## Setup
 
-### Required
+### 1. API Key
+
+Get an API key at https://stitch.withgoogle.com → Settings → API Keys.
+
+Add `STITCH_API_KEY=sk_...` to `~/.claude/.env` (or `~/.claude/skills/.env`).
+
+Running `install.sh` auto-adds the placeholder if missing — just fill in the value.
+
+### 2. Install SDK
 
 ```bash
-# Get API key at https://stitch.withgoogle.com → Settings → API Keys
-export STITCH_API_KEY="sk_..."
+cd ~/.claude/skills/stitch/scripts && npm install
 ```
 
-Add to `.env` or `.claude/.env`.
+Or run `~/.claude/skills/install.sh` which handles this automatically.
 
-### Optional
+### 3. Optional
 
 ```bash
-export STITCH_PROJECT_ID="my-project"    # Default project (auto-creates if unset)
-export STITCH_QUOTA_LIMIT="200"          # Override daily limit
+# In ~/.claude/.env
+STITCH_PROJECT_ID="my-project"    # Default project (auto-creates "claudekit-default" if unset)
+STITCH_QUOTA_LIMIT="200"          # Override daily limit
 ```
 
-### MCP Server (recommended)
+### 4. MCP Server (optional)
 
-Add to `.claude/.mcp.json` for native design context in Claude Code:
+Add to `~/.claude/.mcp.json` for native design context in Claude Code:
 
 ```json
 {
@@ -54,12 +66,6 @@ Add to `.claude/.mcp.json` for native design context in Claude Code:
 ```
 
 See `references/stitch-mcp-setup.md` for alternative options (gcloud, auto-installer).
-
-### Install SDK
-
-```bash
-cd .claude/skills/stitch/scripts && npm install
-```
 
 ## Quick Start
 
@@ -81,7 +87,7 @@ npx tsx scripts/stitch-export.ts <screen-id> --format all --output ./stitch-expo
 Generate UI design from text prompt.
 
 ```bash
-npx tsx scripts/stitch-generate.ts "<prompt>" [--project <id>] [--device mobile|desktop|tablet] [--variants <count>]
+npx tsx scripts/stitch-generate.ts "<prompt>" [--project <id>] [--project-name <title>] [--device MOBILE|DESKTOP|TABLET] [--variants <count>]
 ```
 
 Returns: screen ID, preview image URL. With `--variants`: additional design alternatives.
@@ -117,12 +123,30 @@ Refine an existing design.
 const editedScreen = await screen.edit("Make the header darker and add a search bar");
 ```
 
+### Project Isolation
+
+Stitch auto-isolates designs per git repo. Each repo gets its own Stitch project automatically.
+
+**Resolution priority:**
+1. `--project <id>` — direct Stitch project ID
+2. `--project-name <title>` — title-based lookup-or-create
+3. `STITCH_PROJECT_ID` env — user's global override
+4. Auto-detect from git repo name
+5. `"claudekit-default"` fallback
+
+When an active plan exists, pass `--project-name "{repo}/{plan-slug}"` to group designs by plan:
+```bash
+npx tsx scripts/stitch-generate.ts "checkout page" --project-name "my-saas/auth-system"
+```
+
+If no plan is active, omit `--project-name` — the script auto-detects from the git repo name.
+
 ## Orchestration Pipeline
 
 ### Design-to-Code Flow
 
 1. **Check quota** — Run `stitch-quota.ts check`. If exhausted, suggest `ck:ui-ux-pro-max` fallback.
-2. **Generate** — Run `stitch-generate.ts` with user's design prompt
+2. **Generate** — Run `stitch-generate.ts` with user's design prompt. If a plan is active, pass `--project-name "{repo}/{plan-slug}"` for isolation.
 3. **Review** — Show generated design image to user for feedback
 4. **Variants** (optional) — Generate alternatives if user wants exploration
 5. **Export** — Run `stitch-export.ts --format all` to get HTML + DESIGN.md
@@ -143,7 +167,7 @@ See `references/design-to-code-pipeline.md` for detailed patterns and examples.
 
 ## Quota Management
 
-- 200 credits/day (standard mode), resets at midnight UTC
+- 400 credits/day + 15 redesign/day, resets at midnight UTC
 - Local tracking via `~/.claudekit/.stitch-quota.json`
 - Warns when remaining credits < 20%
 - **Fallback:** When exhausted, use `ck:ui-ux-pro-max` for text-based design generation

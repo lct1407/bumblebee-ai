@@ -9,6 +9,7 @@ When to activate each skill and tool during fixing workflows.
 | `ck:scout` OR parallel `Explore` | Step 1 | Understand codebase context before diagnosing |
 | `ck:debug` | Step 2 | Systematic root cause investigation |
 | `ck:sequential-thinking` | Step 2 | Structured hypothesis formation — NO guessing |
+| `/ck:project-management` | Step 6 | MANDATORY for sync-back and progress tracking, every fix |
 
 ## Task Orchestration (Moderate+ Only)
 
@@ -35,7 +36,6 @@ Skip Tasks for Quick workflow (< 3 steps). See `references/task-orchestration.md
 | `ck:brainstorm` | Multiple valid fix approaches, architecture decision (Deep only) |
 | `ck:context-engineering` | Fixing AI/LLM/agent code, context window issues |
 | `ck:ai-multimodal` | UI issues, screenshots provided, visual bugs |
-| `ck:project-management` | Moderate+ workflows — task hydration, sync-back, progress tracking |
 
 ## Subagent Usage
 
@@ -50,7 +50,6 @@ Skip Tasks for Quick workflow (< 3 steps). See `references/task-orchestration.md
 | `ck:code-review` | After fix, verify quality and security (Step 5) |
 | `git-manager` | After approval, commit changes (Step 6) |
 | `docs-manager` | API/behavior changes need doc updates (Step 6) |
-| `project-manager` | Major fix impacts roadmap/plan status (Step 6) |
 | `fullstack-developer` | Parallel independent issues (each gets own agent) |
 
 ## Parallel Patterns
@@ -69,7 +68,7 @@ See `references/parallel-exploration.md` for detailed patterns.
 
 | Workflow | Skills Activated |
 |----------|------------------|
-| Quick | `ck:scout` (minimal), `ck:debug`, `ck:sequential-thinking`, `ck:code-review`, parallel `Bash` verification |
+| Quick | `ck:scout` (minimal), `ck:debug`, `ck:sequential-thinking`, `ck:code-review`, `/ck:project-management`, parallel `Bash` verification |
 | Standard | Above + Tasks, `ck:problem-solving` (auto), `ck:project-management`, `tester`, parallel `Explore` |
 | Deep | All above + `ck:brainstorm`, `ck:context-engineering`, `researcher`, `planner` |
 | Parallel | Per-issue Task trees + `ck:project-management` + `fullstack-developer` agents + coordination via `TaskList` |
@@ -84,7 +83,7 @@ See `references/parallel-exploration.md` for detailed patterns.
 | Step 3: Assess | Classify complexity → create Tasks (moderate+) |
 | Step 4: Fix | Implement per workflow → follow root cause |
 | Step 5: Verify+Prevent | Iron-law verify → regression test → defense-in-depth → parallel `Bash` verify |
-| Step 6: Finalize | Report → `docs-manager` → `TaskUpdate` → `git-manager` → `/ck:journal` |
+| Step 6: Finalize | Report → `/ck:project-management` (MANDATORY) → `docs-manager` → `TaskUpdate` → `git-manager` → `/ck:journal` |
 
 ## Detection Triggers
 

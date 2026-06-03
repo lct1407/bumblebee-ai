@@ -20,9 +20,11 @@ from bumblebee.routers import (
 )
 from bumblebee.routers import (
     chat,
+    comments,
     events,
     health,
     issues,
+    milestones,
     notifications,
     plugins,
     projects,
@@ -88,6 +90,8 @@ def create_app() -> FastAPI:
     app.include_router(health.router)
     app.include_router(projects.router)
     app.include_router(issues.router)
+    app.include_router(milestones.router)
+    app.include_router(comments.router)
     app.include_router(events.router)
     app.include_router(workflow_runs.router)
     app.include_router(chat.router)

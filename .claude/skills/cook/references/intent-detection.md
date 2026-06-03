@@ -7,10 +7,12 @@ Detect user intent from natural language and route to appropriate workflow.
 ```
 FUNCTION detectMode(input):
   # Priority 1: Explicit flags (override all)
+  IF input contains "--interactive": RETURN "interactive"
   IF input contains "--fast": RETURN "fast"
   IF input contains "--parallel": RETURN "parallel"
   IF input contains "--auto": RETURN "auto"
   IF input contains "--no-test": RETURN "no-test"
+  # "--tdd" is composable and does not change mode selection
 
   # Priority 2: Plan path detection
   IF input matches path pattern (./plans/*, plan.md, phase-*.md):
@@ -67,6 +69,9 @@ Detect multiple features from natural language:
 ## Examples
 
 ```
+"/ck:cook implement user auth --interactive"
+→ Mode: interactive (explicit flag, stops at review gates)
+
 "/ck:cook implement user auth"
 → Mode: interactive (default, stops at review gates)
 
@@ -81,6 +86,9 @@ Detect multiple features from natural language:
 
 "/ck:cook implement dashboard --fast"
 → Mode: fast (explicit flag, stops at review gates)
+
+"/ck:cook refactor auth middleware --tdd"
+→ Mode: interactive (default mode, with tests-first implementation behavior)
 
 "/ck:cook implement everything --auto"
 → Mode: auto (NO STOPS, implements all phases continuously)

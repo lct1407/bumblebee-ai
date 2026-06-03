@@ -3,17 +3,20 @@ import { use, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { EventsApi, IssuesApi, WorkflowApi, getActiveProject, type Issue } from "@/lib/api-client";
+import { EventsApi, IssuesApi, MilestonesApi, ProjectsApi, WorkflowApi, getActiveProject, type Issue } from "@/lib/api-client";
 import { StatusBadge, PriorityBadge } from "@/components/ui/badge";
 import { Sheet } from "@/components/ui/sheet";
 import { IssueForm } from "@/components/issues/issue-form";
+import { Comments } from "@/components/issues/comments";
+import { PeopleScheduleCard } from "@/components/issues/people-schedule-card";
 import { ActivityTimeline } from "@/components/issues/activity-timeline";
 import { WorkflowRuns } from "@/components/issues/workflow-runs";
 import { AcceptanceChecklist } from "@/components/issues/acceptance-checklist";
 import { LiveStream } from "@/components/issues/live-stream";
 import { useEventStream } from "@/lib/event-stream";
 import { parseDescription, serializeDescription, acceptanceProgress } from "@/lib/issue-sections";
-import { TYPE_ICONS, formatRelativeTime, cn } from "@/lib/utils";
+import { TypeIcon } from "@/components/ui/type-icon";
+import { formatRelativeTime, cn } from "@/lib/utils";
 
 type Tab = "overview" | "activity" | "runs";
 
@@ -40,6 +43,16 @@ export default function IssueDetailPage({
     queryFn: () => EventsApi.forIssue(issue.data!.id, 200),
     enabled: !!issue.data?.id,
     refetchInterval: 5000,
+  });
+
+  const members = useQuery({
+    queryKey: ["project-members", project],
+    queryFn: () => ProjectsApi.members(project),
+  });
+
+  const milestones = useQuery({
+    queryKey: ["milestones", project],
+    queryFn: () => MilestonesApi.list(project),
   });
 
   // Live WebSocket stream (chunks + pushed events)
@@ -186,7 +199,7 @@ export default function IssueDetailPage({
             </span>
             <span className="text-sm" style={{ color: "var(--text-tertiary)" }}>·</span>
             <span className="inline-flex items-center gap-1 text-sm" style={{ color: "var(--text-secondary)" }}>
-              <span style={{ opacity: 0.7 }}>{TYPE_ICONS[i.type] || "·"}</span>
+              <TypeIcon type={i.type} size={14} />
               {i.type}
             </span>
             {i.complexity && (
@@ -370,6 +383,8 @@ export default function IssueDetailPage({
                   </p>
                 </Section>
               )}
+
+              <Comments project={project} number={num} />
             </motion.div>
           )}
 
@@ -389,6 +404,14 @@ export default function IssueDetailPage({
 
         {/* Metadata sidebar */}
         <aside className="space-y-4">
+          <PeopleScheduleCard
+            issue={i}
+            members={members.data ?? []}
+            milestones={milestones.data ?? []}
+            saving={update.isPending}
+            onUpdate={(patch) => update.mutate(patch)}
+          />
+
           <MetadataCard>
             <MetaRow label="Status"><StatusBadge status={i.status} /></MetaRow>
             <MetaRow label="Priority"><PriorityBadge priority={i.priority} /></MetaRow>

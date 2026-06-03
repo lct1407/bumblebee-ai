@@ -38,7 +38,7 @@ Spawn multiple `researcher` subagents in parallel:
    - Design guidelines at `./docs/design-guidelines.md`
    - Wireframes in HTML at `./docs/wireframe/`
 4. If no logo provided: generate with `ck:ai-multimodal` skill
-5. Screenshot wireframes with `ck:chrome-devtools` → save to `./docs/wireframes/`
+5. Screenshot wireframes with `ck:agent-browser` → save to `./docs/wireframes/`
 
 **Gate:** User approves design. Repeat if rejected.
 

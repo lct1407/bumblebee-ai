@@ -2,17 +2,21 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
+import { useAuth } from "@/lib/use-auth";
 
 const NAV = [
-  { href: "/settings/workspace", label: "Workspace" },
-  { href: "/settings/members", label: "Members" },
-  { href: "/settings/devices", label: "Devices" },
-  { href: "/settings/api-keys", label: "API keys" },
-  { href: "/settings/billing", label: "Billing" },
+  { href: "/settings/workspace", label: "Workspace", adminOnly: false },
+  { href: "/settings/members", label: "Members", adminOnly: true },
+  { href: "/settings/devices", label: "Devices", adminOnly: false },
+  { href: "/settings/api-keys", label: "API keys", adminOnly: false },
+  { href: "/settings/billing", label: "Billing", adminOnly: true },
 ];
 
 export default function SettingsLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const { isAdmin } = useAuth();
+  const items = NAV.filter((i) => !i.adminOnly || isAdmin);
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-6 lg:gap-10">
       <aside>
@@ -20,7 +24,7 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
           Settings
         </h2>
         <nav className="space-y-px">
-          {NAV.map((item) => {
+          {items.map((item) => {
             const active = pathname === item.href;
             return (
               <Link
@@ -40,6 +44,11 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
                   />
                 )}
                 {item.label}
+                {item.adminOnly && (
+                  <span className="ml-1.5 text-[9px] font-mono uppercase" style={{ color: "var(--text-quaternary)" }}>
+                    admin
+                  </span>
+                )}
               </Link>
             );
           })}

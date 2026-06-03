@@ -4,10 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ProjectsApi, IssuesApi, getActiveProject, setActiveProject } from "@/lib/api-client";
+import { ProjectsApi, IssuesApi, getActiveProject, setActiveProject, setAuthToken } from "@/lib/api-client";
 import { Combobox } from "@/components/ui/combobox";
 import { WorkspaceSwitcher } from "@/components/app/workspace-switcher";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
+import { HexMark } from "@/components/ui/hex-mark";
+import { useAuth } from "@/lib/use-auth";
 import { cn } from "@/lib/utils";
 
 interface NavSection {
@@ -23,6 +25,16 @@ const Icon = ({ d }: { d: string }) => (
 
 export function Sidebar({ onCmdK }: { onCmdK: () => void }) {
   const pathname = usePathname();
+  const { isAdmin, role, user } = useAuth();
+  const username = user?.username || "Account";
+
+  const signOut = () => {
+    setAuthToken(null);
+    try {
+      window.localStorage.removeItem("bumblebee.activeWorkspace");
+    } catch {}
+    window.location.href = "/login";
+  };
   const [collapsed, setCollapsed] = useState(false);
   const [project, setProject] = useState("bb");
   useEffect(() => setProject(getActiveProject()), []);
@@ -59,16 +71,27 @@ export function Sidebar({ onCmdK }: { onCmdK: () => void }) {
         { href: "/issues?status=in_progress", label: "Active", icon: <Icon d="M12 8v4l3 3M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />, badge: issueStats.open },
         { href: "/issues?status=closed", label: "Closed", icon: <Icon d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />, badge: issueStats.closed },
         { href: "/issues?status=failed", label: "Failed", icon: <Icon d="M15 9l-6 6M9 9l6 6M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />, badge: issueStats.failed },
+        { href: "/milestones", label: "Milestones", icon: <Icon d="M4 4v16M4 5h11l-2 3 2 3H4" /> },
       ],
     },
     {
       label: "System",
       items: [
         { href: "/plugins", label: "Plugins", icon: <Icon d="M14 6V3h-4v3H5v15h14V6h-5zm0 12h-4v-2h4v2zm0-4h-4v-2h4v2zm0-4h-4V8h4v2z" /> },
-        { href: "/settings/devices", label: "Devices", icon: <Icon d="M4 6h16v10H4zM2 20h20M9 16v4M15 16v4" /> },
+        { href: "/settings/workspace", label: "Settings", icon: <Icon d="M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" /> },
         { href: "/help", label: "Help", icon: <Icon d="M12 22a10 10 0 100-20 10 10 0 000 20zM9 9a3 3 0 116 0c0 1.5-2 2-3 3v2M12 18h.01" /> },
       ],
     },
+    ...(isAdmin
+      ? [{
+          label: "Admin",
+          items: [
+            { href: "/settings/members", label: "Members", icon: <Icon d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" /> },
+            { href: "/settings/billing", label: "Billing", icon: <Icon d="M1 4h22v16H1zM1 10h22" /> },
+            { href: "/settings/api-keys", label: "API keys", icon: <Icon d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" /> },
+          ] as NavSection["items"],
+        }]
+      : []),
   ];
 
   const projectOptions = (projects.data ?? []).map((p) => ({
@@ -88,10 +111,10 @@ export function Sidebar({ onCmdK }: { onCmdK: () => void }) {
       <div className="h-14 flex items-center px-3 border-b" style={{ borderColor: "var(--border)" }}>
         <Link href="/" className="flex items-center gap-2 flex-1 min-w-0">
           <span
-            className="w-7 h-7 rounded-md flex items-center justify-center text-base font-bold flex-shrink-0"
-            style={{ background: "var(--accent)", color: "var(--accent-fg)" }}
+            className="w-7 h-7 flex items-center justify-center flex-shrink-0"
+            style={{ color: "var(--accent)" }}
           >
-            B
+            <HexMark size={26} />
           </span>
           {!collapsed && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2 min-w-0">
@@ -224,18 +247,47 @@ export function Sidebar({ onCmdK }: { onCmdK: () => void }) {
         style={{ borderColor: "var(--border)" }}
       >
         <div
-          className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0"
+          className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0 uppercase"
           style={{ background: "var(--accent)", color: "var(--accent-fg)" }}
         >
-          A
+          {username.slice(0, 1)}
         </div>
         {!collapsed && (
           <>
             <div className="flex-1 min-w-0">
-              <div className="text-sm font-medium truncate" style={{ color: "var(--text-primary)" }}>Admin</div>
+              <div className="text-sm font-medium truncate" style={{ color: "var(--text-primary)" }}>{username}</div>
+              {role && (
+                <div className="text-[10px] font-mono uppercase tracking-wide" style={{ color: isAdmin ? "var(--accent)" : "var(--text-tertiary)" }}>
+                  {role}
+                </div>
+              )}
             </div>
             <ThemeToggle compact />
+            <button
+              onClick={signOut}
+              title="Sign out"
+              aria-label="Sign out"
+              className="w-7 h-7 rounded-md flex items-center justify-center transition hover:bg-[var(--bg-subtle)]"
+              style={{ color: "var(--text-tertiary)" }}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
+              </svg>
+            </button>
           </>
+        )}
+        {collapsed && (
+          <button
+            onClick={signOut}
+            title="Sign out"
+            aria-label="Sign out"
+            className="w-7 h-7 rounded-md flex items-center justify-center transition hover:bg-[var(--bg-subtle)]"
+            style={{ color: "var(--text-tertiary)" }}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
+            </svg>
+          </button>
         )}
       </div>
     </motion.aside>

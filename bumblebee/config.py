@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     anthropic_api_key: str = ""
     openai_api_key: str = ""
     gemini_api_key: str = ""
-    gemini_model: str = "gemini-2.0-flash"  # cheap + fast for MCP tools
+    gemini_model: str = "gemini-3.1-flash-lite"  # cheap + fast; override via GEMINI_MODEL
     claude_cli_path: str = "claude"
 
     # Vertex AI (alternative auth path; if set, used instead of gemini_api_key)

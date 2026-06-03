@@ -137,8 +137,8 @@ describe('subagent-init.cjs', () => {
 
   describe('Issue #540: ck plan CLI injection for plan-aware agents', () => {
 
-    it('injects ck plan CLI section for plan-aware agent types', async () => {
-      const planAwareTypes = ['planner', 'project-manager', 'code-simplifier', 'brainstormer', 'code-reviewer', 'fullstack-developer'];
+    it('injects ck plan CLI section for agents that may update plan state', async () => {
+      const planAwareTypes = ['planner', 'project-manager', 'code-simplifier', 'fullstack-developer'];
 
       for (const agentType of planAwareTypes) {
         const result = await runHook({
@@ -165,6 +165,31 @@ describe('subagent-init.cjs', () => {
         assert.ok(
           context.includes('Fallback'),
           `Agent type '${agentType}' should include fallback note`
+        );
+      }
+    });
+
+    it('does not inject plan mutation commands for advisory-only agents', async () => {
+      const advisoryTypes = ['brainstormer', 'code-reviewer'];
+
+      for (const agentType of advisoryTypes) {
+        const result = await runHook({
+          agent_type: agentType,
+          agent_id: 'test-704',
+          cwd: process.cwd()
+        });
+
+        const context = result.output?.hookSpecificOutput?.additionalContext || '';
+
+        assert.doesNotMatch(
+          context,
+          /ck plan check/,
+          `Agent type '${agentType}' should not receive plan mutation commands`
+        );
+        assert.doesNotMatch(
+          context,
+          /ck plan uncheck/,
+          `Agent type '${agentType}' should not receive plan mutation commands`
         );
       }
     });

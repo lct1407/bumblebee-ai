@@ -1,6 +1,10 @@
 ---
 name: ck:ask
-description: "Answer technical and architectural questions with expert consultation."
+description: "Answer technical and architectural questions with expert analysis. Use for design decisions, best practices evaluation, solution comparison."
+user-invocable: true
+when_to_use: "Invoke for analysis-only answers before changing code."
+category: utilities
+keywords: [questions, consultation, architecture]
 argument-hint: "[technical-question]"
 metadata:
   author: claudekit

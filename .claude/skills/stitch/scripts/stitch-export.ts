@@ -2,14 +2,22 @@
  * stitch-export.ts — Export Stitch designs as HTML, image, or DESIGN.md.
  *
  * Usage:
- *   npx tsx stitch-export.ts <screen-id> [--project <id>] [--format html|image|all] [--output <dir>]
+ *   npx tsx stitch-export.ts <screen-id> [--project <id>] [--project-name <title>] [--format html|image|all] [--output <dir>]
  *
  * Env: STITCH_API_KEY (required), STITCH_PROJECT_ID (optional default)
+ *
+ * Project resolution priority:
+ *   1. --project <id>          direct Stitch project ID
+ *   2. --project-name <title>  title-based lookup-or-create
+ *   3. STITCH_PROJECT_ID env   user's global override (direct ID)
+ *   4. auto-detect             git repo name from remote, or CWD basename
+ *   5. "claudekit-default"     last resort fallback
  */
 
 import { stitch } from "@google/stitch-sdk";
 import fs from "fs";
 import path from "path";
+import { execSync } from "child_process";
 
 // -- Argument parsing --
 
@@ -34,14 +42,67 @@ function getPositionalArgs(): string[] {
   return positional;
 }
 
+// -- Project name auto-detection --
+
+/**
+ * Detect project name from git remote origin (repo name) or CWD basename.
+ * Returns empty string if neither is available.
+ * Truncated to 50 chars to stay within Stitch title length limits.
+ */
+function autoDetectProjectName(): string {
+  try {
+    const remoteUrl = execSync("git remote get-url origin", {
+      encoding: "utf-8",
+      stdio: ["pipe", "pipe", "ignore"],
+    }).trim();
+    // Extract repo name from SSH (git@github.com:org/repo.git) or HTTPS (https://github.com/org/repo.git)
+    const repoName = remoteUrl.replace(/\.git$/, "").split(/[/:}]/).pop() || "";
+    if (repoName) return repoName.slice(0, 50);
+  } catch { /* not a git repo or no remote */ }
+  const cwdName = path.basename(process.cwd());
+  return cwdName ? cwdName.slice(0, 50) : "";
+}
+
 const screenId = getPositionalArgs()[0];
-const projectId =
-  getFlag("project") || process.env.STITCH_PROJECT_ID || "claudekit-default";
+
+// Resolve project identity per priority order
+const directProjectId = getFlag("project") || process.env.STITCH_PROJECT_ID;
+const projectNameFlag = getFlag("project-name");
+
+// Determine if we use a direct ID (no lookup) or a title (lookup-or-create)
+let projectId: string;
+let isNameBasedProject = false;
+let resolvedProjectName: string;
+
+if (directProjectId) {
+  // Priority 1 & 3: direct ID — no lookup needed
+  projectId = directProjectId;
+  resolvedProjectName = directProjectId;
+  console.error(`[i] Project: ${projectId} (direct ID)`);
+} else if (projectNameFlag) {
+  // Priority 2: explicit --project-name flag
+  projectId = projectNameFlag.slice(0, 50);
+  resolvedProjectName = projectId;
+  isNameBasedProject = true;
+  console.error(`[i] Project name: "${projectId}" (--project-name flag)`);
+} else {
+  // Priority 4 & 5: auto-detect or fallback
+  const detected = autoDetectProjectName();
+  projectId = detected || "claudekit-default";
+  resolvedProjectName = projectId;
+  isNameBasedProject = true;
+  if (detected) {
+    console.error(`[i] Project name: "${projectId}" (auto-detected from git/CWD)`);
+  } else {
+    console.error(`[i] Project name: "${projectId}" (fallback default)`);
+  }
+}
+
 const format = getFlag("format") || "all";
 const outputDir = getFlag("output") || "./stitch-exports";
 
 if (!screenId) {
-  console.error("Usage: npx tsx stitch-export.ts <screen-id> [--project <id>] [--format html|image|all] [--output <dir>]");
+  console.error("Usage: npx tsx stitch-export.ts <screen-id> [--project <id>] [--project-name <title>] [--format html|image|all] [--output <dir>]");
   process.exit(1);
 }
 
@@ -113,8 +174,23 @@ async function main() {
   try {
     fs.mkdirSync(outputDir, { recursive: true });
 
-    console.error(`[i] Exporting screen ${screenId} from project ${projectId}`);
-    const project = await stitch.project(projectId);
+    console.error(`[i] Exporting screen ${screenId} from project "${resolvedProjectName}"`);
+    // Resolve project handle — name-based projects look up by title first; direct IDs used as-is
+    let project;
+    if (isNameBasedProject) {
+      const projects = await stitch.projects();
+      const found = projects.find(p => p.data?.title === resolvedProjectName);
+      if (found) {
+        console.error(`[i] Using existing project: "${resolvedProjectName}" (${found.id})`);
+        project = stitch.project(found.id);
+      } else {
+        // Project doesn't exist — use the name as a fallback handle (will likely 404 on getScreen)
+        console.error(`[!] Project "${resolvedProjectName}" not found; proceeding with name as ID`);
+        project = stitch.project(projectId);
+      }
+    } else {
+      project = stitch.project(projectId);
+    }
     const screen = await project.getScreen(screenId!);
 
     const exported: Record<string, string> = {};

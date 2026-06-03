@@ -1,6 +1,10 @@
 ---
 name: ck:docs-seeker
 description: Search library/framework documentation via llms.txt (context7.com). Use for API docs, GitHub repository analysis, technical documentation lookup, latest library features.
+user-invocable: true
+when_to_use: "Invoke when current library or framework docs are needed."
+category: dev-tools
+keywords: [docs, llms-txt, api, library, context7]
 argument-hint: "[library-name] [topic]"
 metadata:
   author: claudekit

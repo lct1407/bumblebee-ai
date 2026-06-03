@@ -39,8 +39,11 @@ Load: `references/red-team-personas.md` for reviewer prompt template.
 3. Sort by severity: Critical → High → Medium
 4. Cap at 15 findings
 
+### Step 5.5: Evidence Filter
+For each finding, check: does the `Evidence:` field contain at least one `file:line` citation (pattern `path/to/file.ext:NNN`)? If not, auto-set disposition to **Reject** with rationale "No codebase evidence." Do not evaluate merit for evidence-free findings.
+
 ### Step 6: Adjudicate
-For each finding, evaluate and propose: **Accept** or **Reject**.
+For each finding that passed the evidence filter, evaluate and propose: **Accept** or **Reject**.
 
 ### Step 7: User Review
 Present via `AskUserQuestion`:
@@ -61,17 +64,34 @@ Record the modified suggestion. Set disposition to "Accept (modified)" in the Re
 For accepted findings, edit target phase files inline with marker.
 Add `## Red Team Review` section to `plan.md`.
 
+### Step 9: Whole-Plan Consistency Sweep
+Load: `references/verification-roles.md` → "Whole-Plan Consistency Sweep".
+
+After accepted findings are applied, re-read `plan.md` and every `phase-*.md` file. Red-team edits often change one local phase; this sweep prevents stale claims from surviving elsewhere.
+
+Required checks:
+- Convert accepted findings into a decision delta list.
+- Search all plan files for old terms, rejected assumptions, renamed files/APIs/fields, and superseded implementation details.
+- Reconcile `plan.md` summaries, dependencies, phase requirements, implementation steps, success criteria, and existing validation/red-team logs.
+- If a finding updates an embedded draft, pseudo-query, command, or API contract, update duplicate prose/draft copies too.
+- Append `### Whole-Plan Consistency Sweep` to `## Red Team Review`.
+- If contradictions remain, list them as unresolved and do not present the plan as ready for implementation.
+
 ## Output
 - Total findings by severity
 - Accepted vs rejected count
 - Files modified
+- Whole-plan consistency sweep results
 - Key risks addressed
 
-## Next Steps (MANDATORY)
-Remind user to run `/ck:plan validate` then `/ck:cook --auto`.
+## Next Steps
+Remind user they can run `/ck:plan validate {plan-directory-path}` before implementation.
+When the user approves implementation, run `/ck:cook {ABSOLUTE_PATH_TO_PLAN_DIR}/plan.md`.
+Add `--auto` only when the user explicitly asks for autonomous implementation.
 
 ## Important Notes
 - Reviewers must be HOSTILE, not helpful
 - Deduplicate aggressively
 - Adjudication must be evidence-based
 - Reviewers read plan files directly
+- Never recommend cooking until the whole-plan consistency sweep has no unresolved contradictions

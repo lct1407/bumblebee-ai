@@ -1,10 +1,16 @@
 ---
 name: ck:preview
-description: "View files/directories OR generate visual explanations, slides, diagrams (Markdown or self-contained HTML)."
+description: "View files or generate visual explanations, slides, and diagrams. Use for code walkthroughs, architecture visualization, HTML/Markdown presentations."
+user-invocable: true
+when_to_use: "Invoke for visual explanations, file previews, or diagrams."
+category: utilities
+keywords: [preview, visual, slides, diagrams, HTML]
 argument-hint: "[path] OR [--html] --explain|--slides|--diagram|--ascii [topic] OR --html --diff|--plan-review|--recap"
 metadata:
   author: claudekit
-  version: "1.1.0"
+  version: "1.2.0"
+  attribution: "Visual self-review pattern for diagram output adapted from fireworks-tech-graph by yizhiyanhua-ai (MIT)"
+  license: MIT
 ---
 
 # Preview

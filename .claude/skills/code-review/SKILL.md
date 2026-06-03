@@ -1,6 +1,10 @@
 ---
 name: ck:code-review
 description: "Review code quality with adversarial rigor. Supports input modes: pending changes, PR number, commit hash, codebase scan. Always-on red-team analysis finds security holes, false assumptions, and failure modes."
+user-invocable: true
+when_to_use: "Invoke to review diffs, PRs, commits, or full codebases."
+category: utilities
+keywords: [review, quality, red-team, security]
 argument-hint: "[#PR | COMMIT | --pending | codebase [parallel]]"
 metadata:
   author: claudekit
@@ -197,3 +201,9 @@ TaskCreate: "Verify fixes pass"        → pending, blockedBy: [fix]
 5. Evidence before claims
 
 Verify. Scout. Red-team. Question. Then implement. Evidence. Then claim.
+
+## Workflow Position
+
+**Typically follows:** `/ck:cook` (review after implementation), `/ck:fix` (review after bug fix)
+**Typically precedes:** `/ck:ship` (ship after review passes)
+**Related:** `/ck:scout` (scout before reviewing), `/ck:test` (test before reviewing)

@@ -244,9 +244,11 @@ response = client.models.generate_content(
 - 9.5 hours = 1,094,400 tokens
 
 **Model selection**:
-- Use `gemini-2.5-flash` ($1/1M tokens) for most tasks
-- Upgrade to `gemini-2.5-pro` ($3/1M tokens) for complex analysis
-- For high-volume: `gemini-1.5-flash` ($0.70/1M tokens)
+- Use `gemini-2.5-flash` for most tasks (default, balanced cost)
+- Upgrade to `gemini-2.5-pro` for complex analysis
+- For latest features: `gemini-3-flash-preview` (preview tier)
+
+> Pricing changes — see https://ai.google.dev/pricing for current rates. Avoid `gemini-1.5-*`; the 1.5 series is on Google's deprecation track.
 
 **Reduce costs**:
 - Process only relevant segments using timestamps

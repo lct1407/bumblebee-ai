@@ -20,38 +20,37 @@ import { ViewSwitcher, type ViewMode } from "@/components/issues/view-switcher";
 import { BoardView } from "@/components/issues/board-view";
 import { StatsView } from "@/components/issues/stats-view";
 import { IssueForm } from "@/components/issues/issue-form";
-import { IssuesApi, WorkflowApi, getActiveProject, type Issue } from "@/lib/api-client";
-import { TYPE_ICONS, formatRelativeTime, cn } from "@/lib/utils";
+import { IssuesApi, ProjectsApi, WorkflowApi, getActiveProject, type Issue } from "@/lib/api-client";
+import { TypeIcon, StatusDot } from "@/components/ui/type-icon";
+import { formatRelativeTime, cn } from "@/lib/utils";
 
 const STATUS_OPTIONS = [
-  { value: "new", label: "New", icon: "🔵" },
-  { value: "triaged", label: "Triaged", icon: "🟣" },
-  { value: "planned", label: "Planned", icon: "🟦" },
-  { value: "approved", label: "Approved", icon: "🟢" },
-  { value: "in_progress", label: "In Progress", icon: "🟡" },
-  { value: "in_review", label: "In Review", icon: "🟪" },
-  { value: "closed", label: "Closed", icon: "✅" },
-  { value: "failed", label: "Failed", icon: "❌" },
-  { value: "wont_fix", label: "Won't Fix", icon: "⚪" },
+  { value: "new", label: "New", icon: <StatusDot status="new" /> },
+  { value: "triaged", label: "Triaged", icon: <StatusDot status="triaged" /> },
+  { value: "planned", label: "Planned", icon: <StatusDot status="planned" /> },
+  { value: "approved", label: "Approved", icon: <StatusDot status="approved" /> },
+  { value: "in_progress", label: "In Progress", icon: <StatusDot status="in_progress" /> },
+  { value: "in_review", label: "In Review", icon: <StatusDot status="in_review" /> },
+  { value: "closed", label: "Closed", icon: <StatusDot status="closed" /> },
+  { value: "failed", label: "Failed", icon: <StatusDot status="failed" /> },
+  { value: "wont_fix", label: "Won't Fix", icon: <StatusDot status="wont_fix" /> },
 ];
 
+const PRIO_GLYPH: Record<string, string> = { critical: "▲", high: "▴", medium: "■", low: "▾", none: "·" };
 const PRIORITY_OPTIONS = [
-  { value: "critical", label: "Critical", icon: "🔥" },
-  { value: "high", label: "High", icon: "⬆" },
-  { value: "medium", label: "Medium", icon: "▪" },
-  { value: "low", label: "Low", icon: "▾" },
-  { value: "none", label: "None", icon: "•" },
+  { value: "critical", label: "Critical", icon: <span style={{ color: "var(--status-danger)", fontSize: 10 }}>{PRIO_GLYPH.critical}</span> },
+  { value: "high", label: "High", icon: <span style={{ color: "var(--status-warning)", fontSize: 10 }}>{PRIO_GLYPH.high}</span> },
+  { value: "medium", label: "Medium", icon: <span style={{ color: "var(--text-secondary)", fontSize: 10 }}>{PRIO_GLYPH.medium}</span> },
+  { value: "low", label: "Low", icon: <span style={{ color: "var(--text-tertiary)", fontSize: 10 }}>{PRIO_GLYPH.low}</span> },
+  { value: "none", label: "None", icon: <span style={{ color: "var(--text-quaternary)", fontSize: 10 }}>{PRIO_GLYPH.none}</span> },
 ];
 
-const TYPE_OPTIONS = [
-  { value: "bug", label: "Bug", icon: "🐛" },
-  { value: "feature", label: "Feature", icon: "✨" },
-  { value: "task", label: "Task", icon: "📋" },
-  { value: "story", label: "Story", icon: "📖" },
-  { value: "epic", label: "Epic", icon: "🏆" },
-  { value: "chore", label: "Chore", icon: "🧹" },
-  { value: "spike", label: "Spike", icon: "🔬" },
-];
+const TYPE_VALUES = ["bug", "feature", "task", "story", "epic", "chore", "spike"];
+const TYPE_OPTIONS = TYPE_VALUES.map((value) => ({
+  value,
+  label: value.charAt(0).toUpperCase() + value.slice(1),
+  icon: <span style={{ color: "var(--text-tertiary)" }}><TypeIcon type={value} size={14} /></span>,
+}));
 
 const ALL_COLUMNS = [
   { id: "key", label: "Key" },
@@ -59,11 +58,25 @@ const ALL_COLUMNS = [
   { id: "status", label: "Status" },
   { id: "priority", label: "Priority" },
   { id: "type", label: "Type" },
+  { id: "assignee", label: "Assignee" },
+  { id: "due_date", label: "Due" },
   { id: "complexity", label: "Complexity" },
   { id: "ai_confidence", label: "AI Conf." },
   { id: "scope_hints", label: "Scope" },
   { id: "updated_at", label: "Updated" },
 ];
+
+function memberInitials(name?: string | null) {
+  if (!name) return "?";
+  const parts = name.trim().split(/\s+/);
+  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+  return name.trim().slice(0, 2).toUpperCase();
+}
+
+function fmtDue(iso?: string | null) {
+  if (!iso) return null;
+  return new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+}
 
 export default function IssuesPage() {
   const [project, setProject] = useState("bb");
@@ -84,6 +97,18 @@ export default function IssuesPage() {
     queryKey: ["issues", project],
     queryFn: () => IssuesApi.list(project),
   });
+
+  const membersQuery = useQuery({
+    queryKey: ["project-members", project],
+    queryFn: () => ProjectsApi.members(project),
+  });
+  const memberMap = useMemo(() => {
+    const map = new Map<string, { name: string }>();
+    for (const m of membersQuery.data ?? []) {
+      map.set(m.user_id, { name: m.full_name || m.username || m.email || m.user_id });
+    }
+    return map;
+  }, [membersQuery.data]);
 
   const filtered = useMemo(() => {
     return (data ?? []).filter((i) => {
@@ -135,11 +160,50 @@ export default function IssuesPage() {
         id: "type",
         header: "Type",
         cell: ({ row }) => (
-          <span className="inline-flex items-center gap-1 text-[12px]" style={{ color: "var(--text-secondary)" }}>
-            <span style={{ opacity: 0.7 }}>{TYPE_ICONS[row.original.type] || "·"}</span>
+          <span className="inline-flex items-center gap-1.5 text-[12px]" style={{ color: "var(--text-secondary)" }}>
+            <span style={{ color: "var(--text-tertiary)" }}><TypeIcon type={row.original.type} size={13} /></span>
             {row.original.type}
           </span>
         ),
+      },
+      {
+        id: "assignee",
+        accessorKey: "assignee_id",
+        header: "Assignee",
+        cell: ({ row }) => {
+          const id = row.original.assignee_id;
+          if (!id) return <span style={{ color: "var(--text-quaternary)" }}>—</span>;
+          const name = memberMap.get(id)?.name;
+          return (
+            <span className="inline-flex items-center gap-1.5 text-[12px]" style={{ color: "var(--text-secondary)" }} title={name}>
+              <span
+                className="w-5 h-5 rounded flex items-center justify-center text-[9px] font-bold flex-shrink-0"
+                style={{ background: "var(--accent)", color: "var(--accent-fg)" }}
+              >
+                {memberInitials(name)}
+              </span>
+              <span className="truncate max-w-[90px]">{name ?? "—"}</span>
+            </span>
+          );
+        },
+      },
+      {
+        id: "due_date",
+        accessorKey: "due_date",
+        header: "Due",
+        cell: ({ row }) => {
+          const due = fmtDue(row.original.due_date);
+          if (!due) return <span style={{ color: "var(--text-quaternary)" }}>—</span>;
+          const overdue =
+            row.original.due_date != null &&
+            new Date(row.original.due_date) < new Date() &&
+            !["closed", "released"].includes(row.original.status);
+          return (
+            <span className="text-[12px] tabular-nums" style={{ color: overdue ? "var(--status-danger)" : "var(--text-secondary)" }}>
+              {due}
+            </span>
+          );
+        },
       },
       {
         accessorKey: "complexity",
@@ -206,7 +270,7 @@ export default function IssuesPage() {
         ),
       },
     ],
-    [project],
+    [project, memberMap],
   );
 
   const columnVisibility = useMemo(
@@ -235,7 +299,7 @@ export default function IssuesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-start justify-between flex-wrap gap-4">
+      <div className="masthead flex items-start justify-between flex-wrap gap-4">
         <div>
           <div className="flex items-baseline gap-3">
             <h1 className="t-display" style={{ color: "var(--text-primary)" }}>Issues</h1>
@@ -501,7 +565,10 @@ function IssueDetail({ issue, project, onUpdate }: { issue: Issue; project: stri
         </div>
         <div>
           <Label>Type</Label>
-          <div className="text-sm" style={{ color: "var(--text-primary)" }}>{TYPE_ICONS[issue.type]} {issue.type}</div>
+          <div className="inline-flex items-center gap-1.5 text-sm" style={{ color: "var(--text-primary)" }}>
+            <span style={{ color: "var(--text-tertiary)" }}><TypeIcon type={issue.type} size={14} /></span>
+            {issue.type}
+          </div>
         </div>
         <div>
           <Label>Complexity</Label>

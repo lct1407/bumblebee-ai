@@ -48,7 +48,7 @@ The Markdown body has no restrictions on it.
 
 # Additional Information
 
-For a minimal example, see the `template-skill` example.
+For a minimal example, see any existing skill in `claude/skills/` (e.g., `claude/skills/show-off/SKILL.md`).
 
 # Version History
 
