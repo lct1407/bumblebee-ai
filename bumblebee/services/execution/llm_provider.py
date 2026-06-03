@@ -302,7 +302,7 @@ class GeminiProvider(LLMProvider):
       VERTEX_AI_PROJECT     — GCP project id
       VERTEX_AI_LOCATION    — region (e.g. 'global' or 'us-central1')
       VERTEX_AI_API_KEY     — Vertex API key (NOT a Gemini Developer API key)
-      GEMINI_MODEL          — default 'gemini-2.0-flash'
+      GEMINI_MODEL          — default 'gemini-3.1-flash-lite'
 
     Falls back to plain Gemini Developer API if VERTEX_AI_PROJECT is unset but
     GEMINI_API_KEY is provided.
@@ -327,7 +327,7 @@ class GeminiProvider(LLMProvider):
         self.use_vertex_adc = bool(s.vertex_ai_project and not self.gemini_api_key)
         self.vertex_project = s.vertex_ai_project
         self.vertex_location = s.vertex_ai_location or "global"
-        self.model_name = model or s.gemini_model or "gemini-2.0-flash"
+        self.model_name = model or s.gemini_model or "gemini-3.1-flash-lite"
 
     async def invoke(self, prompt: Prompt, max_tokens: int = 4096) -> LLMResponse:
         if not (self.use_vertex_adc or self.gemini_api_key):
