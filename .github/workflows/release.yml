@@ -39,6 +39,7 @@ jobs:
   publish-testpypi:
     needs: build
     runs-on: ubuntu-latest
+    continue-on-error: true   # TestPyPI is best-effort; PyPI still publishes if this fails
     permissions:
       id-token: write   # required for OIDC trusted publishing
     steps:
@@ -56,7 +57,7 @@ jobs:
           password: ${{ secrets.TEST_PYPI_API_TOKEN }}
 
   publish-pypi:
-    needs: publish-testpypi
+    needs: build   # depend on build only; TestPyPI is non-blocking
     runs-on: ubuntu-latest
     permissions:
       id-token: write   # required for OIDC trusted publishing
