@@ -39,6 +39,8 @@ jobs:
   publish-testpypi:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write   # required for OIDC trusted publishing
     steps:
       - uses: actions/download-artifact@v4
         with:
@@ -49,10 +51,15 @@ jobs:
         with:
           repository-url: https://test.pypi.org/legacy/
           skip-existing: true
+          # Falls back to API token if trusted publishing isn't set up yet.
+          # Set TEST_PYPI_API_TOKEN secret (optional).
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
 
   publish-pypi:
     needs: publish-testpypi
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write   # required for OIDC trusted publishing
     environment:
       name: pypi-publish
       url: https://pypi.org/project/bumblebee-ai/
@@ -64,3 +71,8 @@ jobs:
           merge-multiple: true
           path: dist/
       - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          skip-existing: true
+          # Falls back to API token if trusted publishing isn't set up yet.
+          # Set PYPI_API_TOKEN secret (optional).
+          password: ${{ secrets.PYPI_API_TOKEN }}
