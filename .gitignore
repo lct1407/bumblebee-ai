@@ -56,3 +56,8 @@ workspaces/
 web/test-results/
 playwright-report/
 
+
+# Coolify debug artifacts (contain secrets, do NOT commit)
+coolify-token-response.json
+coolify-tokens-debug.html
+coolify-tokens.html
