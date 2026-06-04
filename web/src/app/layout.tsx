@@ -20,6 +20,14 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <head>
+        {/* Set data-theme before paint to prevent FOUC. Mirror ThemeProvider's resolution logic. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var k='bumblebee.theme';var v=localStorage.getItem(k);var r=(v==='light'||v==='dark')?v:(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',r);}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body className="min-h-screen">
         <Providers>{children}</Providers>
       </body>

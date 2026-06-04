@@ -1,6 +1,6 @@
 [project]
 name = "bumblebee-ai"
-version = "0.5.0"
+version = "0.5.1"
 description = "Bumblebee v3 — multi-agent concurrent task management platform"
 requires-python = ">=3.12"
 authors = [

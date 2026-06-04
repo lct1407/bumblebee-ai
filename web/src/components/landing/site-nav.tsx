@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { HexMark } from "./flow-diagram";
 
 export function SiteNav() {
@@ -34,6 +35,7 @@ export function SiteNav() {
             </svg>
             <b>4.2k</b>
           </a>
+          <ThemeToggle compact />
           <Link className="btn btn-secondary" href="/login">Sign in</Link>
           <Link className="btn btn-primary" href="/dashboard">Open dashboard</Link>
         </div>
