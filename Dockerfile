@@ -1,6 +1,6 @@
 # Multi-stage Dockerfile for production deployment.
-# Build: docker build -t bumblebee-ai:0.4.0 .
-# Run:   docker run --rm -p 8000:8000 -e DATABASE_URL=... bumblebee-ai:0.4.0
+# Build: docker build -t bumblebee-ai:0.5.0 .
+# Run:   docker run --rm -p 8000:8000 -e DATABASE_URL=... bumblebee-ai:0.5.0
 
 FROM python:3.12-slim AS builder
 WORKDIR /build
@@ -16,9 +16,9 @@ RUN pip install --upgrade pip build && python -m build --wheel
 FROM python:3.12-slim AS runtime
 LABEL org.opencontainers.image.title="bumblebee-ai"
 LABEL org.opencontainers.image.description="Multi-agent concurrent task management platform"
-LABEL org.opencontainers.image.version="0.4.0"
+LABEL org.opencontainers.image.version="0.5.0"
 LABEL org.opencontainers.image.licenses="MIT"
-LABEL org.opencontainers.image.source="https://github.com/lct1407/bumblebee"
+LABEL org.opencontainers.image.source="https://github.com/lct1407/bumblebee-ai"
 
 # Non-root user
 RUN useradd -m -u 1000 bumblebee

@@ -1,10 +1,9 @@
 ﻿"""Issue: unit of intent (replaces v2 WorkItem). Hierarchical via parent_id."""
 import uuid
-
 from datetime import datetime
 
-from sqlalchemy import Enum as SqlEnum
 from sqlalchemy import DateTime, Float, ForeignKey, Integer, String, Text
+from sqlalchemy import Enum as SqlEnum
 
 
 def _evcall(x):
