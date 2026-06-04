@@ -17,6 +17,7 @@ def build_app() -> FastAPI:
     app = FastAPI(title="Bumblebee MCP", version="0.1.0")
 
     @app.get("/healthz")
+    @app.get("/mcp/healthz")
     async def healthz():
         return {"ok": True, "transport": "mcp-http"}
 

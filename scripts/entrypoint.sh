@@ -30,6 +30,15 @@ case "$cmd" in
   worker|daemon)
     exec bumblebee daemon "$@"
     ;;
+  mcp)
+    echo "[entrypoint] starting MCP HTTP server on ${MCP_HOST:-0.0.0.0}:${MCP_PORT:-8080}"
+    exec python -c "
+import asyncio
+from bumblebee_mcp.http_server import serve_http
+import os
+asyncio.run(serve_http(host=os.getenv('MCP_HOST', '0.0.0.0'), port=int(os.getenv('MCP_PORT', '8080'))))
+"
+    ;;
   bash|sh)
     exec /bin/bash
     ;;

@@ -104,59 +104,71 @@ jobs:
           cache-to: type=gha,mode=max
 
   deploy:
-    name: Deploy to ${{ github.event.inputs.environment || 'production' }}
+    name: Trigger Coolify deploy (${{ github.event.inputs.environment || 'production' }})
     needs: build
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment || 'production' }}
-    # Skip auto-deploy unless infra is provisioned (SSH_HOST secret + DEPLOY_ENABLED var).
-    # Enable via: Settings -> Variables -> Actions -> DEPLOY_ENABLED=true
-    # plus add SSH_HOST / SSH_USER / SSH_PRIVATE_KEY repo secrets.
+    # Skip auto-deploy unless Coolify webhook is configured.
+    # Required: secret COOLIFY_WEBHOOK_URL (full URL incl. /api/v1/deploy?uuid=...).
+    # Optional: secret COOLIFY_API_TOKEN (Bearer token for protected deploys).
+    # Toggle: Settings -> Variables -> Actions -> DEPLOY_ENABLED=true
     if: vars.DEPLOY_ENABLED == 'true' || github.event_name == 'workflow_dispatch'
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Sync Cloudflare DNS records
-        if: ${{ env.CLOUDFLARE_API_TOKEN != '' }}
+      - name: Check Coolify webhook configured
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
-          DOMAIN_API: ${{ secrets.DOMAIN_API }}
-          DOMAIN_WEB: ${{ secrets.DOMAIN_WEB }}
-          SERVER_IP: ${{ secrets.SERVER_IP }}
-        run: bash infra/cloudflare-dns-sync.sh
-
-      - name: Check SSH config exists
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
+          COOLIFY_WEBHOOK_URL: ${{ secrets.COOLIFY_WEBHOOK_URL }}
         run: |
-          if [ -z "$SSH_HOST" ]; then
-            echo "::error::SSH_HOST secret not configured. Add it under Settings → Secrets → Actions."
+          if [ -z "$COOLIFY_WEBHOOK_URL" ]; then
+            echo "::error::COOLIFY_WEBHOOK_URL secret missing. Get it from Coolify -> Application -> Webhooks -> Deploy."
             exit 1
           fi
-          echo "SSH_HOST configured: ${SSH_HOST:0:3}***"
+          echo "Coolify webhook configured: ${COOLIFY_WEBHOOK_URL:0:40}..."
 
-      - name: SSH deploy
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT || 22 }}
-          script_stop: true
-          envs: GITHUB_SHA
-          script: |
-            set -euo pipefail
-            cd /opt/bumblebee
-            git fetch origin
-            git reset --hard ${GITHUB_SHA}
-            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
-            docker compose -f docker-compose.yml -f infra/docker-compose.prod.yml pull
-            docker compose -f docker-compose.yml -f infra/docker-compose.prod.yml run --rm api alembic upgrade head
-            sudo systemctl restart bumblebee
-            sleep 8
-            curl -fsS http://localhost:8000/health/ || (sudo journalctl -u bumblebee --no-pager | tail -50; exit 1)
-            echo "✓ deploy ok @ ${GITHUB_SHA}"
+      - name: Trigger Coolify deploy
+        env:
+          COOLIFY_WEBHOOK_URL: ${{ secrets.COOLIFY_WEBHOOK_URL }}
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          GIT_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          if [ -n "${COOLIFY_API_TOKEN:-}" ]; then
+            AUTH_HEADER=(-H "Authorization: Bearer ${COOLIFY_API_TOKEN}")
+          else
+            AUTH_HEADER=()
+          fi
+          echo "→ POST ${COOLIFY_WEBHOOK_URL%%\?*}?... (sha=${GIT_SHA:0:7})"
+          HTTP=$(curl -sS -o /tmp/coolify.out -w "%{http_code}" -X GET \
+            "${AUTH_HEADER[@]}" \
+            "${COOLIFY_WEBHOOK_URL}")
+          echo "← HTTP ${HTTP}"
+          cat /tmp/coolify.out
+          if [ "${HTTP}" -lt 200 ] || [ "${HTTP}" -ge 300 ]; then
+            echo "::error::Coolify webhook returned ${HTTP}"
+            exit 1
+          fi
+          echo "✓ Coolify deploy triggered for ${GIT_SHA:0:7}"
+
+      - name: Wait for API health (post-deploy)
+        env:
+          PUBLIC_API_URL: ${{ secrets.PUBLIC_API_URL }}
+        run: |
+          set -e
+          if [ -z "${PUBLIC_API_URL:-}" ]; then
+            echo "::warning::PUBLIC_API_URL not set, skipping post-deploy probe"
+            exit 0
+          fi
+          echo "Polling ${PUBLIC_API_URL}/health for up to 5 minutes…"
+          for i in $(seq 1 60); do
+            if curl -fsS "${PUBLIC_API_URL}/health" >/dev/null; then
+              echo "✓ API healthy after ${i}x5s"
+              curl -fsS "${PUBLIC_API_URL}/health"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "::error::API did not become healthy within 5 minutes"
+          exit 1
 
       - name: Notify on failure
         if: failure()
-        run: echo "::error::Deploy failed @ ${GITHUB_SHA:0:7}"
+        run: echo "::error::Coolify deploy failed @ ${GITHUB_SHA:0:7}"

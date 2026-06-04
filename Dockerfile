@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential libpq-dev gcc git && rm -rf /var/lib/apt/lists/*
 COPY pyproject.toml ./
 COPY bumblebee/ ./bumblebee/
+COPY bumblebee_mcp/ ./bumblebee_mcp/
 COPY alembic/ ./alembic/
 COPY alembic.ini ./
 RUN pip install --upgrade pip build && python -m build --wheel

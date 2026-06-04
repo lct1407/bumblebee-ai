@@ -51,3 +51,8 @@ pgdata/
 # Workspaces (agent worktrees)
 .bumblebee/
 workspaces/
+
+# build/test artifacts
+web/test-results/
+playwright-report/
+

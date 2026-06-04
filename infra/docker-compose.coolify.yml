@@ -1,0 +1,92 @@
+# Coolify deployment manifest — fronted by Cloudflare Tunnel "bumblebee".
+#
+# Routing (managed by Cloudflare Tunnel, NOT Coolify Traefik):
+#   bb-api.hubapi.cc        -> api:8000
+#   coolify.hubapi.cc       -> coolify:8080  (Coolify dashboard itself)
+#   bb.hubapi.cc/mcp/*      -> mcp:8080
+#   bb.hubapi.cc            -> web:3000
+#   bumble.hubapi.cc        -> web:3000      (marketing alias)
+#
+# Tunnel ID:    f200e092-f979-4438-8e9c-6c78b3a795e6
+# Account ID:   2c488a9cc706930a4b0a163a9d989f8d
+# Update ingress: scripts/update-cloudflare-tunnel.py
+#
+# Notes:
+#   - Container service names (`api`, `web`, `mcp`) must match the tunnel's ingress
+#     service URLs (http://api:8000, http://web:3000, http://mcp:8080).
+#   - No public ports needed: tunnel reaches services via internal Docker DNS.
+#   - DB is external (db.sidcorp.co:15434) — set DATABASE_URL in Coolify env.
+#   - Coolify auto-deploy on git push triggers via webhook (see deploy.yml).
+
+services:
+  api:
+    image: ghcr.io/lct1407/bumblebee-ai:latest
+    pull_policy: always
+    restart: always
+    environment:
+      DATABASE_URL: "${DATABASE_URL}"
+      API_SECRET_KEY: "${API_SECRET_KEY}"
+      ENVIRONMENT: "production"
+      BILLING_ENABLED: "${BILLING_ENABLED:-true}"
+      BUMBLEBEE_PROVIDER: "${BUMBLEBEE_PROVIDER:-claude-cli}"
+      ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY:-}"
+      GEMINI_API_KEY: "${GEMINI_API_KEY:-}"
+      VERTEX_AI_PROJECT: "${VERTEX_AI_PROJECT:-}"
+      VERTEX_AI_LOCATION: "${VERTEX_AI_LOCATION:-global}"
+      VERTEX_AI_API_KEY: "${VERTEX_AI_API_KEY:-}"
+      STRIPE_SECRET_KEY: "${STRIPE_SECRET_KEY:-}"
+      STRIPE_PUBLISHABLE_KEY: "${STRIPE_PUBLISHABLE_KEY:-}"
+      STRIPE_WEBHOOK_SECRET: "${STRIPE_WEBHOOK_SECRET:-}"
+      STRIPE_PRICE_PRO_ID: "${STRIPE_PRICE_PRO_ID:-}"
+      STRIPE_PRICE_TEAM_ID: "${STRIPE_PRICE_TEAM_ID:-}"
+      STRIPE_PRICE_TEAM_USAGE_ID: "${STRIPE_PRICE_TEAM_USAGE_ID:-}"
+      PUBLIC_API_URL: "https://bb-api.hubapi.cc"
+    expose:
+      - "8000"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  web:
+    image: ghcr.io/lct1407/bumblebee-web:latest
+    pull_policy: always
+    restart: always
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      NEXT_PUBLIC_API_URL: "https://bb-api.hubapi.cc"
+      NODE_ENV: "production"
+    expose:
+      - "3000"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/ >/dev/null 2>&1 || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  mcp:
+    image: ghcr.io/lct1407/bumblebee-ai:latest
+    pull_policy: always
+    restart: always
+    command: ["mcp"]
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: "${DATABASE_URL}"
+      MCP_HOST: "0.0.0.0"
+      MCP_PORT: "8080"
+      ENVIRONMENT: "production"
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/healthz || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s

@@ -1,6 +1,6 @@
 [project]
 name = "bumblebee-ai"
-version = "0.4.0"
+version = "0.5.0"
 description = "Bumblebee v3 — multi-agent concurrent task management platform"
 requires-python = ">=3.12"
 authors = [
@@ -58,12 +58,13 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/lct1407/bumblebee"
-Repository = "https://github.com/lct1407/bumblebee"
-Documentation = "https://github.com/lct1407/bumblebee/blob/master/docs/getting-started.md"
+Homepage = "https://github.com/lct1407/bumblebee-ai"
+Repository = "https://github.com/lct1407/bumblebee-ai"
+Documentation = "https://github.com/lct1407/bumblebee-ai/blob/master/docs/getting-started.md"
 
 [project.scripts]
 bumblebee = "bumblebee.cli:main"
+bb = "bumblebee.cli:main"
 
 [build-system]
 requires = ["setuptools>=68", "wheel"]
@@ -71,7 +72,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["bumblebee*"]
+include = ["bumblebee*", "bumblebee_mcp*"]
 exclude = ["tests*", "alembic*", "web*", "scripts*", "docs*"]
 
 [tool.setuptools.package-data]
