@@ -23,12 +23,12 @@ ACCOUNT_ID = "2c488a9cc706930a4b0a163a9d989f8d"
 TUNNEL_ID = "f200e092-f979-4438-8e9c-6c78b3a795e6"
 
 INGRESS = [
-    {"hostname": "bb-api.hubapi.cc", "service": "http://api:8000"},
+    {"hostname": "bb-api.hubapi.cc", "service": "http://bb_api:8000"},
     {"hostname": "coolify.hubapi.cc", "service": "http://coolify:8080"},
     # path-based MCP rule MUST come before bb.hubapi.cc catch-all
-    {"hostname": "bb.hubapi.cc", "path": "/mcp.*", "service": "http://mcp:8080"},
-    {"hostname": "bb.hubapi.cc", "service": "http://web:3000"},
-    {"hostname": "bumble.hubapi.cc", "service": "http://web:3000"},
+    {"hostname": "bb.hubapi.cc", "path": "/mcp.*", "service": "http://bb_mcp:8080"},
+    {"hostname": "bb.hubapi.cc", "service": "http://bb_web:3000"},
+    {"hostname": "bumble.hubapi.cc", "service": "http://bb_web:3000"},
     {"service": "http_status:404"},
 ]
 

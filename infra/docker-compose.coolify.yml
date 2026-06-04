@@ -19,7 +19,7 @@
 #   - Coolify auto-deploy on git push triggers via webhook (see deploy.yml).
 
 services:
-  api:
+  bb_api:
     image: ghcr.io/lct1407/bumblebee-ai:482a7e6f8b11fc40fffae78d1bcf4d22b0555434
     pull_policy: always
     restart: always
@@ -50,12 +50,12 @@ services:
       retries: 5
       start_period: 30s
 
-  web:
+  bb_web:
     image: ghcr.io/lct1407/bumblebee-web:482a7e6f8b11fc40fffae78d1bcf4d22b0555434
     pull_policy: always
     restart: always
     depends_on:
-      api:
+      bb_api:
         condition: service_healthy
     environment:
       NEXT_PUBLIC_API_URL: "https://bb-api.hubapi.cc"
@@ -69,13 +69,13 @@ services:
       retries: 5
       start_period: 30s
 
-  mcp:
+  bb_mcp:
     image: ghcr.io/lct1407/bumblebee-ai:482a7e6f8b11fc40fffae78d1bcf4d22b0555434
     pull_policy: always
     restart: always
     command: ["mcp"]
     depends_on:
-      api:
+      bb_api:
         condition: service_healthy
     environment:
       DATABASE_URL: "${DATABASE_URL}"
