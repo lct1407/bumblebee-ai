@@ -2,6 +2,18 @@
 
 All notable changes to **bumblebee-ai** documented here.
 
+## [Unreleased] — Execution-plane harness refactor
+
+### Changed
+
+- **Harness is now a real agentic loop, built as a LangGraph StateGraph** (`bumblebee/services/execution/agent_loop.py`) — `run_role` finally wires the ToolExecutor it always documented: LLM tool requests (native `LLMResponse.tool_uses` or text protocol `{"tool_call": {"name": ..., "args": {...}}}`) are validated + executed via Plane 6, `ToolResult` summaries are fed back into the prompt, and the model is re-invoked. The loop runs as a compiled graph (`START → safety → invoke → tools → safety …`) matching the Plane 1 control plane's LangGraph idiom, bounded by `BUMBLEBEE_MAX_TOOL_ITERATIONS` (default 5), with per-iteration session-budget + workspace-quota re-checks and the existing tool-call loop detector (which previously could never fire — no `tool_call` events were ever emitted by the harness path). `harness.py` now owns only session lifecycle (start/finalize, output parsing, triager side-effects).
+- **Tool catalog rendered into the system prompt** (`context_assembler.py`) — role-filtered tools were attached to `Prompt.tools` but never shown to the model; the assembler now renders name + description + args schema with the text call protocol so providers without native function calling can use tools.
+- **Streaming broadcast extracted** to `bumblebee/services/execution/streaming.py` (WebSocket chunk fan-out is an Observability concern, not loop logic). No behavior change.
+
+### Added
+
+- 3 harness tests in `tests/test_integration_real.py`: tool-loop execution end-to-end (tool_call → tool_result → final answer), repeat-detection failure path (`infinite_loop`), tool-catalog rendering in assembled context.
+
 ## [Unreleased] — Phase A + B + C + D + E + F + Post-MVP polish
 
 ### Phase D — Stripe billing live + quotas

@@ -1,23 +1,30 @@
-"""Harness — Plane 3 Execution. Wires Provider + ContextAssembler + ToolExecutor.
+"""Harness — Plane 3 Execution. Session lifecycle around the LangGraph agent loop.
+
+Wires Provider + ContextAssembler + the agent_loop StateGraph:
+
+  1. assemble context (Defense Baseline + role prompt + knowledge + memory)
+  2. run the LangGraph agent loop (safety → invoke → tools, bounded cycle)
+     — see bumblebee/services/execution/agent_loop.py for the graph
+  3. parse final output, persist side-effects, close the session
 
 Stub mode default (BUMBLEBEE_PROVIDER=stub); claude-cli when set to claude-cli.
 """
 from __future__ import annotations
 
+import json
+import os
 from datetime import UTC, datetime
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bumblebee.models.agent_session import AgentSession, FailureReason, SessionStatus
+from bumblebee.services.execution.agent_loop import run_agent_loop
 from bumblebee.services.execution.context_assembler import assemble_context
 from bumblebee.services.execution.llm_provider import get_provider
-from bumblebee.services.safety.budget_enforcer import (
-    BudgetExceeded,
-    check_session_budget,
-    estimate_cost,
-)
 from bumblebee.services.safety.loop_detector import detect_loop
 from bumblebee.services.state.event_log import append_event
+
+DEFAULT_MAX_TOOL_ITERATIONS = 5
 
 
 class HarnessResult:
@@ -35,7 +42,7 @@ async def run_role(
     role: str,
     input_state: dict | None = None,
 ) -> HarnessResult:
-    """Execute one agent role. Real LLM via Provider (stub default for tests)."""
+    """Execute one agent role through the LangGraph agentic loop."""
     session.status = SessionStatus.RUNNING
     session.started_at = datetime.now(UTC)
     session.role = role
@@ -50,92 +57,34 @@ async def run_role(
     user_msg = (input_state or {}).get("user_message")
     prompt = await assemble_context(db, session, user_message=user_msg)
 
-    # Budget pre-check (per-session/issue/project)
-    try:
-        await check_session_budget(db, session)
-    except BudgetExceeded as e:
-        await _finalize_failed(db, session, role, FailureReason.BUDGET_EXCEEDED, str(e))
-        return HarnessResult(ok=False, output={"error": str(e)})
-
-    # Workspace quota pre-check (Phase D) — separate from per-session budget.
-    # Free/Pro plans have a monthly LLM spend cap; Team is unlimited (passthrough).
-    if session.workspace_id:
-        try:
-            from bumblebee.services.billing.quota import QuotaExceeded, check_workspace_quota
-            await check_workspace_quota(db, session.workspace_id)
-        except QuotaExceeded as e:
-            await _finalize_failed(db, session, role, FailureReason.BUDGET_EXCEEDED, str(e))
-            return HarnessResult(ok=False, output={"error": str(e), "upgrade_required": True})
-
-    # LLM call (provider selected via BUMBLEBEE_PROVIDER env, default stub)
-    import os
-    provider_name = os.environ.get("BUMBLEBEE_PROVIDER", "stub")
-    provider = get_provider(provider_name)
-
-    streaming_enabled = os.environ.get("BUMBLEBEE_STREAMING", "1") != "0"
-    if streaming_enabled and getattr(provider, "supports_streaming", False):
-        response = await _invoke_with_streaming(db, session, role, provider, prompt)
-    else:
-        response = await provider.invoke(prompt)
-
-    cost = estimate_cost(response.tokens_in or 1000, response.tokens_out or 200,
-                         model=response.model or "stub")
-    session.tokens_in += (response.tokens_in or 1000)
-    session.tokens_out += (response.tokens_out or 200)
-    session.dollars_used += cost
-
-    await append_event(
-        db, type="llm_call", session_id=session.id, issue_id=session.issue_id,
-        payload={
-            "model": response.model,
-            "tokens_in": response.tokens_in,
-            "tokens_out": response.tokens_out,
-            "cost_usd": cost,
-        },
-        source="agent",
-    )
-    await append_event(
-        db, type="cost_charged", session_id=session.id, issue_id=session.issue_id,
-        payload={"amount_usd": cost, "cumulative_usd": session.dollars_used},
-        source="system",
+    provider = get_provider(os.environ.get("BUMBLEBEE_PROVIDER", "stub"))
+    max_iterations = int(
+        os.environ.get("BUMBLEBEE_MAX_TOOL_ITERATIONS", DEFAULT_MAX_TOOL_ITERATIONS)
     )
 
-    # Phase D: record workspace usage + Stripe metered passthrough (Team plan only)
-    if session.workspace_id and cost > 0:
-        try:
-            from bumblebee.services.billing.quota import record_usage
-            await record_usage(
-                db, session.workspace_id, cost,
-                event_idempotency_key=f"session-{session.id}-{session.tokens_in + session.tokens_out}",
-            )
-        except Exception as exc:
-            import logging
-            logging.getLogger(__name__).warning("usage record failed: %s", exc)
+    state = await run_agent_loop(
+        db, session=session, role=role, provider=provider,
+        prompt=prompt, max_iterations=max_iterations,
+    )
 
-    # Loop detector
+    failure = state.get("failure")
+    if failure:
+        await _finalize_failed(db, session, role, failure["reason"], failure["detail"])
+        output = {"error": _failure_output(failure)}
+        output.update(failure.get("extra") or {})
+        return HarnessResult(ok=False, output=output)
+
+    # Final loop check: the graph may exit on the iteration cap with the model
+    # still requesting the same tool over and over.
     if await detect_loop(db, session.id):
         await _finalize_failed(db, session, role, FailureReason.INFINITE_LOOP, "loop detected")
         return HarnessResult(ok=False, output={"error": "loop"})
 
+    response = state["response"]
     output = _parse_output(response.text, role)
 
-    # Persist triager side-effects
-    if role == "triager" and session.issue_id:
-        from bumblebee.models.issue import Issue, IssueComplexity
-        issue = await db.get(Issue, session.issue_id)
-        if issue:
-            if "complexity" in output:
-                try:
-                    issue.complexity = IssueComplexity(output["complexity"])
-                except ValueError:
-                    pass
-            if "ai_confidence" in output:
-                issue.ai_confidence = output["ai_confidence"]
-            if "ai_summary" in output:
-                issue.ai_summary = output["ai_summary"]
-            # Backward compat with old tests
-            if output.get("summary"):
-                issue.ai_summary = output["summary"]
+    if role == "triager":
+        await _apply_triager_side_effects(db, session, output)
 
     session.status = SessionStatus.COMPLETED
     session.completed_at = datetime.now(UTC)
@@ -150,8 +99,13 @@ async def run_role(
     )
 
 
+def _failure_output(failure: dict) -> str:
+    if failure["reason"] == FailureReason.INFINITE_LOOP:
+        return "loop"
+    return failure["detail"]
+
+
 def _parse_output(text: str, role: str) -> dict:
-    import json
     text = (text or "").strip()
     if text.startswith("{"):
         try:
@@ -170,55 +124,28 @@ def _parse_output(text: str, role: str) -> dict:
     return {"text": text}
 
 
-async def _invoke_with_streaming(db, session, role, provider, prompt):
-    """Run provider.invoke_streaming and broadcast each chunk over WebSocket.
-
-    Chunks are ephemeral (not persisted). Only the final llm_call event hits the DB.
-    The web UI consumes chunks via /ws and assembles them client-side.
-    """
-
-    from sqlalchemy import select
-
-    from bumblebee.models.issue import Issue
-    from bumblebee.models.project import Project
-    from bumblebee.services.websocket.manager import get_manager
-
-    # Resolve project slug once
-    slug = None
-    if session.issue_id:
-        iss = (await db.execute(select(Issue).where(Issue.id == session.issue_id))).scalar_one_or_none()
-        if iss:
-            proj = (await db.execute(select(Project).where(Project.id == iss.project_id))).scalar_one_or_none()
-            if proj:
-                slug = proj.slug
-
-    mgr = get_manager()
-    chunk_seq = 0
-
-    async def on_chunk(chunk: dict) -> None:
-        nonlocal chunk_seq
-        chunk_seq += 1
-        if not slug:
-            return
-        await mgr.broadcast(slug, {
-            "id": f"chunk-{session.id}-{chunk_seq}",
-            "type": "llm.chunk",
-            "session_id": str(session.id),
-            "issue_id": str(session.issue_id) if session.issue_id else None,
-            "actor": role,
-            "payload": {**chunk, "seq": chunk_seq},
-            "occurred_at": datetime.now(UTC).isoformat(),
-        })
-
-    # Announce stream start so UI can clear/prepare its buffer
-    await on_chunk({"type": "stream_started", "role": role})
-    try:
-        response = await provider.invoke_streaming(prompt, on_chunk)
-    except Exception as exc:
-        await on_chunk({"type": "error", "message": str(exc)})
-        raise
-    await on_chunk({"type": "stream_ended", "role": role})
-    return response
+async def _apply_triager_side_effects(
+    db: AsyncSession, session: AgentSession, output: dict
+) -> None:
+    """Persist triage classification onto the Issue row."""
+    if not session.issue_id:
+        return
+    from bumblebee.models.issue import Issue, IssueComplexity
+    issue = await db.get(Issue, session.issue_id)
+    if not issue:
+        return
+    if "complexity" in output:
+        try:
+            issue.complexity = IssueComplexity(output["complexity"])
+        except ValueError:
+            pass
+    if "ai_confidence" in output:
+        issue.ai_confidence = output["ai_confidence"]
+    if "ai_summary" in output:
+        issue.ai_summary = output["ai_summary"]
+    # Backward compat with old tests
+    if output.get("summary"):
+        issue.ai_summary = output["summary"]
 
 
 async def _finalize_failed(

@@ -79,6 +79,13 @@ async def assemble_context(
     elif agent_def:
         parts.append(f"## Role: {agent_def.name}\n\n{agent_def.prompt_template}")
 
+    # Tools — role-filtered catalog rendered into the system prompt so providers
+    # without native function calling can still request tools (text protocol).
+    role = (agent_def.role if agent_def else session.role) or "all"
+    tool_defs = tools_for_role(role)
+    if tool_defs:
+        parts.append(_render_tool_catalog(tool_defs))
+
     # 3. Skills (if AgentDefinition has skill refs)
     if agent_def and agent_def.skill_refs:
         for ref in agent_def.skill_refs[:3]:  # cap 3 skills to limit tokens
@@ -92,7 +99,14 @@ async def assemble_context(
     # 4. Knowledge entries (scope match)
     issue = None
     if session.issue_id:
-        issue = await db.get(Issue, session.issue_id)
+        # Eager-load project: _collect_source_snippets reads issue.project and a
+        # sync lazy-load inside the async session raises MissingGreenlet.
+        from sqlalchemy.orm import selectinload
+        issue = (await db.execute(
+            select(Issue)
+            .options(selectinload(Issue.project))
+            .where(Issue.id == session.issue_id)
+        )).scalar_one_or_none()
     if issue:
         knowledge = await _relevant_knowledge(db, issue, limit=5)
         if knowledge:
@@ -141,11 +155,23 @@ async def assemble_context(
     system = "\n\n".join(parts)
     user = "\n\n".join(user_parts) if user_parts else "(continue with the role's primary objective)"
 
-    # Tools — role-filtered
-    role = (agent_def.role if agent_def else session.role) or "all"
-    tool_defs = tools_for_role(role)
-
     return Prompt(system=system, user=user, tools=tool_defs)
+
+
+def _render_tool_catalog(tool_defs: list) -> str:
+    """Render the tool catalog + text call protocol for the system prompt."""
+    import json as _json
+    lines = [
+        "## Tool calling protocol",
+        "You may call the tools below. To call one, reply with ONLY this JSON "
+        '(no prose): {"tool_call": {"name": "<tool_name>", "args": {...}}}',
+        "The result will be fed back to you; then produce your final answer.",
+        "",
+        "Available tools:",
+    ]
+    for t in tool_defs:
+        lines.append(f"- {t.name}: {t.description} args: {_json.dumps(t.args_schema)}")
+    return "\n".join(lines)
 
 
 # BB-5 — top-level helper for daemon-side reuse.

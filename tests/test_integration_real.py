@@ -102,6 +102,116 @@ async def test_harness_budget_exceeded_finalizes_failed(clean_db):
     assert sess.failure_reason.value == "budget_exceeded"
 
 
+@pytest.mark.asyncio
+async def test_harness_executes_tool_loop(clean_db, monkeypatch):
+    """Provider requests a tool (text protocol) → harness executes it via
+    ToolExecutor, feeds the ToolResult back, then accepts the final answer."""
+    from bumblebee.services.execution.llm_provider import LLMResponse
+
+    db = clean_db
+    issue = (await db.execute(select(Issue).where(Issue.number == 1))).scalar_one()
+
+    class ToolCallingProvider:
+        name = "fake"
+        supports_streaming = False
+
+        def __init__(self):
+            self.calls = 0
+            self.saw_tool_results = False
+
+        async def invoke(self, prompt, max_tokens=4096):
+            self.calls += 1
+            if self.calls == 1:
+                return LLMResponse(
+                    text=json.dumps({"tool_call": {"name": "get_issue",
+                                                   "args": {"issue_id": str(issue.id)}}}),
+                    tokens_in=10, tokens_out=5, model="stub",
+                )
+            self.saw_tool_results = "Tool results" in prompt.user
+            return LLMResponse(
+                text='{"complexity":"simple","ai_summary":"Tool-grounded triage","ai_confidence":0.9}',
+                tokens_in=10, tokens_out=5, model="stub",
+            )
+
+    provider = ToolCallingProvider()
+    monkeypatch.setattr(
+        "bumblebee.services.execution.harness.get_provider", lambda *a, **k: provider
+    )
+
+    sess = AgentSession(
+        role="triager", provider="stub", issue_id=issue.id,
+        budget_wall_min=10, budget_tokens_max=10000, budget_dollars_max=1.0,
+    )
+    db.add(sess)
+    await db.flush()
+    result = await run_role(db, session=sess, role="triager")
+
+    assert result.ok
+    assert provider.calls == 2
+    assert provider.saw_tool_results
+    events = (await db.execute(
+        select(Event).where(Event.session_id == sess.id)
+    )).scalars().all()
+    types = [e.type for e in events]
+    assert "tool_call" in types
+    assert "tool_result" in types
+    assert types.count("llm_call") == 2
+
+
+@pytest.mark.asyncio
+async def test_harness_tool_loop_detects_repeats(clean_db, monkeypatch):
+    """Same tool + same args repeated → loop detector fails the session."""
+    from bumblebee.services.execution.llm_provider import LLMResponse
+
+    db = clean_db
+    issue = (await db.execute(select(Issue).where(Issue.number == 1))).scalar_one()
+
+    class RepeatingProvider:
+        name = "fake"
+        supports_streaming = False
+
+        async def invoke(self, prompt, max_tokens=4096):
+            return LLMResponse(
+                text=json.dumps({"tool_call": {"name": "get_issue",
+                                               "args": {"issue_id": str(issue.id)}}}),
+                tokens_in=10, tokens_out=5, model="stub",
+            )
+
+    monkeypatch.setattr(
+        "bumblebee.services.execution.harness.get_provider",
+        lambda *a, **k: RepeatingProvider(),
+    )
+
+    sess = AgentSession(
+        role="triager", provider="stub", issue_id=issue.id,
+        budget_wall_min=10, budget_tokens_max=100000, budget_dollars_max=5.0,
+    )
+    db.add(sess)
+    await db.flush()
+    result = await run_role(db, session=sess, role="triager")
+
+    assert not result.ok
+    await db.refresh(sess)
+    assert sess.status.value == "failed"
+    assert sess.failure_reason.value == "infinite_loop"
+
+
+@pytest.mark.asyncio
+async def test_context_renders_tool_catalog(clean_db):
+    """Assembled system prompt advertises role tools + the text call protocol."""
+    from bumblebee.services.execution.context_assembler import assemble_context
+
+    db = clean_db
+    issue = (await db.execute(select(Issue).where(Issue.number == 1))).scalar_one()
+    sess = AgentSession(role="triager", provider="stub", issue_id=issue.id)
+    db.add(sess)
+    await db.flush()
+    prompt = await assemble_context(db, sess)
+    assert "Tool calling protocol" in prompt.system
+    assert "get_issue" in prompt.system
+    assert prompt.tools  # role-filtered defs still attached for native providers
+
+
 # ========== Multi-issue concurrent (Scenario A) ==========
 
 @pytest.mark.asyncio
