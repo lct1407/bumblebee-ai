@@ -1,4 +1,4 @@
-﻿"""End-to-end scenarios â€” exercise multiple planes in sequence."""
+﻿"""End-to-end scenarios â€" exercise multiple planes in sequence."""
 import pytest
 
 
@@ -79,7 +79,7 @@ async def test_chat_to_issue_suggestion_flow(client, clean_db):
     events = (
         await client.get(f"/api/events?type=chat_message&limit=20")
     ).json()
-    # Filter to this chat (by chat_session_id) â€” for simplicity, just count >= 7 (3 user + 3 assistant + chat_started)
+    # Filter to this chat (by chat_session_id) â€" for simplicity, just count >= 7 (3 user + 3 assistant + chat_started)
     assert len(events) >= 7
 
 
@@ -106,10 +106,38 @@ async def test_concurrent_triggers_isolated_by_issue(client, clean_db):
 
 @pytest.mark.asyncio
 async def test_seed_idempotent_when_rerun(client, clean_db):
-    """Seed script should be idempotent â€” re-running doesn't duplicate."""
+    """Seed script is idempotent - re-running does not duplicate projects."""
+    import uuid as _uuid
     from bumblebee.seeds.seed_default import seed
     # Calling seed again should skip existing
     await seed()
-    # Verify project count == 1 (not 2)
-    projects = (await client.get("/api/projects")).json()
-    assert len(projects) == 1
+
+    # Authenticate as a new user to verify project count via RBAC-protected endpoint.
+    # The seed workspace owns the 'bb' project; a fresh user has their own workspace
+    # with 0 projects - verify only 1 project total exists in the seed workspace.
+    u = f"seed_check_{_uuid.uuid4().hex[:6]}"
+    reg = await client.post(
+        "/api/auth/register",
+        json={"username": u, "email": f"{u}@example.com", "password": "secret123!"},
+    )
+    assert reg.status_code == 201, reg.text
+    token = reg.json()["access_token"]
+    headers = {"Authorization": f"Bearer {token}"}
+
+    # Use direct DB count to verify seed idempotency (workspace-agnostic)
+    from sqlalchemy import text
+    count = (await clean_db.execute(text("SELECT COUNT(*) FROM projects WHERE deleted_at IS NULL"))).scalar()
+    assert count == 1, f"expected 1 project after re-seed, got {count}"
+
+    # Also verify the RBAC-protected list works for the seed workspace owner
+    # by checking via the seed user (seed@bumblebee.test / seedpassword)
+    login = await client.post(
+        "/api/auth/login",
+        json={"email": "seed@bumblebee.test", "password": "seedpassword"},
+    )
+    if login.status_code == 200:
+        seed_token = login.json()["access_token"]
+        projects = (
+            await client.get("/api/projects", headers={"Authorization": f"Bearer {seed_token}"})
+        ).json()
+        assert len(projects) == 1
