@@ -171,7 +171,28 @@ export interface Project {
   slug: string;
   key: string;
   description: string | null;
-  default_provider?: string;
+  repo_path: string | null;
+  base_branch: string;
+  policy_config: Record<string, unknown>;
+  deploy_config: Record<string, unknown>;
+  enabled: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface ProjectCreateBody {
+  name: string;
+  slug: string;
+  key: string;
+  description?: string | null;
+  repo_path?: string | null;
+  base_branch?: string;
+}
+
+export interface ProjectUpdateBody {
+  name?: string;
+  description?: string | null;
+  repo_path?: string | null;
   base_branch?: string;
 }
 
@@ -183,6 +204,13 @@ export interface WorkflowRun {
 
 export const ProjectsApi = {
   list: () => api.get<Project[]>("/api/projects").then((r) => r.data),
+  get: (slug: string) => api.get<Project>(`/api/projects/${slug}`).then((r) => r.data),
+  create: (body: ProjectCreateBody) =>
+    api.post<Project>("/api/projects", body).then((r) => r.data),
+  update: (slug: string, body: ProjectUpdateBody) =>
+    api.patch<Project>(`/api/projects/${slug}`, body).then((r) => r.data),
+  remove: (slug: string) =>
+    api.delete(`/api/projects/${slug}`).then((r) => r.data),
   members: (slug: string) =>
     api.get<ProjectMember[]>(`/api/projects/${slug}/members`).then((r) => r.data),
 };

@@ -7,6 +7,7 @@ import { useAuth } from "@/lib/use-auth";
 const NAV = [
   { href: "/settings/workspace", label: "Workspace", adminOnly: false },
   { href: "/settings/members", label: "Members", adminOnly: true },
+  { href: "/settings/projects", label: "Projects", adminOnly: false },
   { href: "/settings/devices", label: "Devices", adminOnly: false },
   { href: "/settings/api-keys", label: "API keys", adminOnly: false },
   { href: "/settings/billing", label: "Billing", adminOnly: true },
