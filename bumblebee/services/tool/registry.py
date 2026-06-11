@@ -77,6 +77,71 @@ TOOLS: dict[str, ToolDef] = {
         },
         roles=["assistant"],
     ),
+    "update_issue_status": ToolDef(
+        name="update_issue_status",
+        description="Transition an issue to a new status (new/triaged/in_progress/review/done...).",
+        examples=[{"args": {"issue_id": "uuid", "status": "in_progress"}, "result": "BB-1: new -> in_progress"}],
+        args_schema={
+            "type": "object",
+            "properties": {
+                "issue_id": {"type": "string"},
+                "status": {"type": "string"},
+            },
+            "required": ["issue_id", "status"],
+        },
+        roles=["coordinator", "integrator", "assistant"],
+    ),
+    "read_file": ToolDef(
+        name="read_file",
+        description="Read a file from the session workspace (content capped at 5000 chars).",
+        examples=[{"args": {"path": "src/auth/login.py"}, "result": "{content}"}],
+        args_schema={
+            "type": "object",
+            "properties": {"path": {"type": "string"}},
+            "required": ["path"],
+        },
+        roles=["implementer", "tester", "reviewer", "integrator"],
+    ),
+    "write_file": ToolDef(
+        name="write_file",
+        description="Write content to a file inside the session workspace (path escape rejected).",
+        examples=[{"args": {"path": "src/auth/login.py", "content": "..."}, "result": "wrote N chars"}],
+        args_schema={
+            "type": "object",
+            "properties": {"path": {"type": "string"}, "content": {"type": "string"}},
+            "required": ["path", "content"],
+        },
+        roles=["implementer", "integrator"],
+    ),
+    "search_code": ToolDef(
+        name="search_code",
+        description="Regex search across workspace files (max 50 matches).",
+        examples=[{"args": {"pattern": "def login"}, "result": "[file:line matches]"}],
+        args_schema={
+            "type": "object",
+            "properties": {"pattern": {"type": "string"}},
+            "required": ["pattern"],
+        },
+        roles=["implementer", "tester", "reviewer", "integrator"],
+    ),
+    "git_commit": ToolDef(
+        name="git_commit",
+        description="Stage all changes and commit in the session workspace.",
+        examples=[{"args": {"message": "fix: null check in auth"}, "result": "committed <sha>"}],
+        args_schema={
+            "type": "object",
+            "properties": {"message": {"type": "string"}},
+            "required": ["message"],
+        },
+        roles=["implementer", "integrator"],
+    ),
+    "git_diff": ToolDef(
+        name="git_diff",
+        description="Show uncommitted changes in the session workspace (stat + diff).",
+        examples=[{"args": {}, "result": "{stat, diff}"}],
+        args_schema={"type": "object", "properties": {}},
+        roles=["implementer", "tester", "reviewer", "integrator"],
+    ),
     "acquire_scope_lease": ToolDef(
         name="acquire_scope_lease",
         description="Atomically claim file globs for exclusive access.",
