@@ -20,7 +20,7 @@
 
 services:
   bb_api:
-    image: ghcr.io/lct1407/bumblebee-ai:482a7e6f8b11fc40fffae78d1bcf4d22b0555434
+    image: ghcr.io/lct1407/bumblebee-ai:${BB_IMAGE_TAG:-latest}
     pull_policy: always
     restart: always
     environment:
@@ -51,7 +51,7 @@ services:
       start_period: 30s
 
   bb_web:
-    image: ghcr.io/lct1407/bumblebee-web:482a7e6f8b11fc40fffae78d1bcf4d22b0555434
+    image: ghcr.io/lct1407/bumblebee-web:${BB_IMAGE_TAG:-latest}
     pull_policy: always
     restart: always
     depends_on:
@@ -70,7 +70,7 @@ services:
       start_period: 30s
 
   bb_mcp:
-    image: ghcr.io/lct1407/bumblebee-ai:482a7e6f8b11fc40fffae78d1bcf4d22b0555434
+    image: ghcr.io/lct1407/bumblebee-ai:${BB_IMAGE_TAG:-latest}
     pull_policy: always
     restart: always
     command: ["mcp"]
