@@ -1,0 +1,8 @@
+/* Fumadocs UI styles — imported only in the /docs layout, not the global root layout */
+@import "tailwindcss";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+
+html {
+  scrollbar-gutter: stable;
+}

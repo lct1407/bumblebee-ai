@@ -1,0 +1,43 @@
+---
+title: Bumblebee là gì?
+description: Trợ lý AI quản lý task — bạn brief, AI làm, code không rời máy bạn.
+---
+
+# Bumblebee là gì?
+
+Bumblebee là nền tảng quản lý task đa agent AI. Bạn mô tả công việc (bug fix, tính năng mới, refactor), hệ thống AI phân tích, lên kế hoạch và thực thi — tất cả chạy trên **máy của bạn**, không có code nào upload lên server.
+
+## Kiến trúc tóm tắt
+
+| Plane | Vai trò |
+|---|---|
+| **Control** | LangGraph orchestrator — điều phối workflow DAG |
+| **Dispatch** | Queue + phân phối task đến worker |
+| **Execution** | Harness + LLM provider + context assembler |
+| **State** | Append-only event log — toàn bộ lịch sử |
+| **Safety** | Kiểm soát budget, vòng lặp, lỗi |
+| **Tool** | Skill registry — các tool AI có thể gọi |
+
+### Luồng cơ bản
+
+1. Bạn tạo **issue** (brief task)
+2. **Triager AI** đọc issue, phân loại `simple / medium / complex`, đề xuất scope
+3. Bạn review → **Approve** → **Trigger Workflow**
+4. Các agent (Planner, Implementer, Tester, Reviewer…) chạy trên **worker daemon** ở máy bạn
+5. Code được commit vào Git repo local — không đụng server
+
+## Mục lục
+
+- [Bắt đầu](/docs/getting-started) — đăng ký, onboarding, chọn gói
+- [Quản lý Projects](/docs/projects) — tạo/sửa/xoá project, RBAC
+- [Issues](/docs/issues) — tạo issue, Triager AI, approval flow
+- [Pair thiết bị](/docs/devices) — kết nối máy worker
+- [Tích hợp](/docs/integrations) — MCP, Claude Code, Cursor
+- [CLI Reference](/docs/cli) — bảng lệnh `bb`
+- [Billing](/docs/billing) — so sánh 3 gói Free / Pro / Team
+
+## Yêu cầu
+
+- Trình duyệt hiện đại (Chrome / Firefox / Safari / Edge)
+- Một địa chỉ email hoặc tài khoản Google
+- Terminal để chạy `bb` CLI (cho worker daemon)

@@ -1,0 +1,80 @@
+---
+title: Tích hợp
+description: Kết nối Bumblebee với Claude Code, Cursor, Codex qua MCP và bb skills.
+---
+
+# Tích hợp
+
+Bumblebee hỗ trợ hai hướng tích hợp: **MCP** (expose tools cho LLM bên ngoài) và **bb skills** (ship role prompts vào repo để tool ngoài dùng được).
+
+## MCP (Model Context Protocol)
+
+MCP cho phép Claude Code, Claude Desktop, và Cursor gọi trực tiếp các tool của Bumblebee.
+
+### Các MCP tool có sẵn
+
+| Tool | Dùng để |
+|---|---|
+| `bumblebee_workspaces` | List/get workspaces |
+| `bumblebee_issues` | CRUD issues |
+| `bumblebee_events` | Append/list issue events |
+| `bumblebee_workflows` | Trigger workflows |
+| `bumblebee_audit` | Đọc audit log |
+| `bumblebee_smart_create_issue` | Gemini tạo issue từ mô tả văn xuôi |
+| `bumblebee_ask` | Gemini trả lời Q&A dựa trên context workspace |
+
+### Kết nối Claude Desktop (stdio)
+
+Thêm vào `~/.claude/claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "bumblebee": {
+      "command": "python",
+      "args": ["-m", "bumblebee_mcp.cli"],
+      "env": {
+        "BB_API_URL": "https://your-server.com",
+        "BB_API_KEY": "your-api-key"
+      }
+    }
+  }
+}
+```
+
+### Kết nối Cursor / web clients (Streamable HTTP)
+
+Khởi động MCP HTTP server:
+
+```bash
+python -m bumblebee_mcp.http_server
+```
+
+Server mặc định chạy ở `http://localhost:8001/mcp`. Cấu hình trong Cursor Settings → MCP.
+
+## bb skills — Ship role prompts
+
+Ship 11 role prompts (Triager, Implementer, Reviewer, Planner, Tester, Merger…) vào repo để Claude Code và các tool khác tự dùng.
+
+### Các install target
+
+| Lệnh | Đích | Kết quả |
+|---|---|---|
+| `bb skills install --target=claude-code` | `.claude/agents/` | Claude Code đọc khi chat |
+| `bb skills install --target=cursor` | `.cursor/rules/` | Cursor Rules |
+| `bb skills install --target=codex` | `AGENTS.md` | OpenAI Codex |
+| `bb skills install --target=generic` | `.bumblebee/agents/` | Bất kỳ tool nào |
+
+```bash
+# Xem tất cả targets hỗ trợ
+bb skills targets
+
+# Ví dụ: ship vào Claude Code
+bb skills install --target=claude-code
+```
+
+Sau khi cài, hỏi Claude Code:
+
+> "Act as the Bumblebee Reviewer role and review my latest diff"
+
+Claude Code sẽ đọc role markdown và follow system prompt tương ứng.

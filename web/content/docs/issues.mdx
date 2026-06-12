@@ -1,0 +1,87 @@
+---
+title: Issues
+description: Tạo issue, Triager AI phân tích, approval flow và trigger workflow.
+---
+
+# Issues
+
+Issue là đơn vị công việc trong Bumblebee. Mỗi issue được đánh số trong project (BB-1, BB-2, …) và đi qua vòng đời: **tạo → phân tích → approve → chạy workflow → hoàn thành**.
+
+## Tạo issue
+
+### Qua giao diện web
+
+1. Bấm **Issues** ở sidebar → **+ New Issue**
+2. Điền **Title** ngắn (1 dòng) và **Description** chi tiết
+   - Paste error log, screenshot, expected vs actual behaviour
+3. Chọn **Type**: Bug · Feature · Refactor · Investigation · Chore
+4. Bấm **Create**
+
+![Danh sách issues](/guide/11-issues-list.png)
+
+### Qua CLI
+
+```bash
+bb issue create "fix login bug" --project mwa
+```
+
+## Triager AI phân tích
+
+Sau 10–30 giây, Triager agent tự động cập nhật issue với:
+
+- **Complexity**: `simple` / `medium` / `complex`
+- **AI summary**: tóm tắt vấn đề
+- **Suggested solution**: hướng giải quyết đề xuất
+- **Scope hints**: glob patterns chỉ ra file liên quan (ví dụ `bumblebee/auth/**`)
+
+## Xem chi tiết issue
+
+Bấm bất kỳ row nào để mở **detail sheet** trượt vào từ phải:
+
+![Issue detail sheet](/guide/12-issue-detail-sheet.png)
+
+Bấm **Open full detail page** để mở trang đầy đủ:
+
+![Trang chi tiết issue](/guide/13-issue-detail-page.png)
+
+Ba tabs:
+
+| Tab | Nội dung |
+|---|---|
+| **Overview** | Description, acceptance criteria (checklist), AI summary, scope hints |
+| **Activity** | Timeline mọi event — status changes, LLM calls với cost, tool uses |
+| **Runs** | Workflow runs với status, số LLM calls, tổng cost, duration |
+
+## Approval flow
+
+| Điều kiện | Hành vi |
+|---|---|
+| Simple + **auto-execute policy ON** | AI tự chạy ngay, không cần approve |
+| Simple / Medium / Complex (chưa approved) | Bị block — cần approve thủ công |
+
+Để approve thủ công:
+1. Mở trang chi tiết issue
+2. Đọc **Suggested Solution** — chỉnh **Acceptance criteria** nếu cần
+3. Bấm **Approve**
+4. Bấm **Trigger Workflow**
+
+## Trigger workflow
+
+Bấm **Trigger workflow** ở góc phải trên trang chi tiết.
+
+![Tab Activity](/guide/14-issue-activity-tab.png)
+
+Bumblebee tự chọn workflow phù hợp:
+
+- `simple-fix-flow` — cho simple và medium
+- `feature-complex-flow` — cho complex (Coordinator phân rã thành sub-tasks, chạy parallel Implementers)
+
+Chuyển sang tab **Activity** để xem events stream về realtime. Panel live ở đầu tab hiển thị streaming từng token từ Claude CLI.
+
+## Xử lý sự cố
+
+| Triệu chứng | Cách khắc phục |
+|---|---|
+| Workflow trigger trả về 402 | Hết ngân sách gói — upgrade hoặc đợi reset hàng tháng |
+| Tab Activity không có event nào | Workflow chưa được trigger — bấm "Trigger workflow" |
+| Triager không update sau 60 giây | Worker daemon chưa chạy — xem [Pair thiết bị](/docs/devices) |

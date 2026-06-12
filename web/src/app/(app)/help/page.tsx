@@ -80,15 +80,13 @@ export default function HelpPage() {
         <h1 className="t-h1 mb-2">Hướng dẫn sử dụng</h1>
         <p className="t-body" style={{ color: "var(--text-tertiary)" }}>
           Cài đặt từ A → Z trong 5 phút. Cần thêm? Xem{" "}
-          <a
-            href="https://github.com/lct1407/bumblebee/blob/master/docs/user-guide-vi.md"
-            target="_blank"
-            rel="noopener"
+          <Link
+            href="/docs"
             className="underline"
             style={{ color: "var(--accent)" }}
           >
             full guide
-          </a>{" "}
+          </Link>{" "}
           hoặc email <code>support@bumblebee.dev</code>.
         </p>
       </header>
@@ -137,6 +135,17 @@ export default function HelpPage() {
           <div className="font-medium">Plan & billing</div>
           <div className="text-xs" style={{ color: "var(--text-tertiary)" }}>
             Free → Pro → Team
+          </div>
+        </Link>
+        <Link
+          href="/docs"
+          className="p-4 rounded-xl border hover:shadow transition"
+          style={{ background: "var(--bg-surface)", borderColor: "var(--border)" }}
+        >
+          <div className="text-2xl mb-1">📚</div>
+          <div className="font-medium">Tài liệu đầy đủ</div>
+          <div className="text-xs" style={{ color: "var(--text-tertiary)" }}>
+            Hướng dẫn chi tiết từng tính năng
           </div>
         </Link>
       </nav>
@@ -271,16 +280,22 @@ function SectionBody({ id }: { id: string }) {
       return (
         <ol className="list-decimal list-inside space-y-1">
           <li>
-            Dashboard → <strong>+ New Project</strong>
+            <Link
+              href="/settings/projects"
+              className="underline"
+              style={{ color: "var(--accent)" }}
+            >
+              Settings → Projects
+            </Link>{" "}
+            → <strong>New project</strong>
           </li>
-          <li>Đặt tên (ví dụ "My Web App") + key 2-3 chữ (MWA)</li>
+          <li>Đặt tên (ví dụ "My Web App") + key tối đa 10 ký tự UPPERCASE (MWA)</li>
           <li>
             <strong>Repository path:</strong> URL Git (github.com/you/repo) hoặc
-            đường dẫn local
+            đường dẫn local tuyệt đối
           </li>
           <li>
-            <strong>Base branch:</strong> main / master.{" "}
-            <strong>Staging branch:</strong> stg / develop
+            <strong>Base branch:</strong> main / master
           </li>
           <li>
             (Tuỳ chọn) Bật <em>Auto-execute simple tasks</em> trong project

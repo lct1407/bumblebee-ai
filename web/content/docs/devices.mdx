@@ -1,0 +1,59 @@
+---
+title: Pair thiết bị (Worker)
+description: Kết nối máy tính của bạn làm worker để chạy AI tasks cục bộ.
+---
+
+# Pair thiết bị (Worker)
+
+Bumblebee gửi task về máy bạn để chạy — code không upload lên server. Worker daemon chạy trên máy bạn, long-poll claim tasks, rồi thực thi Claude CLI + git + tests cục bộ.
+
+## Yêu cầu
+
+- `bb` CLI đã cài: `pip install bumblebee-cli` (hoặc `pip install -e .` từ repo)
+- Truy cập được Bumblebee server (cloud hoặc self-host)
+
+## Các bước pair
+
+### Bước 1 — Chạy lệnh pair trên máy bạn
+
+```bash
+bb device pair --server https://your-bumblebee-server.com
+```
+
+CLI in ra **pairing code 8 ký tự**, ví dụ: `XKQM-7BNP`.
+
+### Bước 2 — Xác nhận trên web
+
+1. Vào **Settings → Devices** trong Bumblebee web app
+2. Bấm **Add device** (hoặc **Confirm pairing code**)
+3. Nhập pairing code 8 ký tự
+4. Web trả về **node token** (dạng `nt_xxxxx…`)
+
+### Bước 3 — Lưu token và khởi động daemon
+
+```bash
+# Lưu node token vào config local
+bb device save-token nt_xxxxx...
+
+# Khởi động worker daemon (long-poll liên tục)
+bb daemon
+```
+
+Daemon chạy foreground. Dùng `tmux`, `screen`, hoặc `systemd` để chạy nền.
+
+## Kiểm tra trạng thái
+
+Trong **Settings → Devices** bạn thấy danh sách devices đã pair kèm trạng thái online/offline và thời gian last seen.
+
+## Gỡ lỗi
+
+| Triệu chứng | Cách khắc phục |
+|---|---|
+| `bb device pair` báo connection refused | Kiểm tra `--server` URL đúng và server đang chạy |
+| Pairing code hết hạn | Code có hiệu lực 10 phút — chạy lại `bb device pair` |
+| Daemon khởi động nhưng không nhận task | Kiểm tra `bb whoami` xem workspace có đúng không |
+| Task về nhưng Claude CLI không chạy được | Đảm bảo `claude` CLI đã cài và trong `PATH` |
+
+## Xoá thiết bị
+
+Vào **Settings → Devices** → bấm **Revoke** bên cạnh device cần xoá. Node token bị huỷ ngay lập tức — daemon hiện tại sẽ ngừng nhận task mới.

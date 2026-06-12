@@ -1,0 +1,64 @@
+---
+title: CLI Reference
+description: Bảng tham chiếu đầy đủ các lệnh bb CLI.
+---
+
+# CLI Reference
+
+Cài đặt: `pip install bumblebee-cli` hoặc `pip install -e .` từ repo.
+
+Xem help đầy đủ: `bb --help`
+
+## Xác thực & workspace
+
+| Lệnh | Mô tả |
+|---|---|
+| `bb login <username>` | Đăng nhập, lưu token vào `~/.bumblebee/cli.json` |
+| `bb whoami` | Xem workspace và user hiện tại |
+
+## Issues
+
+| Lệnh | Mô tả |
+|---|---|
+| `bb issue list --project <key>` | List issues của project |
+| `bb issue create "<title>"` | Tạo issue mới |
+| `bb issue create "<title>" --project <key>` | Tạo issue trong project cụ thể |
+
+## Thiết bị & daemon
+
+| Lệnh | Mô tả |
+|---|---|
+| `bb device pair --server <url>` | Pair máy này làm worker — in ra pairing code 8 ký tự |
+| `bb device save-token <token>` | Lưu node token sau khi confirm trên web |
+| `bb daemon` | Chạy worker daemon — long-poll claim và thực thi tasks |
+
+## Skills (role prompts)
+
+| Lệnh | Mô tả |
+|---|---|
+| `bb skills install --target=claude-code` | Ship role prompts vào `.claude/agents/` |
+| `bb skills install --target=cursor` | Ship vào `.cursor/rules/` |
+| `bb skills install --target=codex` | Ship vào `AGENTS.md` |
+| `bb skills install --target=generic` | Ship vào `.bumblebee/agents/` |
+| `bb skills targets` | List tất cả install targets hỗ trợ |
+
+## Ví dụ workflow thực tế
+
+```bash
+# 1. Đăng nhập
+bb login myusername
+
+# 2. Pair máy làm worker
+bb device pair --server https://app.bumblebee.dev
+# → in ra: Pairing code: XKQM-7BNP
+# Vào Settings → Devices trên web, nhập code, copy node token
+
+# 3. Lưu token
+bb device save-token nt_abc123...
+
+# 4. Khởi động daemon
+bb daemon
+
+# 5. Tạo issue (trong terminal khác)
+bb issue create "fix login redirect bug" --project bb
+```

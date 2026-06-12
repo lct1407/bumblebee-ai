@@ -1,0 +1,57 @@
+---
+title: Billing
+description: So sánh 3 gói Free, Pro, Team — hạn mức, giá và cách nâng cấp.
+---
+
+# Billing
+
+Bumblebee có 3 gói. Mỗi workspace có billing riêng.
+
+## Bảng so sánh
+
+| | Free | Pro | Team |
+|---|---|---|---|
+| **Giá** | $0 | $20 / seat / tháng | $100 / tháng + LLM passthrough |
+| **Issues** | 5 | Không giới hạn | Không giới hạn |
+| **Workspaces** | 1 | 5 | Không giới hạn |
+| **Ngân sách LLM** | $1 / tháng | $20 / seat / tháng | Metered (tính theo dùng thực) |
+| **MCP + Claude Code** | — | ✓ | ✓ |
+| **Audit log / SOC2** | — | — | ✓ |
+| **Team members** | 1 | Theo số seat | Không giới hạn |
+
+## Nâng cấp lên Pro
+
+1. Vào **Settings → Billing**
+2. Bấm **Upgrade to Pro**
+3. Stripe Checkout mở → nhập thẻ
+4. Sau khi thành công, webhook update `workspace.plan = pro`
+5. Quota cap nâng từ $1 → $20/seat/tháng
+
+![Trang Billing](/guide/16-settings-billing.png)
+
+## Đồng hồ usage
+
+Thanh usage hiển thị realtime trong **Settings → Billing**:
+
+- **Xanh**: dưới 70% cap
+- **Cam**: 70–90% cap
+- **Đỏ**: trên 90% cap
+
+Khi vượt 100%, workflow bị tạm dừng đến khi reset hàng tháng hoặc bạn upgrade.
+
+## Huỷ subscription
+
+Chỉ owner mới có thể huỷ. Sau khi huỷ:
+
+- Workspace vẫn dùng được đến hết chu kỳ hiện tại
+- Sau đó tự động rớt về Free (5 issues, $1 LLM/tháng)
+
+Vào **Settings → Billing** → **Cancel subscription** → xác nhận.
+
+## Xử lý sự cố
+
+| Triệu chứng | Cách khắc phục |
+|---|---|
+| Workflow trả về 402 | Hết quota LLM — upgrade hoặc đợi reset |
+| Stripe Checkout không mở | Kiểm tra popup blocker trong trình duyệt |
+| Invoice không hiển thị | Webhook có thể delay — refresh sau vài phút |

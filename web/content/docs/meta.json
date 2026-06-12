@@ -1,0 +1,13 @@
+{
+  "title": "Bumblebee",
+  "pages": [
+    "index",
+    "getting-started",
+    "projects",
+    "issues",
+    "devices",
+    "integrations",
+    "cli",
+    "billing"
+  ]
+}

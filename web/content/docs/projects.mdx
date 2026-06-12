@@ -1,0 +1,56 @@
+---
+title: Quản lý Projects
+description: Tạo, sửa, xoá project qua Settings → Projects. Yêu cầu role admin hoặc owner.
+---
+
+# Quản lý Projects
+
+Project là một repo/codebase trong workspace. Mỗi project có issue numbering riêng (ví dụ BB-1, BB-2), workflow riêng và agent config riêng.
+
+## Quyền truy cập (RBAC)
+
+| Thao tác | owner | admin | member | viewer |
+|---|:---:|:---:|:---:|:---:|
+| Xem danh sách project | ✓ | ✓ | ✓ | ✓ |
+| Tạo project mới | ✓ | ✓ | — | — |
+| Sửa project | ✓ | ✓ | — | — |
+| Xoá project | ✓ | ✓ | — | — |
+
+Nếu bạn không thấy nút **New project** hoặc nút **Edit**, kiểm tra role của mình tại `Settings → Members`.
+
+## Tạo project mới
+
+1. Vào **Settings → Projects**
+2. Bấm **New project**
+3. Điền các trường:
+
+| Trường | Mô tả |
+|---|---|
+| **Name** | Tên hiển thị, ví dụ "My Web App" |
+| **Slug** | Tự sinh từ name, dùng trong URL. Có thể chỉnh tay. |
+| **Key** | Prefix cho issue number (tối đa 10 ký tự, UPPERCASE), ví dụ `MWA`. Không thể đổi sau khi tạo. |
+| **Base branch** | Branch chính của repo, ví dụ `main` hoặc `master` |
+| **Repository path** | URL Git (github.com/you/repo) hoặc đường dẫn local tuyệt đối |
+
+4. Bấm **Create project**
+
+## Sửa project
+
+1. Vào **Settings → Projects**
+2. Bấm biểu tượng **Edit** (bút chì) bên cạnh project cần sửa
+3. Cập nhật Name, Base branch hoặc Repository path
+4. Bấm **Save**
+
+> **Lưu ý:** Key không thể thay đổi sau khi đã tạo vì được nhúng vào issue numbers hiện có.
+
+## Xoá project
+
+1. Vào **Settings → Projects** → bấm **Edit** trên project cần xoá
+2. Kéo xuống cuối form → bấm **Delete project**
+3. Xác nhận bằng cách gõ lại tên project
+
+> **Cảnh báo:** Xoá project sẽ xoá toàn bộ issues, workflow runs và events liên quan. Thao tác không thể hoàn tác.
+
+## Tuỳ chọn nâng cao
+
+Trong trang edit project, bạn có thể bật **Auto-execute simple tasks** — khi bật, Bumblebee tự chạy task được phân loại `simple` mà không cần bạn approve thủ công.

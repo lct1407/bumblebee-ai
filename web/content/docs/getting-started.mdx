@@ -1,0 +1,93 @@
+---
+title: Bắt đầu
+description: Đăng ký, đăng nhập, onboarding wizard và chọn gói phù hợp.
+---
+
+# Bắt đầu với Bumblebee
+
+Hướng dẫn này đưa bạn từ landing page đến chạy workflow đầu tiên trong khoảng **5 phút**.
+
+## 1. Landing page
+
+Mở Bumblebee trên trình duyệt. Bấm **Pricing** ở header để xem các gói, hoặc **Sign up** thẳng nếu đã biết muốn dùng gói Free.
+
+![Landing page](/guide/01-landing-page.png)
+
+## 2. Chọn gói
+
+| Gói | Phù hợp cho | Ngân sách LLM |
+|---|---|---|
+| **Free** | Dùng thử, cá nhân | $1/tháng (giới hạn cứng) |
+| **Pro** ($20/tháng/seat) | Khối lượng thật, MCP + Claude Code | $20/tháng/seat |
+| **Team** ($100/tháng + passthrough) | Đội nhóm, audit/SOC2 | Không giới hạn (tính theo dùng thực) |
+
+![Pricing page](/guide/02-pricing-page.png)
+
+Bấm **Start free** (hoặc **Upgrade to Pro / Talk to us**). Gói trả phí dẫn đến Stripe Checkout sau khi onboarding xong — gói Free đi thẳng vào app.
+
+## 3. Tạo tài khoản
+
+Form đăng ký cần 3 thông tin:
+
+- **Username** (≥3 ký tự, chữ và số)
+- **Email**
+- **Password** (≥8 ký tự)
+
+![Đăng ký — form trống](/guide/03-register-empty.png)
+
+Hoặc bấm **Continue with Google** để đăng ký 1 click.
+
+![Đăng ký — đã điền](/guide/04-register-filled.png)
+
+Bấm **Create account** → bạn được chuyển vào onboarding.
+
+## 4. Đăng nhập
+
+Truy cập `/login`. Form nhận **username hoặc email** + password. Cũng hỗ trợ **Continue with Google**.
+
+![Trang Login](/guide/18-login-page.png)
+
+Token được lưu trong `localStorage` cho đến khi bạn đăng xuất.
+
+## 5. Onboarding wizard (4 bước · ~60 giây)
+
+### Bước 1 — Tạo workspace
+
+Workspace là container cấp cao nhất — chứa projects, issues, thành viên và billing. Đặt tên hiển thị (có thể đổi sau), slug tự sinh.
+
+![Onboard bước 1 — tên workspace](/guide/05-onboard-step1-workspace.png)
+
+### Bước 2 — Mời team
+
+Gõ email từng người, nhấn Enter để thêm. Bỏ qua nếu làm 1 mình.
+
+![Onboard bước 2 — mời](/guide/06-onboard-step2-invites.png)
+
+### Bước 3 — Tạo issue đầu tiên từ template
+
+Năm template: Fix bug · Add feature · Refactor · Investigate · Blank.
+
+![Onboard bước 3 — chọn template](/guide/07-onboard-step3-templates.png)
+
+Chọn template, tùy chỉnh title, bấm **Create issue**.
+
+![Onboard bước 3 — đã chọn feature](/guide/08-onboard-step3-feature-picked.png)
+
+### Bước 4 — Xác nhận
+
+Với gói trả phí, nút tiếp theo đưa đến Stripe Checkout. Gói Free đưa vào dashboard.
+
+## 6. Dashboard
+
+Trang chủ — workflow throughput, chi phí LLM, phân bố status, hoạt động gần đây.
+
+![Dashboard](/guide/10-dashboard.png)
+
+## Xử lý sự cố
+
+| Triệu chứng | Cách khắc phục |
+|---|---|
+| Đăng ký trả về 409 | Username đã tồn tại — thử username khác |
+| Google sign-in báo "google_oauth_not_configured" | Operator: set `GOOGLE_CLIENT_ID` + `GOOGLE_CLIENT_SECRET` trong `.env` |
+| Workspace switcher trống | Tài khoản mới — refresh hoặc quay lại `/onboard` |
+| Đăng nhập thành công nhưng bị redirect lại /login | `API_SECRET_KEY` đã đổi — xóa localStorage + đăng nhập lại |
