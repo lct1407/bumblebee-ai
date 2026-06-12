@@ -97,6 +97,10 @@ jobs:
           context: ./web
           file: ./web/Dockerfile
           push: true
+          # NEXT_PUBLIC_* is inlined into client JS at build time; without this
+          # the bundle falls back to http://localhost:8000.
+          build-args: |
+            NEXT_PUBLIC_API_URL=${{ vars.NEXT_PUBLIC_API_URL || 'https://bb-api.hubapi.cc' }}
           tags: |
             ${{ env.IMAGE_WEB }}:latest
             ${{ env.IMAGE_WEB }}:${{ github.sha }}
