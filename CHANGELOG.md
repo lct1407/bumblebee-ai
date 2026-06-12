@@ -2,6 +2,12 @@
 
 All notable changes to **bumblebee-ai** documented here.
 
+## [Unreleased] — npm distribution of bb CLI
+
+### Added
+
+- **`cli-node/` — npm-installable Node.js `bb` CLI** (`bumblebee-ai` on npm, v0.4.0): pure ESM, Node >= 20, zero Python required. Commands ported with full config-file + behavioral parity with the Python CLI: `version`, `login`, `whoami`, `issue list/create`, `device pair/save-token`, `skills install/targets`, `daemon` (heartbeat + repo discovery + `shell` + `role_exec` task kinds + `git apply`). Role prompts (`prompts/*.yaml`) bundled inside the package so `bb skills install` works offline. Default server changed to `https://bb-api.hubapi.cc` (cloud) vs Python's `localhost:8000`; both CLIs share `~/.bumblebee/cli.json` and `node.json`.
+
 ## [Unreleased] — Execution-plane harness refactor
 
 ### Changed

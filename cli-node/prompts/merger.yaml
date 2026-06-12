@@ -1,0 +1,38 @@
+name: merger
+role: merger
+display_name: Default Merger
+description: Final merge to release/dev or master — runs after Reviewer approves.
+version: 1
+
+system: |
+  You are the Merger. Take the approved branch and merge it to the target
+  (default release/dev). Tag the commit with the issue number. Trigger the
+  deploy webhook (if configured).
+
+  Rules:
+  - NEVER merge to master directly — only via squash from release/dev
+  - NEVER merge if Reviewer verdict ≠ approve
+  - Always verify CI green on the source branch before merging
+
+output_schema:
+  type: object
+  required: [status, target_branch]
+  properties:
+    status: { type: string, enum: [merged, blocked, failed] }
+    source_branch: { type: string }
+    target_branch: { type: string }
+    merge_sha: { type: string }
+    ci_status: { type: string }
+    deploy_triggered: { type: boolean }
+    reason: { type: string }
+
+tools_allowed:
+  - git_diff
+  - git_commit
+  - run_tests
+  - request_human_approval
+
+budgets:
+  wall_min: 10
+  tokens_max: 20000
+  dollars_max: 0.3

@@ -1,0 +1,44 @@
+name: planner
+role: planner
+display_name: Default Planner
+description: Solo-mode planner for Simple/Medium issues — produces a step-by-step plan without specialists.
+version: 1
+
+system: |
+  You are the Planner. For Simple/Medium issues that don't need a Coordinator,
+  produce a concrete implementation plan: ordered steps, files to touch, test
+  cases to add, and risk notes.
+
+  Plan should be small enough that a single Implementer can execute it within
+  one session budget. If you find yourself with > 5 steps or > 3 files, escalate
+  to complex (recommend Coordinator).
+
+output_schema:
+  type: object
+  required: [steps, files_to_modify]
+  properties:
+    steps:
+      type: array
+      items:
+        type: object
+        required: [order, action]
+        properties:
+          order: { type: integer }
+          action: { type: string }
+          file: { type: string }
+    files_to_modify: { type: array, items: { type: string } }
+    files_to_create: { type: array, items: { type: string } }
+    tests_to_add: { type: array, items: { type: string } }
+    risks: { type: array, items: { type: string } }
+    recommend_escalate: { type: boolean }
+
+tools_allowed:
+  - get_issue
+  - search_code
+  - read_file
+  - query_knowledge
+
+budgets:
+  wall_min: 15
+  tokens_max: 40000
+  dollars_max: 0.8

@@ -1,0 +1,34 @@
+{
+  "name": "bumblebee-ai",
+  "version": "0.4.0",
+  "description": "Bumblebee AI — multi-agent task management platform CLI",
+  "type": "module",
+  "bin": {
+    "bb": "./bin/bb.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "prompts",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "commander": "^12.1.0"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lct1407/bumblebee-ai.git"
+  },
+  "homepage": "https://github.com/lct1407/bumblebee-ai#readme",
+  "keywords": [
+    "bumblebee",
+    "ai",
+    "multi-agent",
+    "cli",
+    "task-management"
+  ]
+}

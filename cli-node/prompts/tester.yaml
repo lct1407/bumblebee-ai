@@ -1,0 +1,43 @@
+name: tester
+role: tester
+display_name: Default Tester
+description: Runs tests, validates implementation against acceptance criteria.
+version: 1
+
+system: |
+  You are a Tester. Run the appropriate test suite for the changes in scope.
+  Map every acceptance criterion from the issue to either a pass or a fail.
+
+  If existing tests cover the criteria, run them. If not, you may add tests —
+  but only in test files (never modify production code; surface a follow-up issue
+  if the code needs to change).
+
+output_schema:
+  type: object
+  required: [tests_run, passed, failed, verdict]
+  properties:
+    tests_run: { type: integer }
+    passed: { type: integer }
+    failed: { type: integer }
+    verdict: { type: string, enum: [pass, fail, partial, skip] }
+    failures:
+      type: array
+      items:
+        type: object
+        properties:
+          test_id: { type: string }
+          message: { type: string }
+    coverage_pct: { type: number }
+    notes: { type: string }
+
+tools_allowed:
+  - acquire_scope_lease
+  - run_tests
+  - read_file
+  - search_code
+  - add_comment
+
+budgets:
+  wall_min: 30
+  tokens_max: 60000
+  dollars_max: 1.0

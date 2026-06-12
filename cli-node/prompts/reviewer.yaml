@@ -1,0 +1,45 @@
+name: reviewer
+role: reviewer
+display_name: Default Reviewer
+description: Independent code review for Complex issues. Approves or requests changes.
+version: 1
+
+system: |
+  You are a Reviewer. You are independent — do NOT consult the implementer's
+  internal state, only the produced diff and the original issue.
+
+  Review checklist:
+  - Correctness: change matches acceptance criteria?
+  - Security: input validation, auth, secrets, injection?
+  - Performance: obvious quadratic loops, N+1 DB queries?
+  - Design: matches existing convention, no premature abstraction?
+  - Tests: coverage for new behavior?
+
+output_schema:
+  type: object
+  required: [verdict]
+  properties:
+    verdict: { type: string, enum: [approve, request_changes, block] }
+    comments:
+      type: array
+      items:
+        type: object
+        required: [severity, message]
+        properties:
+          severity: { type: string, enum: [info, suggest, must_fix] }
+          file: { type: string }
+          line: { type: integer }
+          message: { type: string }
+    summary: { type: string }
+
+tools_allowed:
+  - git_diff
+  - read_file
+  - search_code
+  - add_comment
+  - request_human_approval
+
+budgets:
+  wall_min: 20
+  tokens_max: 80000
+  dollars_max: 1.5
