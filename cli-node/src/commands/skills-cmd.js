@@ -243,12 +243,12 @@ export function registerSkills(program) {
     .action((opts) => {
       if (!TARGETS[opts.target]) {
         console.error(`Unknown target: ${opts.target}. Choices: ${Object.keys(TARGETS).join(', ')}`);
-        process.exit(2);
+        process.exitCode = 2; return;
       }
       const repoPath = resolve(opts.repo);
       if (!existsSync(repoPath)) {
         console.error(`Repo path does not exist: ${repoPath}`);
-        process.exit(1);
+        process.exitCode = 1; return;
       }
 
       let written;
@@ -256,7 +256,7 @@ export function registerSkills(program) {
         written = TARGETS[opts.target].install(repoPath);
       } catch (err) {
         console.error(`Install failed: ${err.message}`);
-        process.exit(1);
+        process.exitCode = 1; return;
       }
 
       console.log(`Installed ${written.length} file(s) for target ${opts.target}:`);

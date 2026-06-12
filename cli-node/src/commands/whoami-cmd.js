@@ -21,7 +21,7 @@ export function registerWhoami(program) {
 
       if (!token) {
         console.error('Not logged in. Run `bb login <username>` first.');
-        process.exit(1);
+        process.exitCode = 1; return;
       }
 
       let data;
@@ -29,12 +29,12 @@ export function registerWhoami(program) {
         data = await gql(gqlEndpoint(serverUrl), ME_QUERY, {}, token);
       } catch (err) {
         console.error(`whoami failed: ${err.message}`);
-        process.exit(1);
+        process.exitCode = 1; return;
       }
 
       if (!data.me) {
         console.error('No workspace bound to current token.');
-        process.exit(1);
+        process.exitCode = 1; return;
       }
 
       const me = data.me;

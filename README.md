@@ -68,6 +68,13 @@ Mở `http://localhost:3000` → đăng ký → tạo workspace → bắt đầu
 
 ### Bước tiếp theo — link máy bạn để chạy tasks
 
+Cài `bb` CLI trên máy worker — qua npm (không cần Python) hoặc pip:
+
+```bash
+npm install -g bumblebee-ai     # Node ≥ 20 — đủ các lệnh login/issue/device/daemon/skills
+# hoặc: pip install -e .        # bản đầy đủ kèm lệnh vận hành server
+```
+
 ```bash
 # Trên máy bạn (nơi có code repo của bạn)
 bb device pair --server http://localhost:8000

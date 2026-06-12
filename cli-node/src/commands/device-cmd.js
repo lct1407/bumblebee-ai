@@ -35,7 +35,7 @@ export function registerDevice(program) {
         data = await post(`${serverUrl}/api/devices/pair-request`, body);
       } catch (err) {
         console.error(`Pair request failed: ${err.message}`);
-        process.exit(1);
+        process.exitCode = 1; return;
       }
 
       const code = data.pairing_code;

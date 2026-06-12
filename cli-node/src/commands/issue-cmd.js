@@ -56,7 +56,7 @@ export function registerIssue(program) {
       const token = process.env.BUMBLEBEE_TOKEN || cfg.access_token;
       if (!token) {
         console.error('Not logged in. Run `bb login <username>` first.');
-        process.exit(1);
+        process.exitCode = 1; return;
       }
 
       const endpoint = gqlEndpoint(serverUrl);
@@ -65,11 +65,11 @@ export function registerIssue(program) {
         pid = await resolveProjectId(endpoint, token, opts.project);
       } catch (err) {
         console.error(`Failed to fetch projects: ${err.message}`);
-        process.exit(1);
+        process.exitCode = 1; return;
       }
       if (!pid) {
         console.error(`Project not found: ${opts.project}`);
-        process.exit(1);
+        process.exitCode = 1; return;
       }
 
       let data;
@@ -77,7 +77,7 @@ export function registerIssue(program) {
         data = await gql(endpoint, ISSUES_QUERY, { pid, status: opts.status ?? null }, token);
       } catch (err) {
         console.error(`Failed to list issues: ${err.message}`);
-        process.exit(1);
+        process.exitCode = 1; return;
       }
 
       const issues = data.issues ?? [];
@@ -109,7 +109,7 @@ export function registerIssue(program) {
       const token = process.env.BUMBLEBEE_TOKEN || cfg.access_token;
       if (!token) {
         console.error('Not logged in. Run `bb login <username>` first.');
-        process.exit(1);
+        process.exitCode = 1; return;
       }
 
       const endpoint = gqlEndpoint(serverUrl);
@@ -118,11 +118,11 @@ export function registerIssue(program) {
         pid = await resolveProjectId(endpoint, token, opts.project);
       } catch (err) {
         console.error(`Failed to fetch projects: ${err.message}`);
-        process.exit(1);
+        process.exitCode = 1; return;
       }
       if (!pid) {
         console.error(`Project not found: ${opts.project}`);
-        process.exit(1);
+        process.exitCode = 1; return;
       }
 
       let data;
@@ -137,7 +137,7 @@ export function registerIssue(program) {
         }, token);
       } catch (err) {
         console.error(`Failed to create issue: ${err.message}`);
-        process.exit(1);
+        process.exitCode = 1; return;
       }
 
       const d = data.createIssue;

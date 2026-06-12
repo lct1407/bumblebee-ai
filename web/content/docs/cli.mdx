@@ -5,7 +5,24 @@ description: Bảng tham chiếu đầy đủ các lệnh bb CLI.
 
 # CLI Reference
 
-Cài đặt: `pip install bumblebee-cli` hoặc `pip install -e .` từ repo.
+## Cài đặt
+
+**Qua npm (khuyến nghị — không cần Python):**
+
+```bash
+npm install -g bumblebee-ai
+bb version
+```
+
+Yêu cầu Node.js ≥ 20. Gói npm có đủ các lệnh người dùng: `login`, `whoami`, `issue`, `device`, `daemon`, `skills`. Mặc định trỏ server cloud `https://bb-api.hubapi.cc` — đổi bằng `--server` hoặc biến môi trường `BB_SERVER_URL`.
+
+**Qua pip (bản đầy đủ, kèm lệnh vận hành server):**
+
+```bash
+pip install -e .   # từ repo
+```
+
+Hai bản dùng chung file config `~/.bumblebee/cli.json` và `~/.bumblebee/node.json` — cài bản nào trước cũng được, chuyển qua lại không mất đăng nhập.
 
 Xem help đầy đủ: `bb --help`
 

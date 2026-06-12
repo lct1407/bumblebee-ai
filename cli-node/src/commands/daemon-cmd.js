@@ -18,7 +18,7 @@ export function registerDaemon(program) {
       const pollInterval = parseFloat(opts.interval);
       if (isNaN(pollInterval) || pollInterval <= 0) {
         console.error('--interval must be a positive number');
-        process.exit(1);
+        process.exitCode = 1; return;
       }
       await runDaemon(configPath, opts.server ?? null, pollInterval);
     });

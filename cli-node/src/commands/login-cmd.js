@@ -49,7 +49,7 @@ export function registerLogin(program) {
       const password = await promptPassword(`Password for ${username}: `);
       if (!password) {
         console.error('Password is required.');
-        process.exit(1);
+        process.exitCode = 1; return;
       }
 
       let data;
@@ -59,13 +59,13 @@ export function registerLogin(program) {
         });
       } catch (err) {
         console.error(`Login failed: ${err.message}`);
-        process.exit(1);
+        process.exitCode = 1; return;
       }
 
       const out = data.login;
       if (!out?.accessToken) {
         console.error('Login failed: no access token returned.');
-        process.exit(1);
+        process.exitCode = 1; return;
       }
 
       const cfg = {
