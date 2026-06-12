@@ -8,12 +8,21 @@ import "@/styles/docs.css";
  * Layout for all /docs pages.
  * - No <html>/<body> here — the root app/layout.tsx provides those.
  * - RootProvider wraps just the docs subtree (search + theme context for fumadocs).
- *   next-themes is disabled so it doesn't conflict with the app's own data-theme system.
+ * - Theme: next-themes manages BOTH the `dark` class (what fumadocs CSS keys on)
+ *   and the `data-theme` attribute (what the app's own CSS vars key on), sharing
+ *   the app's `bumblebee.theme` storage key so the toggle stays in sync app-wide.
  * - docs.css is imported here (not in globals.css) to scope fumadocs styles.
  */
 export default function DocsRootLayout({ children }: { children: ReactNode }) {
   return (
-    <RootProvider theme={{ enabled: false }}>
+    <RootProvider
+      theme={{
+        attribute: ["class", "data-theme"],
+        defaultTheme: "system",
+        enableSystem: true,
+        storageKey: "bumblebee.theme",
+      }}
+    >
       <DocsLayout
         tree={source.pageTree}
         nav={{ title: "Bumblebee Docs" }}

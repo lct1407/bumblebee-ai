@@ -19,12 +19,17 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      suppressHydrationWarning
+    >
       <head>
-        {/* Set data-theme before paint to prevent FOUC. Mirror ThemeProvider's resolution logic. */}
+        {/* Set data-theme + dark class before paint to prevent FOUC. The app's CSS
+            vars key on data-theme; fumadocs (/docs) keys on the dark class. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var k='bumblebee.theme';var v=localStorage.getItem(k);var r=(v==='light'||v==='dark')?v:(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',r);}catch(e){}})();`,
+            __html: `(function(){try{var k='bumblebee.theme';var v=localStorage.getItem(k);var r=(v==='light'||v==='dark')?v:(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');var d=document.documentElement;d.setAttribute('data-theme',r);d.classList.toggle('dark',r==='dark');}catch(e){}})();`,
           }}
         />
       </head>
