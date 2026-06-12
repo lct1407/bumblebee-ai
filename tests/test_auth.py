@@ -61,6 +61,25 @@ async def test_register_duplicate_rejected(client, clean_db):
 
 
 @pytest.mark.asyncio
+async def test_login_accepts_email_as_identifier(client, clean_db):
+    await client.post(
+        "/api/auth/register",
+        json={"email": "mail-login@example.com", "username": "maillogin", "password": "pw1234"},
+    )
+    by_email = await client.post(
+        "/api/auth/login",
+        json={"username": "mail-login@example.com", "password": "pw1234"},
+    )
+    assert by_email.status_code == 200
+    assert by_email.json()["user"]["username"] == "maillogin"
+
+    by_username = await client.post(
+        "/api/auth/login", json={"username": "maillogin", "password": "pw1234"},
+    )
+    assert by_username.status_code == 200
+
+
+@pytest.mark.asyncio
 async def test_login_invalid_credentials(client, clean_db):
     await client.post(
         "/api/auth/register",

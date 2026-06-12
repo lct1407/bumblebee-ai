@@ -28,6 +28,17 @@ from bumblebee.config import get_settings
 
 settings = get_settings()
 
+# The clean_db fixture TRUNCATES every table in the target database. Refuse to
+# run against anything that is not a local/CI database, no matter what
+# DATABASE_URL or .env says — pointing tests at production must never wipe it.
+_ALLOWED_TEST_DB_HOSTS = ("localhost", "127.0.0.1", "db", "bumblebee-db")
+_db_host = settings.database_url.split("@")[-1].split(":")[0].split("/")[0]
+if _db_host not in _ALLOWED_TEST_DB_HOSTS:
+    raise RuntimeError(
+        f"Refusing to run tests against non-local database host '{_db_host}'. "
+        "Tests truncate all tables; set DATABASE_URL to a local database."
+    )
+
 
 @pytest_asyncio.fixture
 async def engine():

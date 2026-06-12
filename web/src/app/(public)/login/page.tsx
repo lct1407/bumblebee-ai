@@ -68,7 +68,7 @@ export default function LoginPage() {
             }}
           >
             <div>
-              <label className="t-overline block mb-1.5" style={{ color: "var(--text-tertiary)" }}>Username</label>
+              <label className="t-overline block mb-1.5" style={{ color: "var(--text-tertiary)" }}>Username or email</label>
               <input
                 type="text"
                 autoFocus

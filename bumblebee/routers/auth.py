@@ -10,7 +10,7 @@ import uuid
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
-from sqlalchemy import select
+from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bumblebee.auth.dependencies import get_current_user
@@ -166,9 +166,13 @@ async def register(body: RegisterRequest, db: AsyncSession = Depends(get_db)):
 
 @router.post("/login", response_model=TokenResponse)
 async def login(body: LoginRequest, db: AsyncSession = Depends(get_db)):
+    # The identifier field accepts either username or email.
     user = (
         await db.execute(
-            select(User).where(User.username == body.username, User.is_active)
+            select(User).where(
+                or_(User.username == body.username, User.email == body.username),
+                User.is_active,
+            )
         )
     ).scalar_one_or_none()
     if not user or not verify_password(body.password, user.password_hash):
