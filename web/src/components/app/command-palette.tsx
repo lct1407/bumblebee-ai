@@ -3,9 +3,9 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Command } from "cmdk";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ProjectsApi, IssuesApi, getActiveProject, setActiveProject } from "@/lib/api-client";
+import { ProjectsApi, IssuesApi, setActiveProject } from "@/lib/api-client";
+import { useActiveProject } from "@/lib/use-active-project";
 
 export function CommandPalette({
   open,
@@ -15,14 +15,13 @@ export function CommandPalette({
   onOpenChange: (v: boolean) => void;
 }) {
   const router = useRouter();
-  const [project, setProject] = useState("bb");
-  useEffect(() => setProject(getActiveProject()), []);
+  const { project } = useActiveProject();
 
   const projects = useQuery({ queryKey: ["projects"], queryFn: ProjectsApi.list, enabled: open });
   const issues = useQuery({
     queryKey: ["issues", project],
-    queryFn: () => IssuesApi.list(project),
-    enabled: open,
+    queryFn: () => IssuesApi.list(project!),
+    enabled: open && !!project,
   });
 
   const go = (href: string) => {
@@ -119,7 +118,7 @@ export function CommandPalette({
                           <Item
                             key={i.id}
                             label={i.title}
-                            hint={`${project.toUpperCase()}-${i.number}`}
+                            hint={`${(project ?? "").toUpperCase()}-${i.number}`}
                             onSelect={() => go(`/issues/${i.number}`)}
                           />
                         ))}

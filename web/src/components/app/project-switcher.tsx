@@ -1,16 +1,12 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
 import { Combobox } from "@/components/ui/combobox";
-import { ProjectsApi, getActiveProject, setActiveProject } from "@/lib/api-client";
+import { setActiveProject } from "@/lib/api-client";
+import { useActiveProject } from "@/lib/use-active-project";
 
 export function ProjectSwitcher() {
-  const [active, setActive] = useState("bb");
-  useEffect(() => setActive(getActiveProject()), []);
+  const { project, projects } = useActiveProject();
 
-  const { data } = useQuery({ queryKey: ["projects"], queryFn: ProjectsApi.list });
-
-  const options = (data ?? []).map((p) => ({
+  const options = (projects.data ?? []).map((p) => ({
     value: p.slug,
     label: p.name,
     hint: p.key,
@@ -20,10 +16,9 @@ export function ProjectSwitcher() {
   return (
     <Combobox
       options={options}
-      value={active}
+      value={project ?? ""}
       onChange={(v: string) => {
         setActiveProject(v);
-        setActive(v);
         // Reload current page so all queries pick up new project
         window.location.reload();
       }}

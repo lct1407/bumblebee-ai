@@ -3,7 +3,8 @@ import { use, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { EventsApi, IssuesApi, MilestonesApi, ProjectsApi, WorkflowApi, getActiveProject, type Issue } from "@/lib/api-client";
+import { EventsApi, IssuesApi, MilestonesApi, ProjectsApi, WorkflowApi, type Issue } from "@/lib/api-client";
+import { useActiveProject } from "@/lib/use-active-project";
 import { StatusBadge, PriorityBadge } from "@/components/ui/badge";
 import { Sheet } from "@/components/ui/sheet";
 import { IssueForm } from "@/components/issues/issue-form";
@@ -28,14 +29,15 @@ export default function IssueDetailPage({
   const { number } = use(params);
   const num = parseInt(number, 10);
   const qc = useQueryClient();
-  const project = typeof window !== "undefined" ? getActiveProject() : "bb";
+  const { project } = useActiveProject();
 
   const [tab, setTab] = useState<Tab>("overview");
   const [editOpen, setEditOpen] = useState(false);
 
   const issue = useQuery({
     queryKey: ["issue", project, num],
-    queryFn: () => IssuesApi.get(project, num),
+    queryFn: () => IssuesApi.get(project!, num),
+    enabled: !!project,
   });
 
   const events = useQuery({
@@ -47,17 +49,19 @@ export default function IssueDetailPage({
 
   const members = useQuery({
     queryKey: ["project-members", project],
-    queryFn: () => ProjectsApi.members(project),
+    queryFn: () => ProjectsApi.members(project!),
+    enabled: !!project,
   });
 
   const milestones = useQuery({
     queryKey: ["milestones", project],
-    queryFn: () => MilestonesApi.list(project),
+    queryFn: () => MilestonesApi.list(project!),
+    enabled: !!project,
   });
 
   // Live WebSocket stream (chunks + pushed events)
   const stream = useEventStream({
-    project,
+    project: project ?? "",
     issueId: issue.data?.id,
     enabled: !!issue.data?.id,
   });
@@ -83,7 +87,7 @@ export default function IssueDetailPage({
   })();
 
   const update = useMutation({
-    mutationFn: (patch: Partial<Issue>) => IssuesApi.update(project, num, patch),
+    mutationFn: (patch: Partial<Issue>) => IssuesApi.update(project!, num, patch),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["issue", project, num] });
       qc.invalidateQueries({ queryKey: ["issues"] });
@@ -195,7 +199,7 @@ export default function IssueDetailPage({
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-2 flex-wrap">
             <span className="font-mono text-sm font-semibold" style={{ color: "var(--accent)" }}>
-              {project.toUpperCase()}-{i.number}
+              {(project ?? "").toUpperCase()}-{i.number}
             </span>
             <span className="text-sm" style={{ color: "var(--text-tertiary)" }}>·</span>
             <span className="inline-flex items-center gap-1 text-sm" style={{ color: "var(--text-secondary)" }}>
@@ -384,7 +388,7 @@ export default function IssueDetailPage({
                 </Section>
               )}
 
-              <Comments project={project} number={num} />
+              <Comments project={project ?? ""} number={num} />
             </motion.div>
           )}
 
@@ -473,7 +477,7 @@ export default function IssueDetailPage({
         </aside>
       </div>
 
-      <Sheet open={editOpen} onOpenChange={setEditOpen} title={`Edit ${project.toUpperCase()}-${i.number}`}>
+      <Sheet open={editOpen} onOpenChange={setEditOpen} title={`Edit ${(project ?? "").toUpperCase()}-${i.number}`}>
         <IssueForm
           mode="edit"
           initial={i}

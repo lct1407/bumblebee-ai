@@ -1,7 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { MilestonesApi, getActiveProject, type Milestone } from "@/lib/api-client";
+import { MilestonesApi, type Milestone } from "@/lib/api-client";
+import { useActiveProject } from "@/lib/use-active-project";
 
 const STATUS_TONE: Record<string, string> = {
   planned: "var(--status-neutral)",
@@ -17,19 +18,18 @@ function fmtDate(iso?: string | null) {
 
 export default function MilestonesPage() {
   const qc = useQueryClient();
-  const [project, setProject] = useState("bb");
+  const { project } = useActiveProject();
   const [name, setName] = useState("");
   const [due, setDue] = useState("");
 
-  useEffect(() => setProject(getActiveProject()), []);
-
   const list = useQuery({
     queryKey: ["milestones", project],
-    queryFn: () => MilestonesApi.list(project),
+    queryFn: () => MilestonesApi.list(project!),
+    enabled: !!project,
   });
 
   const create = useMutation({
-    mutationFn: () => MilestonesApi.create(project, { name: name.trim(), due_date: due || null, status: "active" }),
+    mutationFn: () => MilestonesApi.create(project!, { name: name.trim(), due_date: due || null, status: "active" }),
     onSuccess: () => {
       setName("");
       setDue("");
@@ -38,7 +38,7 @@ export default function MilestonesPage() {
   });
 
   const remove = useMutation({
-    mutationFn: (id: string) => MilestonesApi.remove(project, id),
+    mutationFn: (id: string) => MilestonesApi.remove(project!, id),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["milestones", project] }),
   });
 
@@ -51,7 +51,7 @@ export default function MilestonesPage() {
           <h1 className="t-display" style={{ color: "var(--text-primary)" }}>Milestones</h1>
           <p className="t-small mt-1" style={{ color: "var(--text-tertiary)" }}>
             Time-boxed delivery goals · project{" "}
-            <code className="font-mono px-1.5 py-0.5 rounded" style={{ background: "var(--bg-subtle)", color: "var(--text-secondary)" }}>{project}</code>
+            <code className="font-mono px-1.5 py-0.5 rounded" style={{ background: "var(--bg-subtle)", color: "var(--text-secondary)" }}>{project ?? "…"}</code>
           </p>
         </div>
       </div>

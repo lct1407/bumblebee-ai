@@ -81,12 +81,16 @@ async def _unique_slug(db: AsyncSession, base: str) -> str:
 async def _resolve_primary_membership(
     db: AsyncSession, user_id: uuid.UUID
 ) -> WorkspaceMember | None:
-    """Return the user's earliest-joined workspace membership."""
+    """Return the user's earliest-joined membership among non-deleted workspaces."""
     return (
         await db.execute(
             select(WorkspaceMember)
-            .where(WorkspaceMember.user_id == user_id)
-            .order_by(WorkspaceMember.created_at.asc())
+            .join(Workspace, Workspace.id == WorkspaceMember.workspace_id)
+            .where(
+                WorkspaceMember.user_id == user_id,
+                Workspace.deleted_at.is_(None),
+            )
+            .order_by(WorkspaceMember.created_at.asc(), WorkspaceMember.id.asc())
             .limit(1)
         )
     ).scalar_one_or_none()
@@ -202,10 +206,13 @@ async def login(body: LoginRequest, db: AsyncSession = Depends(get_db)):
 async def me(user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
     if user is None:
         return {"authenticated": False, "auth_enabled": False}
-    # Surface the user's workspaces so the UI knows which to switch to
+    # Surface the user's workspaces so the UI knows which to switch to.
+    # Earliest-joined first → workspaces[0] matches the backend's default scope.
     memberships = (
         await db.execute(
-            select(WorkspaceMember).where(WorkspaceMember.user_id == user.id)
+            select(WorkspaceMember)
+            .where(WorkspaceMember.user_id == user.id)
+            .order_by(WorkspaceMember.created_at.asc(), WorkspaceMember.id.asc())
         )
     ).scalars().all()
     workspaces = []

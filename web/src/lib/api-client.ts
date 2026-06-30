@@ -13,9 +13,10 @@ const PROJECT_KEY = "bumblebee.activeProject";
 const WORKSPACE_KEY = "bumblebee.activeWorkspace";
 const TOKEN_KEY = "bumblebee.token";
 
-export function getActiveProject(): string {
-  if (typeof window === "undefined") return "bb";
-  return window.localStorage.getItem(PROJECT_KEY) || "bb";
+/** The last-used project slug, or null if none stored yet (caller falls back to the first project). */
+export function getActiveProject(): string | null {
+  if (typeof window === "undefined") return null;
+  return window.localStorage.getItem(PROJECT_KEY) || null;
 }
 
 export function setActiveProject(slug: string) {
@@ -49,11 +50,17 @@ export function setAuthToken(token: string | null) {
   }
 }
 
-// Wire JWT into axios headers when set
+// Wire JWT + active-workspace scope into axios headers when set
 api.interceptors.request.use((config) => {
   const token = getAuthToken();
   if (token && !config.headers["Authorization"]) {
     config.headers["Authorization"] = `Bearer ${token}`;
+  }
+  // The backend scopes the request to this workspace (last-used selection).
+  // An empty/stale value is ignored server-side, falling back to the default.
+  const ws = getActiveWorkspace();
+  if (ws && !config.headers["X-Workspace"]) {
+    config.headers["X-Workspace"] = ws;
   }
   return config;
 });

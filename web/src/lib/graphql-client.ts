@@ -11,10 +11,16 @@
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 const TOKEN_KEY = "bumblebee.token";
+const WORKSPACE_KEY = "bumblebee.activeWorkspace";
 
 function getToken(): string | null {
   if (typeof window === "undefined") return null;
   return window.localStorage.getItem(TOKEN_KEY);
+}
+
+function getWorkspace(): string | null {
+  if (typeof window === "undefined") return null;
+  return window.localStorage.getItem(WORKSPACE_KEY);
 }
 
 export class GraphQLError extends Error {
@@ -34,6 +40,9 @@ export async function gql<TData = unknown>(
     ...(init?.headers as Record<string, string> | undefined),
   };
   if (token) headers["Authorization"] = `Bearer ${token}`;
+  // Scope to the active workspace (last-used selection), matching the REST client.
+  const ws = getWorkspace();
+  if (ws && !headers["X-Workspace"]) headers["X-Workspace"] = ws;
 
   const r = await fetch(`${BASE_URL}/graphql`, {
     method: "POST",

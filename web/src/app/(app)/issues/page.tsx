@@ -2,7 +2,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -20,7 +20,8 @@ import { ViewSwitcher, type ViewMode } from "@/components/issues/view-switcher";
 import { BoardView } from "@/components/issues/board-view";
 import { StatsView } from "@/components/issues/stats-view";
 import { IssueForm } from "@/components/issues/issue-form";
-import { IssuesApi, ProjectsApi, WorkflowApi, getActiveProject, type Issue } from "@/lib/api-client";
+import { IssuesApi, ProjectsApi, WorkflowApi, type Issue } from "@/lib/api-client";
+import { useActiveProject } from "@/lib/use-active-project";
 import { TypeIcon, StatusDot } from "@/components/ui/type-icon";
 import { formatRelativeTime, cn } from "@/lib/utils";
 
@@ -79,8 +80,7 @@ function fmtDue(iso?: string | null) {
 }
 
 export default function IssuesPage() {
-  const [project, setProject] = useState("bb");
-  useEffect(() => setProject(getActiveProject()), []);
+  const { project } = useActiveProject();
 
   const [statusFilter, setStatusFilter] = useState<string[]>([]);
   const [priorityFilter, setPriorityFilter] = useState<string[]>([]);
@@ -95,12 +95,14 @@ export default function IssuesPage() {
   const qc = useQueryClient();
   const { data, isLoading } = useQuery({
     queryKey: ["issues", project],
-    queryFn: () => IssuesApi.list(project),
+    queryFn: () => IssuesApi.list(project!),
+    enabled: !!project,
   });
 
   const membersQuery = useQuery({
     queryKey: ["project-members", project],
-    queryFn: () => ProjectsApi.members(project),
+    queryFn: () => ProjectsApi.members(project!),
+    enabled: !!project,
   });
   const memberMap = useMemo(() => {
     const map = new Map<string, { name: string }>();
@@ -128,7 +130,7 @@ export default function IssuesPage() {
         header: "Key",
         cell: ({ row }) => (
           <span className="font-mono font-semibold text-[12px]" style={{ color: "var(--accent)" }}>
-            {project.toUpperCase()}-{row.original.number}
+            {(project ?? "").toUpperCase()}-{row.original.number}
           </span>
         ),
       },
@@ -454,7 +456,7 @@ export default function IssuesPage() {
       )}
 
       {!isLoading && filtered.length > 0 && view === "board" && (
-        <BoardView issues={filtered} project={project} onSelect={setSelectedIssue} />
+        <BoardView issues={filtered} project={project ?? ""} onSelect={setSelectedIssue} />
       )}
 
       {!isLoading && filtered.length > 0 && view === "stats" && (
@@ -464,12 +466,12 @@ export default function IssuesPage() {
       <Sheet
         open={!!selectedIssue}
         onOpenChange={(v) => !v && setSelectedIssue(null)}
-        title={selectedIssue ? `${project.toUpperCase()}-${selectedIssue.number}` : ""}
+        title={selectedIssue ? `${(project ?? "").toUpperCase()}-${selectedIssue.number}` : ""}
       >
         {selectedIssue && (
           <IssueDetail
             issue={selectedIssue}
-            project={project}
+            project={project ?? ""}
             onUpdate={(updated) => {
               setSelectedIssue(updated);
               qc.invalidateQueries({ queryKey: ["issues"] });
@@ -480,7 +482,7 @@ export default function IssuesPage() {
 
       <Sheet open={showCreate} onOpenChange={setShowCreate} title="Create new issue">
         <CreateIssueWrapper
-          project={project}
+          project={project ?? ""}
           onSuccess={() => {
             setShowCreate(false);
             qc.invalidateQueries({ queryKey: ["issues"] });
