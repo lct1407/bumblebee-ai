@@ -2,9 +2,10 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ProjectsApi, IssuesApi, getActiveProject, setActiveProject, setAuthToken } from "@/lib/api-client";
+import { ProjectsApi, IssuesApi, setActiveProject, setAuthToken } from "@/lib/api-client";
+import { useActiveProject } from "@/lib/use-active-project";
 import { Combobox } from "@/components/ui/combobox";
 import { WorkspaceSwitcher } from "@/components/app/workspace-switcher";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
@@ -36,13 +37,12 @@ export function Sidebar({ onCmdK }: { onCmdK: () => void }) {
     window.location.href = "/login";
   };
   const [collapsed, setCollapsed] = useState(false);
-  const [project, setProject] = useState("bb");
-  useEffect(() => setProject(getActiveProject()), []);
+  const { project } = useActiveProject();
 
   const projects = useQuery({ queryKey: ["projects"], queryFn: ProjectsApi.list });
   const issues = useQuery({
     queryKey: ["issues", project],
-    queryFn: () => IssuesApi.list(project),
+    queryFn: () => IssuesApi.list(project!),
     enabled: !!project,
   });
 
@@ -148,10 +148,9 @@ export function Sidebar({ onCmdK }: { onCmdK: () => void }) {
           <WorkspaceSwitcher />
           <Combobox
             options={projectOptions}
-            value={project}
+            value={project ?? ""}
             onChange={(v: string) => {
               setActiveProject(v);
-              setProject(v);
               window.location.reload();
             }}
             placeholder="Project…"

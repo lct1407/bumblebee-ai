@@ -2,8 +2,8 @@
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { IssuesApi, ProjectsApi, EventsApi, getActiveProject } from "@/lib/api-client";
+import { IssuesApi, EventsApi } from "@/lib/api-client";
+import { useActiveProject } from "@/lib/use-active-project";
 import { StatCard } from "@/components/app/stat-card";
 import {
   ThroughputChart,
@@ -15,13 +15,11 @@ import { CardSkeleton } from "@/components/ui/skeleton";
 import { TypeIcon } from "@/components/ui/type-icon";
 
 export default function Dashboard() {
-  const [project, setProject] = useState("bb");
-  useEffect(() => setProject(getActiveProject()), []);
-
-  const projects = useQuery({ queryKey: ["projects"], queryFn: ProjectsApi.list });
+  const { project, projects } = useActiveProject();
   const issues = useQuery({
     queryKey: ["issues", project],
-    queryFn: () => IssuesApi.list(project),
+    queryFn: () => IssuesApi.list(project!),
+    enabled: !!project,
   });
   const events = useQuery({
     queryKey: ["events", "recent"],
@@ -58,7 +56,7 @@ export default function Dashboard() {
           <p className="t-small mt-1" style={{ color: "var(--text-tertiary)" }}>
             Project
             <code className="font-mono mx-1.5 px-1.5 py-0.5 rounded" style={{ background: "var(--bg-subtle)", color: "var(--text-secondary)" }}>
-              {project}
+              {project ?? "…"}
             </code>
             · Workflow overview
           </p>
@@ -120,7 +118,7 @@ export default function Dashboard() {
         <div className="flex items-center justify-between mb-3">
           <div>
             <h2 className="t-overline" style={{ color: "var(--text-tertiary)" }}>Recently updated</h2>
-            <p className="t-small mt-0.5" style={{ color: "var(--text-quaternary)" }}>Latest 5 issues in {project}</p>
+            <p className="t-small mt-0.5" style={{ color: "var(--text-quaternary)" }}>Latest 5 issues in {project ?? "…"}</p>
           </div>
           <Link href="/issues" className="text-xs transition" style={{ color: "var(--accent)" }}>
             See all →
@@ -138,7 +136,7 @@ export default function Dashboard() {
             >
               <span className="flex-shrink-0" style={{ color: "var(--text-tertiary)" }}><TypeIcon type={issue.type} size={14} /></span>
               <span className="font-mono text-[11px] flex-shrink-0 font-semibold" style={{ color: "var(--accent)" }}>
-                {project.toUpperCase()}-{issue.number}
+                {(project ?? "").toUpperCase()}-{issue.number}
               </span>
               <span className="flex-1 text-sm font-medium truncate" style={{ color: "var(--text-primary)" }}>{issue.title}</span>
               <span className="text-[11px] flex-shrink-0" style={{ color: "var(--text-tertiary)" }}>{issue.status}</span>

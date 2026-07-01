@@ -76,9 +76,13 @@ async def list_my_workspaces(
 ):
     if user is None:
         return []
+    # Earliest-joined first, so the client's "first workspace" default matches the
+    # backend's earliest-active fallback in require_workspace.
     memberships = (
         await db.execute(
-            select(WorkspaceMember).where(WorkspaceMember.user_id == user.id)
+            select(WorkspaceMember)
+            .where(WorkspaceMember.user_id == user.id)
+            .order_by(WorkspaceMember.created_at.asc(), WorkspaceMember.id.asc())
         )
     ).scalars().all()
     out = []

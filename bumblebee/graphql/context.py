@@ -36,14 +36,24 @@ async def get_context(request: Request) -> GraphQLContext:
     if auth.startswith("Bearer ") and not auth[7:].startswith("nt_"):
         try:
             from bumblebee.auth.security import decode_access_token
+            from bumblebee.services.rbac.dependencies import resolve_active_workspace
             payload = decode_access_token(auth[7:]) or {}
             user_id = payload.get("sub")
             if user_id:
                 user = await db.get(User, user_id)
-            ws_id = payload.get("ws")
-            if ws_id:
-                workspace = await db.get(Workspace, ws_id)
-            role = payload.get("role")
+            if user is not None:
+                # Same precedence as REST: X-Workspace header → JWT claim → earliest
+                # active. Verifies membership + skips soft-deleted, so role is the
+                # user's role in the *resolved* workspace, not the (possibly stale) claim.
+                member = await resolve_active_workspace(
+                    db,
+                    user.id,
+                    x_workspace=request.headers.get("X-Workspace"),
+                    jwt_ws=payload.get("ws"),
+                )
+                if member is not None:
+                    workspace = await db.get(Workspace, member.workspace_id)
+                    role = member.role.value
         except Exception:
             pass
 

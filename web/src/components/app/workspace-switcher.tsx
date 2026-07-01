@@ -16,21 +16,22 @@ import {
 export function WorkspaceSwitcher() {
   const [active, setActive] = useState<string | null>(null);
 
-  useEffect(() => setActive(getActiveWorkspace()), []);
-
   const { data, isLoading } = useQuery({
     queryKey: ["workspaces"],
     queryFn: WorkspacesApi.listMine,
     staleTime: 60_000,
   });
 
-  // Auto-select first workspace if nothing active yet (post-login)
+  // Resolve the active workspace: last-used (localStorage) if still accessible,
+  // otherwise the first workspace. Persist so it survives reloads.
   useEffect(() => {
-    if (!active && data && data.length > 0) {
-      setActiveWorkspace(data[0].slug);
-      setActive(data[0].slug);
-    }
-  }, [active, data]);
+    if (!data || data.length === 0) return;
+    const stored = getActiveWorkspace();
+    const resolved =
+      stored && data.some((w) => w.slug === stored) ? stored : data[0].slug;
+    if (resolved !== stored) setActiveWorkspace(resolved);
+    setActive(resolved);
+  }, [data]);
 
   const options: ComboOption[] = (data ?? []).map((w) => ({
     value: w.slug,
