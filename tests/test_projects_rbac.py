@@ -291,6 +291,22 @@ async def test_duplicate_key_within_workspace_returns_409(client):
     assert r2.status_code == 409
 
 
+# ---------- deterministic ordering ----------
+
+@pytest.mark.asyncio
+async def test_list_projects_ordered_by_created_at(client):
+    """List returns projects earliest-created first, so the client's default is stable."""
+    owner = await _register(client, "proj_order")
+    p1 = await _create_project(client, owner["access_token"])
+    p2 = await _create_project(client, owner["access_token"])
+
+    resp = await client.get("/api/projects", headers=_auth(owner["access_token"]))
+    assert resp.status_code == 200
+    slugs = [p["slug"] for p in resp.json()]
+    assert p1["slug"] in slugs and p2["slug"] in slugs
+    assert slugs.index(p1["slug"]) < slugs.index(p2["slug"])
+
+
 # ---------- key normalisation ----------
 
 @pytest.mark.asyncio

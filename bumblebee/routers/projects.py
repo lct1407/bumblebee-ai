@@ -26,11 +26,15 @@ async def list_projects(
     ws_ctx: CurrentWorkspace = Depends(require_permission(Permission.READ_PROJECT)),
     db: AsyncSession = Depends(get_db),
 ) -> list[Project]:
+    # Earliest-created first (with an id tie-break) so the client's "first project"
+    # default is deterministic rather than dependent on physical row order.
     result = await db.execute(
-        select(Project).where(
+        select(Project)
+        .where(
             Project.workspace_id == ws_ctx.workspace_id,
             Project.deleted_at.is_(None),
         )
+        .order_by(Project.created_at.asc(), Project.id.asc())
     )
     return list(result.scalars().all())
 
